@@ -1,0 +1,5 @@
+.direnv/
+.envrc
+server/__pycache__/
+server_buddy/__pycache__/
+server/migrations/__pycache__/
