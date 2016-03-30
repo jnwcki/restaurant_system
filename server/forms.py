@@ -5,3 +5,6 @@ from django import forms
 
 class NewUserCreation(UserCreationForm):
     name = forms.CharField()
+
+    # class Meta:
+    #     fields = ['username', 'password', 'name']

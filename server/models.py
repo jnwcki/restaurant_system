@@ -1,7 +1,4 @@
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.conf import settings
 
 
 class UserProfile(models.Model):
@@ -24,6 +21,9 @@ class MenuItem(models.Model):
     description = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Server(models.Model):
     user_profile = models.ForeignKey(UserProfile, related_name='server_model')
@@ -43,20 +43,16 @@ class Menu(models.Model):
         return self.name
 
 
+class Order(models.Model):
+    items = models.ManyToManyField(MenuItem)
+    seat = models.IntegerField()
+
+
 class Table(models.Model):
     restaurant = models.ForeignKey(Restaurant)
     number = models.IntegerField()
     seats = models.IntegerField()
+    customer_order = models.ForeignKey(Order)
 
     def __str__(self):
         return str(self.number)
-
-
-class Order(models.Model):
-    items = models.ManyToManyField(MenuItem)
-
-
-# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-# def create_user_profile(sender, instance=None, created=False, **kwargs):
-#     if created:
-#         UserProfile.objects.create(user=instance)
