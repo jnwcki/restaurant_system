@@ -17,7 +17,7 @@ class UserProfile(models.Model):
     workplace = models.ForeignKey(Restaurant)
 
     def __str__(self):
-        return "{}, {}".format(self.position, + ", " + self.name)
+        return self.name
 
 
 class MenuItem(models.Model):
@@ -42,6 +42,7 @@ class Menu(models.Model):
 
 
 class Order(models.Model):
+    server = models.ForeignKey(UserProfile)
     items = models.ManyToManyField(MenuItem)
     seat_number = models.IntegerField()
     table_number = models.IntegerField()

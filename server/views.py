@@ -1,4 +1,4 @@
-from django.shortcuts import render
+# from django.shortcuts import render
 from django.views.generic import TemplateView
 from server.models import UserProfile, Restaurant, Order
 from django.contrib.auth.models import User
@@ -40,11 +40,12 @@ class ServerHomeView(TemplateView):
 
     def get_context_data(self):
         context = super(ServerHomeView, self).get_context_data()
-        current_server = Server.objects.get(user_profile=self.request.user.userprofile)
-        current_restaurant = Restaurant.objects.get(server__user_profile=current_server.user_profile)
-        context['server'] = current_server
-        context['restaurant'] = current_restaurant
-        context['table_list'] = Table.objects.filter(restaurant=current_restaurant)
+        current_server = UserProfile.objects.get(user=self.request.user)
+        if current_server.position != 'K':
+            context['restaurant'] = current_server.workplace
+            context['server'] = current_server
+        else:
+            return reverse('kitchen')
         return context
 
 
