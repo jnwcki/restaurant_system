@@ -1,7 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="col-md-6">
-    <a href="{% url 'server_home' %}">Server Home</a>
+<div class="row">
+    <div class="col-xs-12">
+        <h1>Welcome {{ user.name }}</h1>
+    </div>
 </div>
+<div class="row">
+    <div class="col-md-4">
+        <h3>Currently Active Servers</h3>
+        <h3>Inactive Severs</h3>
+    </div>
+    <div class="col-md-4">
+        <h3>Curently Active Kitchen</h3>
+        <h3>Inactive Kitchen</h3>
+    </div>
+    <div class="col-md-4">
+        <h3>Sales</h3>
+    </div>
+</div>
+
 {% endblock %}

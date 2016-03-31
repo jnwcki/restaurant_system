@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
-from server.models import Table, UserProfile, Server, Restaurant
+from server.models import UserProfile, Restaurant, Order
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.views.generic import CreateView, ListView, DetailView, View
@@ -12,7 +12,7 @@ class IndexView(TemplateView):
 
     def get_context_data(self):
         context = super(IndexView, self).get_context_data()
-
+        context['user'] = UserProfile.objects.get(user=self.request.user)
         return context
 
 
@@ -22,8 +22,12 @@ class UserCreateView(CreateView):
 
     def form_valid(self, form):
         user_object = form.save()
-        name = form.cleaned_data["name"]
-        profile = UserProfile.objects.create(user=user_object, name=name)
+        new_restaurant = Restaurant.objects.create(name=form.cleaned_data["restaurant_name"])
+        profile = UserProfile.objects.create(
+                                             user=user_object,
+                                             name=form.cleaned_data["first_name"],
+                                             workplace=new_restaurant
+                                             )
         profile.save()
         return super().form_valid(form)
 
@@ -44,5 +48,5 @@ class ServerHomeView(TemplateView):
         return context
 
 
-class TableView(DetailView):
-    model = Table
+# class TableView(DetailView):
+#     model = Table

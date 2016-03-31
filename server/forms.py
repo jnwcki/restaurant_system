@@ -4,7 +4,8 @@ from django import forms
 
 
 class NewUserCreation(UserCreationForm):
-    name = forms.CharField()
+    first_name = forms.CharField()
+    restaurant_name = forms.CharField()
 
     # class Meta:
     #     fields = ['username', 'password', 'name']

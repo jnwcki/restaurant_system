@@ -9,7 +9,7 @@
         <div class="container">
             <ul class="nav nav-pills">
                 <li role="presentation" class="active"><a href="{% url 'index' %}">Home</a></li>
-                {% if user.is_authenticated %}
+                {% if user %}
                 <li role="presentation"><a href="{% url 'logout' %}">Log Out</a></li>
                 {% else %}
                 <li role="presentation"><a href="{% url 'login' %}">Log In</a></li>
