@@ -12,7 +12,7 @@
                 {% if user %}
                 <li role="presentation"><a href="{% url 'logout' %}">Log Out</a></li>
                 <li role="presentation"><a href="{% url 'server_home' %}">Server View</a></li>
-
+                <li role="presentation"><a href="{% url 'kitchen' %}">Kitchen View</a></li>
                 {% else %}
                 <li role="presentation"><a href="{% url 'login' %}">Log In</a></li>
                 <li role="presentation"><a href="{% url 'signup' %}">Sign Up</a></li>

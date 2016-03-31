@@ -2,7 +2,7 @@
 from server.models import UserProfile, Restaurant, Order
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.views.generic import CreateView, TemplateView, DetailView
+from django.views.generic import CreateView, TemplateView, DetailView, ListView
 from server.forms import NewUserCreation
 
 
@@ -64,4 +64,8 @@ class OrderCreateView(CreateView):
 
 
 class OrderDetailView(DetailView):
+    model = Order
+
+
+class KitchenListView(ListView):
     model = Order

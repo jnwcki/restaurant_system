@@ -19,7 +19,7 @@
                         <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Start Table
                     </button>
                 </a>
-
+                <br><br>
                 {% for order in order_list %}
                     <a href="{% url 'order_detail' order.pk %}" class="list-group-item">Order {{ order }}</a>
 
