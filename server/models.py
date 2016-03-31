@@ -47,6 +47,7 @@ class Order(models.Model):
     seat_number = models.IntegerField()
     table_number = models.IntegerField()
     fulfilled = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.pk)
