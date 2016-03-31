@@ -46,6 +46,7 @@ class Order(models.Model):
     items = models.ManyToManyField(MenuItem)
     seat_number = models.IntegerField()
     table_number = models.IntegerField()
+    fulfilled = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.pk
+        return str(self.pk)

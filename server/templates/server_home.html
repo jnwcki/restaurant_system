@@ -14,10 +14,16 @@
         <div class="col-xs-10">
             <h3>Tables</h3>
             <div class="list-group">
-                {% for table in table_list %}
-                    <a href="" class="list-group-item">#{{ table }} {{ table.seats }}-Top</a>
+                <a href="{% url 'order_create_view' %}">
+                    <button type="button" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Start Table
+                    </button>
+                </a>
+
+                {% for order in order_list %}
+                    <a href="{% url 'order_detail' order.pk %}" class="list-group-item">Order {{ order }}</a>
+
                 {% empty %}
-                There Are currently no tables
                 {% endfor %}
             </div>
         </div>

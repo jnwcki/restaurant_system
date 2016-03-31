@@ -1,9 +1,8 @@
 # from django.shortcuts import render
-from django.views.generic import TemplateView
 from server.models import UserProfile, Restaurant, Order
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.views.generic import CreateView, ListView, DetailView, View
+from django.views.generic import CreateView, TemplateView, DetailView
 from server.forms import NewUserCreation
 
 
@@ -44,10 +43,25 @@ class ServerHomeView(TemplateView):
         if current_server.position != 'K':
             context['restaurant'] = current_server.workplace
             context['server'] = current_server
+            context['order_list'] = Order.objects.filter(server=self.request.user.userprofile)
         else:
             return reverse('kitchen')
         return context
 
 
-# class TableView(DetailView):
-#     model = Table
+class OrderCreateView(CreateView):
+    model = Order
+    fields = ['seat_number', 'table_number', 'items']
+
+    def form_valid(self, form):
+        new_order = form.save(commit=False)
+        new_order.server = self.request.user.userprofile
+        new_order.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('server_home')
+
+
+class OrderDetailView(DetailView):
+    model = Order
