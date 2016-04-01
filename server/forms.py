@@ -7,5 +7,7 @@ class NewUserCreation(UserCreationForm):
     first_name = forms.CharField()
     restaurant_name = forms.CharField()
 
-    # class Meta:
-    #     fields = ['username', 'password', 'name']
+
+class ServerCreateForm(UserCreationForm):
+    name = forms.CharField()
+    

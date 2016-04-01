@@ -9,10 +9,14 @@
         <div class="container">
             <ul class="nav nav-pills">
                 <li role="presentation" class="active"><a href="{% url 'index' %}">Home</a></li>
-                {% if user %}
+                {% if user.is_authenticated %}
                 <li role="presentation"><a href="{% url 'logout' %}">Log Out</a></li>
                 <li role="presentation"><a href="{% url 'server_home' %}">Server View</a></li>
                 <li role="presentation"><a href="{% url 'kitchen' %}">Kitchen View</a></li>
+                <li role="presentation"><a href="{% url 'add_menu_item' %}">Add Menu Item</a></li>
+                <li role="presentation"><a href="{% url 'create_menu' %}">Create A New Menu</a></li>
+                <li role="presentation"><a href="#">Currently Logged In As {{ user.username }}</a></li>
+
                 {% else %}
                 <li role="presentation"><a href="{% url 'login' %}">Log In</a></li>
                 <li role="presentation"><a href="{% url 'signup' %}">Sign Up</a></li>

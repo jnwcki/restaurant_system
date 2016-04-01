@@ -3,16 +3,27 @@
 {% block content %}
 <div class="row">
     <div class="col-xs-12">
-        <h1>Welcome {{ user.name }}</h1>
+        <h1>Welcome {{ user.userprofile.name }}</h1>
     </div>
 </div>
 <div class="row">
     <div class="col-md-4">
         <h3>Currently Active Servers</h3>
+        <a href="{% url 'add_server' user.userprofile.workplace.pk %}">Add New Server</a>
+        {% for server in servers %}
+        <br>
+        {{ server }}
+
+        {% endfor %}
         <h3>Inactive Severs</h3>
     </div>
     <div class="col-md-4">
         <h3>Curently Active Kitchen</h3>
+        <a href="{% url 'add_cook' user.userprofile.workplace.pk %}">Add New Kitchen Staff</a>
+        {% for cook in kitchen %}
+        <br>
+        {{ cook }}
+        {% endfor %}
         <h3>Inactive Kitchen</h3>
     </div>
     <div class="col-md-4">
