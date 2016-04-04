@@ -1,7 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for order in order_list %}
-{{ order }}
-{% endfor %}
+<ul class="list-group">
+    {% for order in order_list %}
+
+  <li class="list-group-item">Server: {{ order.server }}
+      <a href="{% url 'order_update' order.pk %}">Update Order</a>
+      Table: {{ order.table_number }}
+      Seat Number: {{ order.seat_number }}
+      Fulfilled: {{ order.fulfilled }}
+      Items: {% for fooditem in order.items.all %}<br><b>{{ fooditem.name }}</b>{% endfor %}</li>
+  {% endfor %}
+
+</ul>
+
+
+
 {% endblock %}

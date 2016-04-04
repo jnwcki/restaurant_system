@@ -6,6 +6,10 @@ from django.views.generic import CreateView, TemplateView, DetailView, ListView,
 from server.forms import NewUserCreation, ServerCreateForm
 
 
+class LandingView(TemplateView):
+    template_name = 'landing.html'
+
+    
 class IndexView(TemplateView):
     template_name = 'index.html'
 
@@ -73,6 +77,11 @@ class OrderDetailView(DetailView):
 
 class KitchenListView(ListView):
     model = Order
+
+    # def get_context_data(self):
+    #     context = super(KitchenListView, self).get_context_data()
+    #
+    #     return context
 
 
 class MenuDetailView(DetailView):
@@ -159,3 +168,8 @@ class UpdateMenuView(UpdateView):
 
 class MenuItemDetailView(DetailView):
     model = MenuItem
+
+
+class OrderUpdateView(UpdateView):
+    model = Order
+    fields = ['seat_number', 'table_number', 'items']
