@@ -1,14 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <div class="row">
-    <div class="col-md-4">
-        <form class="" action="" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" name="name" value="Send Order">
-        </form>
+    <div class="col-lg-12">
+        <h1 class="page-header">Order</h1>
     </div>
+    <!-- /.col-lg-12 -->
+</div>
+<form role="form" method="post">
+    {% csrf_token %}
+<div class="row">
+    <div class="col-lg-4" id="order_input">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b>Seat 1</b>
+            </div>
+            <div class="panel-body">
+                    {{ form.as_p }}
+            </div>
+        </div>
+    </div>
+    <input type="button" value="Add Seat" onClick="addInput('order_input');">
 
 </div>
+<br><br>
+<input type="submit" name="name" value="Send Order">
+
+</form>
 {% endblock %}

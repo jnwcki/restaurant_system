@@ -1,31 +1,130 @@
 <!DOCTYPE html>
 <html>
+{% load staticfiles %}
+
     <head>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
         <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <!-- Bootstrap Core CSS -->
+        <link href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+
+        <!-- MetisMenu CSS -->
+        <link href="{% static 'bower_components/metisMenu/dist/metisMenu.min.css' %}" rel="stylesheet">
+
+        <!-- Timeline CSS -->
+        <link href="{% static 'dist/css/timeline.css' %}" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="{% static 'dist/css/sb-admin-2.css' %}" rel="stylesheet">
+
+        <!-- Morris Charts CSS -->
+        <link href="{% static 'bower_components/morrisjs/morris.css' %}" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+
         <title>Server Buddy</title>
     </head>
     <body>
-        <div class="container">
-            <ul class="nav nav-pills">
-                <li role="presentation" class="active"><a href="{% url 'index' %}">Home</a></li>
-                {% if user.is_authenticated %}
-                <li role="presentation"><a href="{% url 'logout' %}">Log Out</a></li>
-                <li role="presentation"><a href="{% url 'server_home' %}">Server View</a></li>
-                <li role="presentation"><a href="{% url 'kitchen' %}">Kitchen View</a></li>
-                <li role="presentation"><a href="{% url 'add_menu_item' %}">Add Menu Item</a></li>
-                <li role="presentation"><a href="{% url 'create_menu' %}">Create A New Menu</a></li>
-                <li role="presentation"><a href="#">Currently Logged In As {{ user.username }}</a></li>
+        <div id='wrapper'>
+            <!-- Navigation -->
+            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{% url 'index' %}">Home</a>
+                </div>
+                <!-- /.navbar-header -->
 
-                {% else %}
-                <li role="presentation"><a href="{% url 'login' %}">Log In</a></li>
-                <li role="presentation"><a href="{% url 'signup' %}">Sign Up</a></li>
-                {% endif %}
-            </ul>
-            {% block content %}
-            {% endblock %}
+                <ul class="nav navbar-top-links navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            {% if user.is_authenticated %}
+                            <li><a href="#">Currently Logged In As {{ user.username }}</a></li>
+                            <li><a href="{% url 'logout' %}"><i class="fa fa-user fa-fw"></i> Log Out</a></li>
+                            {% else %}
+                            <li><a href="{% url 'login' %}"><i class="fa fa-user fa-fw"></i> Log In</a></li>
+                            <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                            {% endif %}
+                        </ul>
+                        <!-- /.dropdown-user -->
+                    </li>
+                    <!-- /.dropdown -->
+                </ul>
+                <!-- /.navbar-top-links -->
+
+                <div class="navbar-default sidebar" role="navigation">
+                    <div class="sidebar-nav navbar-collapse">
+                        <ul class="nav" id="side-menu">
+                            <li>
+                                <a href="{% url 'index' %}"><i class="fa fa-dashboard fa-fw"></i>Home Link</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'server_home' %}"><i class="fa fa-bar-chart-o fa-fw"></i>Server View<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="{% url 'order_create_view' %}">New Table</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="{% url 'kitchen' %}"><i class="fa fa-table fa-fw"></i>Kitchen View</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-wrench fa-fw"></i>Admin<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="{% url 'add_menu_item' %}">Add Menu Items</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'create_menu' %}">Create New Menu</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.sidebar-collapse -->
+                </div>
+                <!-- /.navbar-static-side -->
+            </nav>
+
+                <div id='page-wrapper'>
+                    {% block content %}
+                    {% endblock %}
+                </div>
         </div>
     </body>
-    <script src="https://code.jquery.com/jquery-2.2.2.min.js" integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI=" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <!-- jQuery -->
+    <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{% static 'bower_components/metisMenu/dist/metisMenu.min.js' %}"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="{% static 'bower_components/raphael/raphael-min.js' %}"></script>
+    <script src="{% static 'bower_components/morrisjs/morris.min.js' %}"></script>
+    <script src="{% static 'js/morris-data.js' %}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{% static 'dist/js/sb-admin-2.js' %}"></script>
+
+    <!-- Order Form Script -->
+    <script src="{% static 'js/order_form_include.js' %}" language="Javascript" type="text/javascript"></script>
+
 </html>
