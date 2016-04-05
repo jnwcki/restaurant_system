@@ -13,6 +13,8 @@
 <form role="form" method="post">
     {% csrf_token %}
     <div class="row">
+        {{ formset.management_form }}
+
         {% for form in formset %}
             <div class="col-lg-4" id="order_input">
                 <div class="panel panel-default">
@@ -21,6 +23,7 @@
                     </div>
                     <div class="panel-body">
                         {{ form.as_p }}
+                        {{ form.errors }}
                     </div>
                 </div>
             </div>
@@ -30,4 +33,5 @@
 <input type="submit" name="name" value="Send Order">
 
 </form>
+<br><br>
 {% endblock %}

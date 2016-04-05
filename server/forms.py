@@ -18,7 +18,7 @@ class CreateOrderForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ['items']
+        exclude = []
         widgets = {'items': CheckboxSelectMultiple()}
 
-order_form_set = formset_factory(CreateOrderForm, extra=2)
+OrderFormSet = formset_factory(CreateOrderForm, extra=3, max_num=6)

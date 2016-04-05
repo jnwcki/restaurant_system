@@ -3,7 +3,7 @@ from server.models import UserProfile, Restaurant, Order, MenuItem, Menu
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
-from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm, order_form_set
+from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm, OrderFormSet
 from django.forms import formset_factory
 from django.forms.widgets import CheckboxSelectMultiple
 
@@ -71,10 +71,15 @@ class OrderCreateView(CreateView):
         # context['form'] = form
         # print(form)
         if self.request.POST:
-            context['formset'] = order_form_set(self.request.POST)
+            context['formset'] = OrderFormSet(self.request.POST)
         else:
-            context['formset'] = order_form_set()
+            context['formset'] = OrderFormSet()
         return context
+
+    def form_invalid(self, form):
+        print(form.errors)
+        return super().form_invalid(form)
+        #return reverse('order_create_view')
 
     def form_valid(self, form):
         new_order = form.save(commit=False)
