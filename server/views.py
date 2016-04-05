@@ -3,7 +3,9 @@ from server.models import UserProfile, Restaurant, Order, MenuItem, Menu
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
-from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm
+from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm, order_form_set
+from django.forms import formset_factory
+from django.forms.widgets import CheckboxSelectMultiple
 
 
 class LandingView(TemplateView):
@@ -61,12 +63,17 @@ class OrderCreateView(CreateView):
     form_class = CreateOrderForm
     model = Order
 
-    def get_context_data(self):
-        context = super().get_context_data()
-        form = self.form_class()
-        items = MenuItem.objects.all().values_list("pk", "name")
-        form.fields["items"].choices = items
-        context['form'] = form
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # form = self.form_class()
+        # items = MenuItem.objects.all().values_list("pk", "name")
+        # form.fields["items"].choices = items
+        # context['form'] = form
+        # print(form)
+        if self.request.POST:
+            context['formset'] = order_form_set(self.request.POST)
+        else:
+            context['formset'] = order_form_set()
         return context
 
     def form_valid(self, form):

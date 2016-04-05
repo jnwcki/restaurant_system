@@ -1,7 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from server.models import Order, MenuItem
+from server.models import Order
 from django.forms.widgets import CheckboxSelectMultiple
+from django.forms import formset_factory
 
 
 class NewUserCreation(UserCreationForm):
@@ -14,8 +15,10 @@ class ServerCreateForm(UserCreationForm):
 
 
 class CreateOrderForm(forms.ModelForm):
+
     class Meta:
-        CHOICES = MenuItem.objects.all()
         model = Order
         fields = ['items']
-        widgets = {'items': CheckboxSelectMultiple(choices=((item.id, item.name) for item in CHOICES))}
+        widgets = {'items': CheckboxSelectMultiple()}
+
+order_form_set = formset_factory(CreateOrderForm, extra=2)

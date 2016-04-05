@@ -44,8 +44,8 @@ class Menu(models.Model):
 class Order(models.Model):
     server = models.ForeignKey(UserProfile)
     items = models.ManyToManyField(MenuItem)
-    seat_number = models.IntegerField()
-    table_number = models.IntegerField()
+    seat_number = models.IntegerField(default=1)
+    table_number = models.IntegerField(default=1)
     fulfilled = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
