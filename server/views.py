@@ -3,13 +3,13 @@ from server.models import UserProfile, Restaurant, Order, MenuItem, Menu
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
-from server.forms import NewUserCreation, ServerCreateForm
+from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm
 
 
 class LandingView(TemplateView):
     template_name = 'landing.html'
 
-    
+
 class IndexView(TemplateView):
     template_name = 'index.html'
 
@@ -58,12 +58,23 @@ class ServerHomeView(TemplateView):
 
 
 class OrderCreateView(CreateView):
+    form_class = CreateOrderForm
     model = Order
-    fields = ['seat_number', 'table_number', 'items']
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        form = self.form_class()
+        items = MenuItem.objects.all().values_list("pk", "name")
+        form.fields["items"].choices = items
+        context['form'] = form
+        return context
 
     def form_valid(self, form):
         new_order = form.save(commit=False)
         new_order.server = self.request.user.userprofile
+        new_order.seat_number = 1
+        new_order.table_number = 1
+
         new_order.save()
         return super().form_valid(form)
 
