@@ -43,7 +43,7 @@ class Menu(models.Model):
 
 
 class Table(models.Model):
-    restaurant = models.ForeignKey(Restaurant)
+    server = models.ForeignKey(UserProfile)
     number = models.IntegerField()
     started = models.DateTimeField(auto_now_add=True)
     fulfilled = models.BooleanField(default=False)
@@ -56,10 +56,9 @@ class Table(models.Model):
 
 
 class Order(models.Model):
-    server = models.ForeignKey(UserProfile)
+    table = models.ForeignKey(Table)
     items = models.ManyToManyField(MenuItem)
     seat_number = models.IntegerField(default=1)
-    table = models.ForeignKey(Table)
     fulfilled = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 

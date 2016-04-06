@@ -4,10 +4,11 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
 from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm
-# from django.forms import formset_factory
+from django.forms import inlineformset_factory
 # from django.forms.widgets import CheckboxSelectMultiple
-# from django.shortcuts import render
+from django.shortcuts import render
 from extra_views import CreateWithInlinesView
+from django.http import HttpResponseRedirect
 
 
 class LandingView(TemplateView):
@@ -56,20 +57,38 @@ class ServerHomeView(TemplateView):
         current_server = UserProfile.objects.get(user=self.request.user)
         if current_server.position != 'K':
             current_restaurant = current_server.workplace
-            bound_table_list = Table.objects.filter(restaurant=current_restaurant, fulfilled=False)
+            bound_table_list = Table.objects.filter(server__workplace=current_restaurant, fulfilled=False)
             all_tables_list = [x for x in range(current_restaurant.number_of_tables)]
             bound_table_numbers = bound_table_list.values_list('number', flat=True)
             unbound_tables = [x for x in all_tables_list if x not in bound_table_numbers]
 
             context['restaurant'] = current_restaurant
             context['server'] = current_server
-            context['order_list'] = Order.objects.filter(server=self.request.user.userprofile)
+            # context['order_list'] = Order.objects.filter(server=self.request.user.userprofile)
             context['menus'] = Menu.objects.all()
             context['bound_tables'] = bound_table_list
             context['unbound_tables'] = unbound_tables
         else:
             return reverse('kitchen')
         return context
+
+
+def FunctionBasedCreateOrder(request, table_number):
+    server = request.user.userprofile
+
+    OrderFormSet = inlineformset_factory(Table, Order, exclude=[])
+
+    if request.method == 'POST':
+            new_table = Table.objects.create(server=server, number=table_number)
+
+            order_form_set = OrderFormSet(request.POST, instance=new_table)
+
+            if order_form_set.is_valid():
+                order_form_set.save()
+                return HttpResponseRedirect(reverse('server_home'))
+    else:
+        order_form_set = OrderFormSet()
+        return render(request, 'server/order_form.html', {'formset': order_form_set})
 
 
 class OrderCreateView(CreateWithInlinesView):
