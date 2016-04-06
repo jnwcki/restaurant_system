@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load staticfiles %}
+<!-- Django Dynamic Formsets -->
+<script src="{% static 'js/jquery.formset.js' %}"></script>
 
 <div class="row">
     <div class="col-lg-12">
@@ -10,7 +13,7 @@
 </div>
 
 
-<form role="form" method="post">
+<form id="create_order_form" role="form" method="post">
     {% csrf_token %}
     <div class="row">
         {{ formset.management_form }}
@@ -30,14 +33,18 @@
                                 <p class="help">{{ field.help_text|safe }}</p>
                                 {% endif %}
                             </div>
-                        {% endfor %}                    </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         {% endfor %}
     </div>
 <br><br>
 <input type="submit" name="name" value="Send Order">
-
 </form>
+
+<script type="text/javascript">
+    $('#create_order_form .panel-body').formset();
+</script>
 <br><br>
 {% endblock %}
