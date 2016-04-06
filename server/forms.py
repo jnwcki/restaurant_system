@@ -21,4 +21,12 @@ class CreateOrderForm(forms.ModelForm):
         exclude = []
         widgets = {'items': CheckboxSelectMultiple()}
 
+    def __init__(self, *args, **kwargs):
+        initial_first_name = kwargs.pop('server')
+
+        super(CreateOrderForm, self).__init__(*args, **kwargs)
+
+        self.fields['server'].initial = initial_first_name
+
+
 OrderFormSet = formset_factory(CreateOrderForm, extra=3, max_num=6)

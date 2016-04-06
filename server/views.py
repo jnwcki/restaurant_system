@@ -3,9 +3,11 @@ from server.models import UserProfile, Restaurant, Order, MenuItem, Menu
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
-from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm, OrderFormSet
-from django.forms import formset_factory
-from django.forms.widgets import CheckboxSelectMultiple
+from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm
+# from django.forms import formset_factory
+# from django.forms.widgets import CheckboxSelectMultiple
+# from django.shortcuts import render
+from extra_views import FormSetView, ModelFormSetView
 
 
 class LandingView(TemplateView):
@@ -58,40 +60,82 @@ class ServerHomeView(TemplateView):
             return reverse('kitchen')
         return context
 
+#
+# def form_test(request):
+#     context = {'formset': OrderFormSet()}
+#
+#     if request.method == 'POST':
+#         post_formset = OrderFormSet(request.POST)
+#         if post_formset.is_valid():
+#             for post_form in post_formset:
+#                 pass
+#     return render(request, 'server/order_form.html', context)
 
-class OrderCreateView(CreateView):
+
+class OrderCreateView(FormSetView):
     form_class = CreateOrderForm
+    template_name = 'server/order_form.html'
+    success_url = '/server/home/'
+    extra = 1
     model = Order
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # form = self.form_class()
-        # items = MenuItem.objects.all().values_list("pk", "name")
-        # form.fields["items"].choices = items
-        # context['form'] = form
-        # print(form)
-        if self.request.POST:
-            context['formset'] = OrderFormSet(self.request.POST)
-        else:
-            context['formset'] = OrderFormSet()
-        return context
+    def get_extra_form_kwargs(self):
+        kwargs = super(OrderCreateView, self).get_extra_form_kwargs()
+        kwargs.update({
+            'server': self.request.user.userprofile,
+        })
+        return kwargs
 
-    def form_invalid(self, form):
-        print(form.errors)
-        return super().form_invalid(form)
-        #return reverse('order_create_view')
+    def forms_valid(self, form, inlines):
+        form.instance.server = self.request.user.userprofile
+        return super(OrderCreateView, self).forms_valid(form, inlines)
 
-    def form_valid(self, form):
-        new_order = form.save(commit=False)
-        new_order.server = self.request.user.userprofile
-        new_order.seat_number = 1
-        new_order.table_number = 1
+    def formset_valid(self, formset):
+        # print(formset)
+        for new_order in formset:
+            # if new_order.is_valid and not new_order.empty_permitted:
+            new_order.save(commit=False)
+            # print(self.request.user.userprofile)
+            new_order.server = UserProfile.objects.get(user=self.request.user)
+            new_order.seat_number = 1
+            new_order.table_number = 1
+            new_order.save()
+        return super(OrderCreateView, self).formset_valid(formset)
 
-        new_order.save()
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse('server_home')
+# class OrderCreateView(CreateView):
+#     form_class = CreateOrderForm
+#     model = Order
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         # form = self.form_class()
+#         # items = MenuItem.objects.all().values_list("pk", "name")
+#         # form.fields["items"].choices = items
+#         # context['form'] = form
+#         # print(form)
+#         if self.request.POST:
+#             context['formset'] = OrderFormSet(self.request.POST)
+#         else:
+#             context['formset'] = OrderFormSet()
+#         return context
+#
+#     def form_invalid(self, formset):
+#         print(formset.errors)
+#         return super().form_invalid(formset.errors)
+#         #return reverse('order_create_view')
+#
+#     def form_valid(self, form):
+#         new_order = form.save(commit=False)
+#         new_order.server = self.request.user.userprofile
+#         new_order.seat_number = 1
+#         new_order.table_number = 1
+#
+#         new_order.save()
+#         return super().form_valid(form)
+#
+#     def get_success_url(self):
+#         return reverse('server_home')
+#
 
 
 class OrderDetailView(DetailView):

@@ -1,5 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{{ object }}
+{{ object.server }}
+<br>
+{{ object.table }}
+<br>
+{{object.seat_number}}
+{% for item in object.items.all %}
+<br>
+{{ item }}
+
+{% endfor %}
 {% endblock %}

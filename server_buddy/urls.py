@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^server/add/(?P<restaurant_id>\d+)', ServerAddView.as_view(), name='add_server'),
     url(r'^kitchen/add/(?P<restaurant_id>\d+)', KitchenAddView.as_view(), name='add_cook'),
     url(r'^menuitem/detail/(?P<pk>\d+)', MenuItemDetailView.as_view(), name='menu_item_detail'),
+    # url(r'^formtest/', OrderCreateTestView.as_view(), name='formtest')
 ]

@@ -14,7 +14,7 @@
     {% csrf_token %}
     <div class="row">
         {{ formset.management_form }}
-
+        {{ formset.non_field_errors }}
         {% for form in formset %}
             <div class="col-lg-4" id="order_input">
                 <div class="panel panel-default">
@@ -22,9 +22,15 @@
                         <b>Seat 1</b>
                     </div>
                     <div class="panel-body">
-                        {{ form.as_p }}
-                        {{ form.errors }}
-                    </div>
+                        {% for field in form %}
+                            <div class="fieldWrapper">
+                                {{ field.errors }}
+                                {{ field.label_tag }} {{ field }}
+                                {% if field.help_text %}
+                                <p class="help">{{ field.help_text|safe }}</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}                    </div>
                 </div>
             </div>
         {% endfor %}
