@@ -8,6 +8,7 @@ from django.forms import formset_factory
 class NewUserCreation(UserCreationForm):
     first_name = forms.CharField()
     restaurant_name = forms.CharField()
+    number_of_tables = forms.IntegerField()
 
 
 class ServerCreateForm(UserCreationForm):

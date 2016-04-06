@@ -18,12 +18,22 @@
         <div class="col-xs-10">
             <h3>Your Tables</h3>
             <div class="list-group">
-                <a href="{% url 'order_create_view' %}">
-                    <button type="button" class="btn btn-default btn-lg">
-                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Start Table
+                {% for table in bound_tables %}
+                <a href="">
+                    <button type="button" class="btn btn-danger btn-lg">
+                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Current Table {{ table.number }}
                     </button>
                 </a>
+                {% endfor %}
                 <br><br>
+                {% for table in unbound_tables %}
+                <a href="{% url 'order_create_view' table %}">
+                    <button type="button" class="btn btn-default btn-lg">
+                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Start Table {{ table }}
+                    </button>
+                </a>
+                {% endfor %}
+
                 {% for order in order_list %}
                     <a href="{% url 'order_detail' order.pk %}" class="list-group-item">Order {{ order }}</a>
 

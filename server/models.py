@@ -5,6 +5,7 @@ POSITION_CHOICES = [('M', 'Manager'), ('S', 'Server'), ('K', 'Kitchen')]
 
 class Restaurant(models.Model):
     name = models.CharField(max_length=255)
+    number_of_tables = models.IntegerField(default=1)
 
     def __str__(self):
         return "{}".format(self.name)
@@ -41,11 +42,24 @@ class Menu(models.Model):
         return self.name
 
 
+class Table(models.Model):
+    restaurant = models.ForeignKey(Restaurant)
+    number = models.IntegerField()
+    started = models.DateTimeField(auto_now_add=True)
+    fulfilled = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-started']
+
+    def __str__(self):
+        return "Table {} {}".format(self.number, self.started)
+
+
 class Order(models.Model):
     server = models.ForeignKey(UserProfile)
     items = models.ManyToManyField(MenuItem)
     seat_number = models.IntegerField(default=1)
-    table_number = models.IntegerField(default=1)
+    table = models.ForeignKey(Table)
     fulfilled = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 

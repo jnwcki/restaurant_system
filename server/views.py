@@ -1,5 +1,5 @@
 # from django.shortcuts import render
-from server.models import UserProfile, Restaurant, Order, MenuItem, Menu
+from server.models import UserProfile, Restaurant, Order, MenuItem, Menu, Table
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
@@ -7,7 +7,7 @@ from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm
 # from django.forms import formset_factory
 # from django.forms.widgets import CheckboxSelectMultiple
 # from django.shortcuts import render
-from extra_views import FormSetView, ModelFormSetView
+from extra_views import CreateWithInlinesView
 
 
 class LandingView(TemplateView):
@@ -32,7 +32,10 @@ class UserCreateView(CreateView):
 
     def form_valid(self, form):
         user_object = form.save()
-        new_restaurant = Restaurant.objects.create(name=form.cleaned_data["restaurant_name"])
+        new_restaurant = Restaurant.objects.create(
+                                                    name=form.cleaned_data["restaurant_name"],
+                                                    number_of_tables=form.cleaned_data['number_of_tables'],
+                                                    )
         profile = UserProfile.objects.create(
                                              user=user_object,
                                              name=form.cleaned_data["first_name"],
@@ -52,37 +55,36 @@ class ServerHomeView(TemplateView):
         context = super(ServerHomeView, self).get_context_data()
         current_server = UserProfile.objects.get(user=self.request.user)
         if current_server.position != 'K':
-            context['restaurant'] = current_server.workplace
+            current_restaurant = current_server.workplace
+            bound_table_list = Table.objects.filter(restaurant=current_restaurant, fulfilled=False)
+            all_tables_list = [x for x in range(current_restaurant.number_of_tables)]
+            bound_table_numbers = bound_table_list.values_list('number', flat=True)
+            unbound_tables = [x for x in all_tables_list if x not in bound_table_numbers]
+
+            context['restaurant'] = current_restaurant
             context['server'] = current_server
             context['order_list'] = Order.objects.filter(server=self.request.user.userprofile)
             context['menus'] = Menu.objects.all()
+            context['bound_tables'] = bound_table_list
+            context['unbound_tables'] = unbound_tables
         else:
             return reverse('kitchen')
         return context
 
-#
-# def form_test(request):
-#     context = {'formset': OrderFormSet()}
-#
-#     if request.method == 'POST':
-#         post_formset = OrderFormSet(request.POST)
-#         if post_formset.is_valid():
-#             for post_form in post_formset:
-#                 pass
-#     return render(request, 'server/order_form.html', context)
 
-
-class OrderCreateView(FormSetView):
+class OrderCreateView(CreateWithInlinesView):
     form_class = CreateOrderForm
     template_name = 'server/order_form.html'
     success_url = '/server/home/'
     extra = 1
-    model = Order
+    model = Table
+    inline_model = Order
 
     def get_extra_form_kwargs(self):
         kwargs = super(OrderCreateView, self).get_extra_form_kwargs()
         kwargs.update({
             'server': self.request.user.userprofile,
+
         })
         return kwargs
 
@@ -101,41 +103,6 @@ class OrderCreateView(FormSetView):
             new_order.table_number = 1
             new_order.save()
         return super(OrderCreateView, self).formset_valid(formset)
-
-# class OrderCreateView(CreateView):
-#     form_class = CreateOrderForm
-#     model = Order
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         # form = self.form_class()
-#         # items = MenuItem.objects.all().values_list("pk", "name")
-#         # form.fields["items"].choices = items
-#         # context['form'] = form
-#         # print(form)
-#         if self.request.POST:
-#             context['formset'] = OrderFormSet(self.request.POST)
-#         else:
-#             context['formset'] = OrderFormSet()
-#         return context
-#
-#     def form_invalid(self, formset):
-#         print(formset.errors)
-#         return super().form_invalid(formset.errors)
-#         #return reverse('order_create_view')
-#
-#     def form_valid(self, form):
-#         new_order = form.save(commit=False)
-#         new_order.server = self.request.user.userprofile
-#         new_order.seat_number = 1
-#         new_order.table_number = 1
-#
-#         new_order.save()
-#         return super().form_valid(form)
-#
-#     def get_success_url(self):
-#         return reverse('server_home')
-#
 
 
 class OrderDetailView(DetailView):
@@ -240,3 +207,7 @@ class MenuItemDetailView(DetailView):
 class OrderUpdateView(UpdateView):
     model = Order
     fields = ['seat_number', 'table_number', 'items']
+
+
+class TableStartView(TemplateView):
+    template_name = 'server/table_start_view.html'
