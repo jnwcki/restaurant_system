@@ -57,7 +57,7 @@ class Table(models.Model):
 
 class Order(models.Model):
     table = models.ForeignKey(Table)
-    items = models.ManyToManyField(MenuItem)
+    items = models.ManyToManyField(MenuItem, through='OrderItems')
     seat_number = models.IntegerField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -66,3 +66,10 @@ class Order(models.Model):
 
     def __str__(self):
         return str(self.pk)
+
+
+class OrderItems(models.Model):
+    menuitem = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    special_instructions = models.CharField(max_length=255)
