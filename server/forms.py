@@ -1,11 +1,11 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from server.models import Order
-from django.forms.widgets import CheckboxSelectMultiple
+from server.models import Seat, OrderItems
+# from django.forms.widgets import CheckboxSelectMultiple
 
 
 class NewUserCreation(UserCreationForm):
-    first_name = forms.CharField()
+    # first_name = forms.CharField()
     restaurant_name = forms.CharField()
     number_of_tables = forms.IntegerField()
 
@@ -14,12 +14,21 @@ class ServerCreateForm(UserCreationForm):
     name = forms.CharField()
 
 
+# class CreateOrderForm(forms.ModelForm):
+#
+#     class Meta:
+#         model = Seat
+#         fields = ['items', 'seat_number']
+#         widgets = {'items': CheckboxSelectMultiple()}
+#
+
 class CreateOrderForm(forms.ModelForm):
 
     class Meta:
-        model = Order
-        fields = ['items', 'seat_number']
-        widgets = {'items': CheckboxSelectMultiple()}
+        model = OrderItems
+        exclude = []
+        # widgets = {'items': CheckboxSelectMultiple()}
+
 
 # this may be completely unnecessary
 # class OrderBaseFormSet(forms.BaseInlineFormSet):

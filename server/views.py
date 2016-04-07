@@ -1,9 +1,9 @@
-from server.models import UserProfile, Restaurant, Order, MenuItem, Menu, Table
+from server.models import UserProfile, Restaurant, Seat, MenuItem, Menu, Table, OrderItems
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
-from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm
-from django.forms import inlineformset_factory
+from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm, CreateOrderForm
+from django.forms import inlineformset_factory, formset_factory
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
@@ -69,11 +69,15 @@ class ServerHomeView(TemplateView):
         return context
 
 
+class CreateOrderItem(CreateView):
+    model = OrderItems
+    fields = '__all__'
+
 def FunctionBasedCreateOrder(request, table_number):
     server = request.user.userprofile
-    OrderFormSet = inlineformset_factory(Table, Order, form=CreateOrderForm, max_num=20)
-    menus = Menu.objects.filter(restaurant=request.user.userprofile.workplace)
-
+    # OrderFormSet = inlineformset_factory(Table, Order, form=CreateOrderForm, max_num=20)
+    # menus = Menu.objects.filter(restaurant=request.user.userprofile.workplace)
+    OrderFormSet = formset_factory(form=CreateOrderFormM)
     if request.method == 'POST':
             new_table = Table.objects.create(server=server, number=table_number)
             order_form_set = OrderFormSet(request.POST, instance=new_table)
@@ -86,7 +90,6 @@ def FunctionBasedCreateOrder(request, table_number):
 
         return render(request, 'server/order_form.html', {'formset': order_form_set,
                                                           'table_num': table_number,
-                                                          'menus': menus
                                                           }
                       )
 
@@ -106,7 +109,7 @@ def FunctionBasedUpdateOrder(request, table_pk):
 
 
 class OrderDetailView(DetailView):
-    model = Order
+    model = Seat
 
 
 class KitchenListView(ListView):
@@ -200,7 +203,7 @@ class MenuItemDetailView(DetailView):
 
 
 class OrderUpdateView(UpdateView):
-    model = Order
+    model = Seat
     fields = ['seat_number', 'table_number', 'items']
 
 
