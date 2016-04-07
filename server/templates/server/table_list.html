@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<ul class="list-group">
+    {% for table in table_list %}
+
+        {% if not table.fulfilled %}
+            <li class="list-group-item"><p class='bg-success'>
+
+            Server: {{ table.server }}<br>
+
+              <a href="{% url 'table_fulfilled' table.pk %}">
+                  <button type="button" class="btn btn-success btn-lg pull-right">
+                      <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Mark Table Fulfilled
+                  </button>
+              </a>
+              Table: {{ table.number }}<br>
+              Order Sent: {{ table.started }}<br>
+              Items:
+              {% for order in table.order_set.all %}
+              <br><b>
+                  {% for item in order.items.all %}
+                  <br>
+                  {{ item.name }}
+                  {% endfor %}
+              </b>{% endfor %}
+          </p></li>
+          {% else %}
+          <li class="list-group-item "><p class="bg-warning">
+
+            Server: {{ order.server }}
+            Table: {{ table.number }}<br>
+            Seat Number: {{ table.started }}<br>
+            Items:
+            {% for order in table.order_set.all %}
+            <br><b>
+                {% for item in order.items.all %}
+                <br>
+                {{ item.name }}
+                {% endfor %}
+            </b>{% endfor %}
+            </p></li>
+
+        {% endif %}
+    {% endfor %}
+</ul>
+
+
+
+{% endblock %}

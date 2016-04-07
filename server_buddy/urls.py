@@ -2,9 +2,10 @@ from django.conf.urls import url
 from django.contrib import admin
 from server_buddy import settings
 # from django.views.static import serve
-from server.views import IndexView, ServerHomeView, UserCreateView, OrderCreateView, OrderDetailView, \
+from server.views import IndexView, ServerHomeView, UserCreateView, OrderDetailView, \
     KitchenListView, AddMenuItemView, CreateMenuView, MenuDetailView, ServerAddView, KitchenAddView, \
-    UpdateMenuView, MenuItemDetailView, OrderUpdateView, LandingView, FunctionBasedCreateOrder
+    UpdateMenuView, MenuItemDetailView, OrderUpdateView, LandingView, FunctionBasedCreateOrder, \
+    FunctionBasedUpdateOrder, mark_table_fulfilled
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -29,4 +30,6 @@ urlpatterns = [
     url(r'^kitchen/add/(?P<restaurant_id>\d+)', KitchenAddView.as_view(), name='add_cook'),
     url(r'^menuitem/detail/(?P<pk>\d+)', MenuItemDetailView.as_view(), name='menu_item_detail'),
     # url(r'^start/table/$', TableStartView.as_view(), name='start_table'),
+    url(r'^table/order/update/(?P<pk>\d+)', FunctionBasedUpdateOrder, name='order_update_view'),
+    url(r'^table/fulfilled/(?P<table_id>\d+)', mark_table_fulfilled, name='table_fulfilled')
 ]

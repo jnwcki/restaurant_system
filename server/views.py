@@ -7,7 +7,7 @@ from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm
 from django.forms import inlineformset_factory
 # from django.forms.widgets import CheckboxSelectMultiple
 from django.shortcuts import render
-from extra_views import CreateWithInlinesView
+# from extra_views import CreateWithInlinesView, ModelFormSetView
 from django.http import HttpResponseRedirect
 
 
@@ -76,7 +76,7 @@ class ServerHomeView(TemplateView):
 def FunctionBasedCreateOrder(request, table_number):
     server = request.user.userprofile
 
-    OrderFormSet = inlineformset_factory(Table, Order, exclude=[])
+    OrderFormSet = inlineformset_factory(Table, Order, form=CreateOrderForm)
 
     if request.method == 'POST':
             new_table = Table.objects.create(server=server, number=table_number)
@@ -84,44 +84,71 @@ def FunctionBasedCreateOrder(request, table_number):
             order_form_set = OrderFormSet(request.POST, instance=new_table)
 
             if order_form_set.is_valid():
-                order_form_set.save()
-                return HttpResponseRedirect(reverse('server_home'))
+                for order in order_form_set:
+                    order.save()
+                # Order.objects.bulk_create(order_form_set)
+
+            return HttpResponseRedirect(reverse('server_home'))
     else:
         order_form_set = OrderFormSet()
         return render(request, 'server/order_form.html', {'formset': order_form_set})
 
 
-class OrderCreateView(CreateWithInlinesView):
-    form_class = CreateOrderForm
-    template_name = 'server/order_form.html'
-    success_url = '/server/home/'
-    extra = 1
-    model = Table
-    inline_model = Order
+# class UpdateOrder(ModelFormSetView):
+#     template_name = 'server/update_order_form.html'
+#     model = Table
+#
+    # def get_queryset(self):
+    #     table_id = self.kwargs['pk']
+    #     return super().get_queryset().filter(pk=table_id)
 
-    def get_extra_form_kwargs(self):
-        kwargs = super(OrderCreateView, self).get_extra_form_kwargs()
-        kwargs.update({
-            'server': self.request.user.userprofile,
 
-        })
-        return kwargs
+def FunctionBasedUpdateOrder(request, pk):
+    OrderFormSet = inlineformset_factory(Table, Order, form=CreateOrderForm)
+    working_table = Table.objects.get(pk=pk)
 
-    def forms_valid(self, form, inlines):
-        form.instance.server = self.request.user.userprofile
-        return super(OrderCreateView, self).forms_valid(form, inlines)
+    if request.method == 'POST':
+        update_order_form_set = OrderFormSet(request.POST, instance=working_table)
+        if update_order_form_set.is_valid():
+            update_order_form_set.save()
+            # Order.objects.filter(table=working_table).delete()
+            # Order.objects.bulk_create(update_order_form_set)
+        return HttpResponseRedirect(reverse('server_home'))
+    else:
+        update_order_form_set = OrderFormSet(instance=working_table)
+        return render(request, 'server/update_order_form.html', {'formset': update_order_form_set})
 
-    def formset_valid(self, formset):
-        # print(formset)
-        for new_order in formset:
-            # if new_order.is_valid and not new_order.empty_permitted:
-            new_order.save(commit=False)
-            # print(self.request.user.userprofile)
-            new_order.server = UserProfile.objects.get(user=self.request.user)
-            new_order.seat_number = 1
-            new_order.table_number = 1
-            new_order.save()
-        return super(OrderCreateView, self).formset_valid(formset)
+# class OrderCreateView(CreateWithInlinesView):
+#     form_class = CreateOrderForm
+#     template_name = 'server/order_form.html'
+#     success_url = '/server/home/'
+#     extra = 1
+#     model = Table
+#     inline_model = Order
+#
+#     def get_extra_form_kwargs(self):
+#         kwargs = super(OrderCreateView, self).get_extra_form_kwargs()
+#         kwargs.update({
+#             'server': self.request.user.userprofile,
+#
+#         })
+#         return kwargs
+#
+#     def forms_valid(self, form, inlines):
+#         form.instance.server = self.request.user.userprofile
+#         return super(OrderCreateView, self).forms_valid(form, inlines)
+#
+#     def formset_valid(self, formset):
+#         # print(formset)
+#         for new_order in formset:
+#             # if new_order.is_valid and not new_order.empty_permitted:
+#             new_order.save(commit=False)
+#             # print(self.request.user.userprofile)
+#             new_order.server = UserProfile.objects.get(user=self.request.user)
+#             new_order.seat_number = 1
+#             new_order.table_number = 1
+#             new_order.save()
+#         return super(OrderCreateView, self).formset_valid(formset)
 
 
 class OrderDetailView(DetailView):
@@ -129,7 +156,7 @@ class OrderDetailView(DetailView):
 
 
 class KitchenListView(ListView):
-    model = Order
+    model = Table
 
     # def get_context_data(self):
     #     context = super(KitchenListView, self).get_context_data()
@@ -230,3 +257,10 @@ class OrderUpdateView(UpdateView):
 
 class TableStartView(TemplateView):
     template_name = 'server/table_start_view.html'
+
+
+def mark_table_fulfilled(request, table_id):
+    done_table = Table.objects.get(pk=table_id)
+    done_table.fulfilled = True
+    done_table.save()
+    return HttpResponseRedirect(reverse('kitchen'))

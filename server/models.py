@@ -59,7 +59,6 @@ class Order(models.Model):
     table = models.ForeignKey(Table)
     items = models.ManyToManyField(MenuItem)
     seat_number = models.IntegerField(default=1)
-    fulfilled = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
