@@ -1,7 +1,6 @@
 from django.conf.urls import url
 from django.contrib import admin
 from server_buddy import settings
-# from django.views.static import serve
 from server.views import IndexView, ServerHomeView, UserCreateView, OrderDetailView, \
     KitchenListView, AddMenuItemView, CreateMenuView, MenuDetailView, ServerAddView, KitchenAddView, \
     UpdateMenuView, MenuItemDetailView, OrderUpdateView, LandingView, FunctionBasedCreateOrder, \
@@ -17,7 +16,6 @@ urlpatterns = [
     url(r'^accounts/login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout_then_login, name='logout'),
     url(r'^signup/$', UserCreateView.as_view(), name='signup'),
-    # url(r'^order/new/(?P<table_number>\d+)$', OrderCreateView.as_view(), name='order_create_view'),
     url(r'^order/new/(?P<table_number>\d+)$', FunctionBasedCreateOrder, name='order_create_view'),
     url(r'^order_detail/(?P<pk>\d+)', OrderDetailView.as_view(), name='order_detail'),
     url(r'^order/update/(?P<pk>\d+)', OrderUpdateView.as_view(), name='order_update'),
@@ -29,7 +27,6 @@ urlpatterns = [
     url(r'^server/add/(?P<restaurant_id>\d+)', ServerAddView.as_view(), name='add_server'),
     url(r'^kitchen/add/(?P<restaurant_id>\d+)', KitchenAddView.as_view(), name='add_cook'),
     url(r'^menuitem/detail/(?P<pk>\d+)', MenuItemDetailView.as_view(), name='menu_item_detail'),
-    # url(r'^start/table/$', TableStartView.as_view(), name='start_table'),
-    url(r'^table/order/update/(?P<pk>\d+)', FunctionBasedUpdateOrder, name='order_update_view'),
+    url(r'^table/order/update/(?P<table_pk>\d+)', FunctionBasedUpdateOrder, name='order_update_view'),
     url(r'^table/fulfilled/(?P<table_id>\d+)', mark_table_fulfilled, name='table_fulfilled')
 ]

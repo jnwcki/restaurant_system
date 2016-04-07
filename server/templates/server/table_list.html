@@ -19,6 +19,7 @@
               Items:
               {% for order in table.order_set.all %}
               <br><b>
+                  Seat Number {{ order.seat_number }}:
                   {% for item in order.items.all %}
                   <br>
                   {{ item.name }}
@@ -34,6 +35,7 @@
             Items:
             {% for order in table.order_set.all %}
             <br><b>
+                Seat Number {{ order.seat_number }}:
                 {% for item in order.items.all %}
                 <br>
                 {{ item.name }}

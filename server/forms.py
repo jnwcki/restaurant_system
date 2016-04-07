@@ -2,7 +2,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from server.models import Order
 from django.forms.widgets import CheckboxSelectMultiple
-# from django.forms import formset_factory
 
 
 class NewUserCreation(UserCreationForm):
@@ -22,12 +21,3 @@ class CreateOrderForm(forms.ModelForm):
         exclude = []
         widgets = {'items': CheckboxSelectMultiple()}
         extra = 1
-    # def __init__(self, *args, **kwargs):
-    #     initial_first_name = kwargs.pop('server')
-    #
-    #     super(CreateOrderForm, self).__init__(*args, **kwargs)
-    #
-    #     self.fields['server'].initial = initial_first_name
-    #
-
-# OrderFormSet = formset_factory(CreateOrderForm, extra=1, max_num=6)

@@ -19,11 +19,11 @@
             <h3>Your Tables</h3>
             <div class="list-group">
                 {% for table in bound_tables %}
-                <a href="{% url 'order_update_view' table.pk %}">
-                    <button type="button" class="btn btn-danger btn-lg">
-                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Current Table {{ table.number }}
-                    </button>
-                </a>
+                    <a href="{% url 'order_update_view' table.pk %}">
+                        <button type="button" class="btn btn-danger btn-lg">
+                            <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Current Table {{ table.number }}
+                        </button>
+                    </a>
                 {% endfor %}
                 <br><br>
                 {% for table in unbound_tables %}
