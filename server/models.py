@@ -53,7 +53,6 @@ class Table(models.Model):
 
 
 class Seat(models.Model):
-    table = models.ForeignKey(Table)
     items = models.ManyToManyField(MenuItem, through='OrderItems')
     seat_number = models.IntegerField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -66,6 +65,7 @@ class Seat(models.Model):
 
 
 class OrderItems(models.Model):
+    table = models.ForeignKey(Table)
     menuitem = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
     seat = models.ForeignKey(Seat, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)

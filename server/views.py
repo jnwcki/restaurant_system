@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
 from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm, CreateOrderForm
-from django.forms import modelformset_factory
+from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
@@ -75,9 +75,9 @@ class CreateOrderItem(CreateView):
 
 def FunctionBasedCreateOrder(request, table_number):
     server = request.user.userprofile
-    # OrderFormSet = inlineformset_factory(Table, Order, form=CreateOrderForm, max_num=20)
+    OrderFormSet = inlineformset_factory(Table, OrderItems, form=CreateOrderForm, max_num=20)
     # menus = Menu.objects.filter(restaurant=request.user.userprofile.workplace)
-    OrderFormSet = modelformset_factory(OrderItems, exclude=[])
+    # OrderFormSet = modelformset_factory(OrderItems, exclude=[])
     if request.method == 'POST':
             new_table = Table.objects.create(server=server, number=table_number)
             order_form_set = OrderFormSet(request.POST, instance=new_table)
