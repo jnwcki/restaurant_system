@@ -26,22 +26,24 @@
                   {% endfor %}
               </b>{% endfor %}
           </p></li>
-          {% else %}
-          <li class="list-group-item "><p class="bg-warning">
+        {% else %}
+            <li class="list-group-item ">
+                <p class="bg-warning">
 
-            Server: {{ order.server }}
-            Table: {{ table.number }}<br>
-            Seat Number: {{ table.started }}<br>
-            Items:
-            {% for order in table.order_set.all %}
-            <br><b>
-                Seat Number {{ order.seat_number }}:
-                {% for item in order.items.all %}
-                <br>
-                {{ item.name }}
-                {% endfor %}
-            </b>{% endfor %}
-            </p></li>
+                    Server: {{ order.server }}
+                    Table: {{ table.number }}<br>
+                    Seat Number: {{ table.started }}<br>
+                    Items:
+                    {% for order in table.order_set.all %}
+                    <br><b>
+                        Seat Number {{ order.seat_number }}:
+                        {% for item in order.items.all %}
+                        <br>
+                        {{ item.name }}
+                        {% endfor %}
+                    </b>{% endfor %}
+                </p>
+            </li>
 
         {% endif %}
     {% endfor %}

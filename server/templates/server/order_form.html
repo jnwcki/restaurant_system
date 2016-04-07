@@ -7,33 +7,51 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Order</h1>
+        <h1 class="page-header">Table {{ table_num }} Order</h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
 
-
-<form id="create_order_form" role="form" method="post">
-    {% csrf_token %}
     <div class="row">
+        <div class="col-lg-4">
+            <h4>{{ menu.name }}</h4>
+            {% for item in menu.item.all %}
+                <br>
+                <a href="{% url 'menu_item_detail' item.pk %}">
+                    <img class="img-circle" src="{{ item.photo.url }}" alt="image" height='20px' />
+                    {{ item.name }}, {{ item.price }}
+                </a>
+            {% endfor %}
+
+        </div>
+        <form id="create_order_form" role="form" method="post">
+            {% csrf_token %}
+
         {{ formset.management_form }}
         {{ formset.non_field_errors }}
         {% for form in formset %}
             <div class="col-lg-4" id="order_input">
-                <div class="panel panel-default">
+                <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <b>Seat 1</b>
+                        <b>Seat</b>
                     </div>
                     <div class="panel-body">
-                        {% for field in form %}
-                            <div class="fieldWrapper">
-                                {{ field.errors }}
-                                {{ field.label_tag }} {{ field }}
-                                {% if field.help_text %}
-                                <p class="help">{{ field.help_text|safe }}</p>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
+                        <div class="fieldWrapper">
+                            <tr>
+                                <td>
+                                    {{ form.items.label_tag }}
+                                    {{ form.items }}
+                                    {{ form.seat_number.label_tag }}
+                                    {{ form.seat_number }}
+
+                                    {% if form.items.help_text %}
+                                        <p class="help">{{ form.items.help_text|safe }}</p>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </div>
+                        <div class="panel-footer">
+                        </div>
                     </div>
                 </div>
             </div>

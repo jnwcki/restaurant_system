@@ -1,19 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<br>
-{{ object.restaurant }}
-<br>
-{{ object.name }}
-<br>
-<a href="{% url 'update_menu' object.pk %}">Update Menu</a>
-<h3>Menu Items</h3>
-{% for item in object.item.all %}
-    <br>
-    <a href="{% url 'menu_item_detail' item.pk %}">
-        <img src="{{ item.photo.url }}" alt="image" height='50px' />
-        {{ item.name }}, {{ item.description }}, {{ item.price }}
-    </a>
-{% endfor %}
-<br><br>
+<div class="row">
+    <div class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+
+                <div class="panel panel-body">
+
+                    <br>
+                    {{ object.restaurant }}
+                    <br>
+                    {{ object.name }}
+                    <br>
+                    <a href="{% url 'update_menu' object.pk %}">Update Menu</a>
+                    <h3>Menu Items</h3>
+                    {% for item in object.item.all %}
+                        <br>
+                        <a href="{% url 'menu_item_detail' item.pk %}">
+                            <img class="img-circle" src="{{ item.photo.url }}" alt="image" height='50px' />
+                            {{ item.name }}, {{ item.description }}, {{ item.price }}
+                        </a>
+                    {% endfor %}
+                    <br><br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

@@ -21,3 +21,18 @@ class CreateOrderForm(forms.ModelForm):
         exclude = []
         widgets = {'items': CheckboxSelectMultiple()}
         extra = 1
+
+# this may be completely unnecessary
+# class OrderBaseFormSet(forms.BaseInlineFormSet):
+#     def clean(self):
+#         if any(self.errors):
+#             return
+#         counter = 1
+#         for form in self.forms:
+#             form.cleaned_data['seat_number'] = counter
+#             counter += 1
+#         return form.cleaned_data
+#
+
+
+#

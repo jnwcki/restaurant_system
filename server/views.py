@@ -71,20 +71,24 @@ class ServerHomeView(TemplateView):
 
 def FunctionBasedCreateOrder(request, table_number):
     server = request.user.userprofile
-    OrderFormSet = inlineformset_factory(Table, Order, form=CreateOrderForm)
+    OrderFormSet = inlineformset_factory(Table, Order, form=CreateOrderForm, extra=1, max_num=20)
+    menu = Menu.objects.get(restaurant=request.user.userprofile.workplace)
 
     if request.method == 'POST':
             new_table = Table.objects.create(server=server, number=table_number)
             order_form_set = OrderFormSet(request.POST, instance=new_table)
-
             if order_form_set.is_valid():
-                for order in order_form_set:
-                    order.save()
+                    order_form_set.save()
             # need to add message if form invalid
             return HttpResponseRedirect(reverse('server_home'))
     else:
-        order_form_set = OrderFormSet()
-        return render(request, 'server/order_form.html', {'formset': order_form_set})
+        order_form_set = OrderFormSet
+
+        return render(request, 'server/order_form.html', {'formset': order_form_set,
+                                                          'table_num': table_number,
+                                                          'menu': menu
+                                                          }
+                      )
 
 
 def FunctionBasedUpdateOrder(request, table_pk):
