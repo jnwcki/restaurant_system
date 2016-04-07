@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from server.models import Seat, OrderItems
-# from django.forms.widgets import CheckboxSelectMultiple
+from django.forms.widgets import CheckboxSelectMultiple
 
 
 class NewUserCreation(UserCreationForm):
@@ -27,7 +27,7 @@ class CreateOrderForm(forms.ModelForm):
     class Meta:
         model = OrderItems
         exclude = []
-        # widgets = {'items': CheckboxSelectMultiple()}
+        widgets = {'items': CheckboxSelectMultiple()}
 
 
 # this may be completely unnecessary

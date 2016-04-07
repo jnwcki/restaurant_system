@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
 from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm, CreateOrderForm
-from django.forms import inlineformset_factory, formset_factory
+from django.forms import modelformset_factory
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
@@ -36,7 +36,6 @@ class UserCreateView(CreateView):
                                                     )
         profile = UserProfile.objects.create(
                                              user=user_object,
-                                             name=form.cleaned_data["first_name"],
                                              workplace=new_restaurant
                                              )
         profile.save()
@@ -68,16 +67,17 @@ class ServerHomeView(TemplateView):
             return reverse('kitchen')
         return context
 
-
+# test for new OrderItems model
 class CreateOrderItem(CreateView):
     model = OrderItems
     fields = '__all__'
+
 
 def FunctionBasedCreateOrder(request, table_number):
     server = request.user.userprofile
     # OrderFormSet = inlineformset_factory(Table, Order, form=CreateOrderForm, max_num=20)
     # menus = Menu.objects.filter(restaurant=request.user.userprofile.workplace)
-    OrderFormSet = formset_factory(form=CreateOrderFormM)
+    OrderFormSet = modelformset_factory(OrderItems, exclude=[])
     if request.method == 'POST':
             new_table = Table.objects.create(server=server, number=table_number)
             order_form_set = OrderFormSet(request.POST, instance=new_table)
@@ -86,8 +86,8 @@ def FunctionBasedCreateOrder(request, table_number):
             # need to add message if form invalid
             return HttpResponseRedirect(reverse('server_home'))
     else:
-        order_form_set = OrderFormSet
-
+        order_form_set = OrderFormSet()
+        print(order_form_set)
         return render(request, 'server/order_form.html', {'formset': order_form_set,
                                                           'table_num': table_number,
                                                           }
@@ -95,17 +95,17 @@ def FunctionBasedCreateOrder(request, table_number):
 
 
 def FunctionBasedUpdateOrder(request, table_pk):
-    OrderFormSet = inlineformset_factory(Table, Order, form=CreateOrderForm)
-    working_table = Table.objects.get(pk=table_pk)
+    # OrderFormSet = inlineformset_factory(Table, Order, form=CreateOrderForm)
+    # working_table = Table.objects.get(pk=table_pk)
 
     if request.method == 'POST':
-        update_order_form_set = OrderFormSet(request.POST, instance=working_table)
-        if update_order_form_set.is_valid():
-            update_order_form_set.save()
+        # update_order_form_set = OrderFormSet(request.POST, instance=working_table)
+        # if update_order_form_set.is_valid():
+        #     update_order_form_set.save()
         return HttpResponseRedirect(reverse('server_home'))
-    else:
-        update_order_form_set = OrderFormSet(instance=working_table)
-        return render(request, 'server/update_order_form.html', {'formset': update_order_form_set})
+    # else:
+    #     # update_order_form_set = OrderFormSet(instance=working_table)
+    #     return render(request, 'server/update_order_form.html', {'formset': update_order_form_set})
 
 
 class OrderDetailView(DetailView):

@@ -13,12 +13,9 @@ class Restaurant(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField('auth.User')
-    name = models.CharField(max_length=100, default='default_username')
+    # name = models.CharField(max_length=100, default='default_username')
     position = models.CharField(max_length=255, choices=POSITION_CHOICES)
     workplace = models.ForeignKey(Restaurant)
-
-    def __str__(self):
-        return self.name
 
 
 class MenuItem(models.Model):
@@ -70,6 +67,6 @@ class Seat(models.Model):
 
 class OrderItems(models.Model):
     menuitem = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
-    order = models.ForeignKey(Seat, on_delete=models.CASCADE)
+    seat = models.ForeignKey(Seat, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     special_instructions = models.CharField(max_length=255, null=True, blank=True)
