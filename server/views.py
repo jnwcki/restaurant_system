@@ -55,7 +55,7 @@ class ServerHomeView(TemplateView):
         if current_server.position != 'K':
             current_restaurant = current_server.workplace
             bound_table_list = Table.objects.filter(server__workplace=current_restaurant, fulfilled=False)
-            all_tables_list = [x for x in range(current_restaurant.number_of_tables)]
+            all_tables_list = [x for x in range(1, current_restaurant.number_of_tables + 1)]
             bound_table_numbers = bound_table_list.values_list('number', flat=True)
             unbound_tables = [x for x in all_tables_list if x not in bound_table_numbers]
 
@@ -71,8 +71,8 @@ class ServerHomeView(TemplateView):
 
 def FunctionBasedCreateOrder(request, table_number):
     server = request.user.userprofile
-    OrderFormSet = inlineformset_factory(Table, Order, form=CreateOrderForm, extra=1, max_num=20)
-    menu = Menu.objects.get(restaurant=request.user.userprofile.workplace)
+    OrderFormSet = inlineformset_factory(Table, Order, form=CreateOrderForm, max_num=20)
+    menus = Menu.objects.filter(restaurant=request.user.userprofile.workplace)
 
     if request.method == 'POST':
             new_table = Table.objects.create(server=server, number=table_number)
@@ -86,7 +86,7 @@ def FunctionBasedCreateOrder(request, table_number):
 
         return render(request, 'server/order_form.html', {'formset': order_form_set,
                                                           'table_num': table_number,
-                                                          'menu': menu
+                                                          'menus': menus
                                                           }
                       )
 

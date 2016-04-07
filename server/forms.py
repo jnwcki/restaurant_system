@@ -18,9 +18,8 @@ class CreateOrderForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        exclude = []
+        fields = ['items', 'seat_number']
         widgets = {'items': CheckboxSelectMultiple()}
-        extra = 1
 
 # this may be completely unnecessary
 # class OrderBaseFormSet(forms.BaseInlineFormSet):
