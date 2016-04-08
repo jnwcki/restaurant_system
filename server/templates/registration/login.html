@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 {% load staticfiles %}
 <html>
     <head>
@@ -48,6 +48,8 @@
                                         <input class="form-control" id="id_password" placeholder="Password" name="password" type="password">
                                     </div>
                                     <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
+                                    <a href="{% url 'landing' %}" class="btn btn-lg btn-primary btn-block">Home</a>
+
                                 </fieldset>
                             </form>
                         </div>
