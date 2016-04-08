@@ -87,7 +87,7 @@ def FunctionBasedCreateOrder(request, table_number):
             return HttpResponseRedirect(reverse('server_home'))
     else:
         order_form_set = OrderFormSet()
-        print(order_form_set)
+        # print(order_form_set)
         return render(request, 'server/order_form.html', {'formset': order_form_set,
                                                           'table_num': table_number,
                                                           }
