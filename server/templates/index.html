@@ -3,32 +3,57 @@
 {% block content %}
 <div class="row">
     <div class="col-xs-12">
-        <h1>Welcome {{ user.userprofile.name }}</h1>
+        <h1 class="page-header">Welcome {{ user.userprofile.name }}</h1>
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4">
-        <h3>Currently Active Servers</h3>
-        <a href="{% url 'add_server' user.userprofile.workplace.pk %}">Add New Server</a>
-        {% for server in servers %}
-        <br>
-        {{ server }}
+    <div class="col-lg-4">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <h4>Servers</h4>
+                {% for server in servers %}
+                <br>
+                {{ server }}
+                {% endfor %}
+                <br>
+            </div>
 
-        {% endfor %}
-        <h3>Inactive Severs</h3>
+            <a href="{% url 'add_server' user.userprofile.workplace.pk %}">
+                <div class="panel-footer">
+                    <span class="pull-left">Add New Server</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
     </div>
     <div class="col-md-4">
-        <h3>Curently Active Kitchen</h3>
-        <a href="{% url 'add_cook' user.userprofile.workplace.pk %}">Add New Kitchen Staff</a>
-        {% for cook in kitchen %}
-        <br>
-        {{ cook }}
-        {% endfor %}
-        <h3>Inactive Kitchen</h3>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+
+                <h4>Curently Active Kitchen</h4>
+                {% for cook in kitchen %}
+                <br>
+                {{ cook }}
+                {% endfor %}
+            </div>
+            <a href="{% url 'add_cook' user.userprofile.workplace.pk %}">
+                <div class="panel-footer">
+                    <span class="pull-left">Add New Kitchen Staff</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+
+            </a>
+
+        </div>
     </div>
+
     <div class="col-md-4">
         <h3>Sales</h3>
     </div>
 </div>
+
+
 
 {% endblock %}
