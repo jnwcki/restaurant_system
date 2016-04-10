@@ -148,7 +148,7 @@ class CreateMenuView(CreateView):
 class ServerAddView(CreateView):
     form_class = ServerCreateForm
     model = User
-    template_name = 'server/employee_create_form.html'
+    template_name = 'server/server_create_form.html'
 
     def form_valid(self, form, **kwargs):
         new_server = form.save()
@@ -162,6 +162,10 @@ class ServerAddView(CreateView):
         profile.save()
         return super().form_valid(form, **kwargs)
 
+    def form_invalid(self, form):
+        print("Your Form Is Invalid sir!")
+        return super().form_invalid(form)
+
     def get_success_url(self):
         return reverse('index')
 
@@ -169,7 +173,7 @@ class ServerAddView(CreateView):
 class KitchenAddView(CreateView):
     form_class = ServerCreateForm
     model = User
-    template_name = 'server/employee_create_form.html'
+    template_name = 'server/kitchen_create_form.html'
 
     def form_valid(self, form, **kwargs):
         new_server = form.save()
