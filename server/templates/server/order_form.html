@@ -7,7 +7,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Table {{ table_num }} Order</h1>
+        <h1 class="page-header">Table {{ table_num }}, Seat {{ seat_num }}</h1>
     </div>
     <!-- /.col-lg-12 -->
 
@@ -31,7 +31,7 @@
                                     <br>
                                     {{ form.items.label_tag }}
                                     {% for item in form.items %}
-                                        <div><button type="button" class="btn btn-default btn-lg" name="button">{{ item }}</button></div>
+                                        <div><button type="button" class="btn btn-default btn-sm" name="button">{{ item }}</button></div>
                                     {% endfor %}
                                     {% if form.items.help_text %}
                                         <p class="help">{{ form.items.help_text|safe }}</p>

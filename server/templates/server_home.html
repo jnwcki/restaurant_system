@@ -27,7 +27,7 @@
                 {% endfor %}
                 <br><br>
                 {% for table in unbound_tables %}
-                <a href="{% url 'order_create_view' table %}">
+                <a href="{% url 'order_create_view' table 1 %}">
                     <button type="button" class="btn btn-default btn-lg">
                         <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Start Table {{ table }}
                     </button>
