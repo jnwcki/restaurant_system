@@ -6,7 +6,7 @@ from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm, Cre
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-
+from formtools.wizard.views import CookieWizardView
 
 class LandingView(TemplateView):
     template_name = 'landing.html'
@@ -67,28 +67,40 @@ class ServerHomeView(TemplateView):
             return reverse('kitchen')
         return context
 
-# test for new OrderItems model
-class CreateOrderItem(CreateView):
-    model = OrderItems
-    fields = '__all__'
+# # test for new OrderItems model
+# class CreateOrderItem(CreateView):
+#     model = OrderItems
+#     fields = '__all__'
+
+# # test for form wizard
+# class WizardCreateOrderView(CookieWizardView):
+#     def done(self, form_list, **kwargs):
+#
+#         return HttpResponseRedirect(reverse('server_home'))
 
 
 def FunctionBasedCreateOrder(request, table_number):
     server = request.user.userprofile
-    OrderFormSet = inlineformset_factory(Table, OrderItems, form=CreateOrderForm, max_num=20)
-    # menus = Menu.objects.filter(restaurant=request.user.userprofile.workplace)
-    # OrderFormSet = modelformset_factory(OrderItems, exclude=[])
+    OrderFormSet = inlineformset_factory(Seat, OrderItems, form=CreateOrderForm, extra=1, max_num=20)
     if request.method == 'POST':
             new_table = Table.objects.create(server=server, number=table_number)
-            order_form_set = OrderFormSet(request.POST, instance=new_table)
+            order_form_set = OrderFormSet(request.POST)
+
+            for form_number in range(1, order_form_set.total_form_count()):
+                Seat.objects.create(table=new_table, seat_number=form_number)
+
             if order_form_set.is_valid():
-                    order_form_set.save()
+                for order in order_form_set:
+                    order.seat = Seat.objects.get(table=new_table, seat_number=1)
+                    order.save()
+                order_form_set.save()
+
             # need to add message if form invalid
             return HttpResponseRedirect(reverse('server_home'))
     else:
         order_form_set = OrderFormSet()
-        # print(order_form_set)
-        return render(request, 'server/order_form.html', {'formset': order_form_set,
+        return render(request, 'server/order_form.html', {
+                                                          'formset': order_form_set,
                                                           'table_num': table_number,
                                                           }
                       )

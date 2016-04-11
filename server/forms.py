@@ -27,7 +27,7 @@ class CreateOrderForm(forms.ModelForm):
     class Meta:
         model = OrderItems
         exclude = []
-        widgets = {'items': CheckboxSelectMultiple()}
+        # widgets = {'menuitem': CheckboxSelectMultiple()}
 
 
 # this may be completely unnecessary

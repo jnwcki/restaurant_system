@@ -16,14 +16,15 @@
 
         {{ formset.management_form }}
         {{ formset.non_field_errors }}
-        {% for form in formset %}
             <div class="col-lg-12" id="order_input">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <b>Seat</b>
                     </div>
                     <div class="panel-body">
-                        <div class="fieldWrapper">
+                        {% for form in formset %}
+
+                        <div class="fieldWrapper" id="fields">
                             <tr>
                                 <td>
                                     {{ form }}
@@ -37,21 +38,22 @@
                                 </td>
                             </tr>
                         </div>
+                        {% endfor %}
+
                         <br>
 
-                        <div class="panel-footer">
+                        <div class="panel-footer" id="fieldfooter">
                         </div>
                     </div>
                 </div>
             </div>
-        {% endfor %}
     </div>
 <br><br>
 <button type="submit" class="btn btn-success btn-lg"><i class="fa fa-check"></i> Submit Order</button>
 </form>
-
 <script type="text/javascript">
-    $('#create_order_form #order_input').formset();
+    $('#fields').formset();
 </script>
+
 <br><br>
 {% endblock %}

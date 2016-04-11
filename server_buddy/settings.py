@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'server',
     'bootstrap3',
+    'formtools'
 ]
 
 MIDDLEWARE_CLASSES = [
