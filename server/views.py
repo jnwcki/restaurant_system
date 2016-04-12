@@ -74,24 +74,50 @@ class CreateOrderItem(CreateView):
     fields = '__all__'
 
     def get_template_names(self):
-
         return ['server/order_form.html']
 
+    # create the nested form set
     def get_form_class(self):
-
         return nestedformset_factory(
-            Table,
-            Seat,
-            nested_formset=inlineformset_factory(
-                Seat,
-                OrderItems,
-                fields='__all__'
-            )
-        )
+                                     Table,
+                                     Seat,
+                                     nested_formset=inlineformset_factory(
+                                                                          Seat,
+                                                                          OrderItems,
+                                                                          fields=['menuitem']
+                                                                          )
+                                     )
+
+    def form_valid(self, formset, **kwargs):
+        #seat_form_set = form.save(commit=False)
+        """
+        for form in formset:
+            seat_instance = form.save(commit=False)
+            for item in form.nested:
+                item.instance.seat = seat_instance
+            seat_list.append(seat_instance)"""
+
+        seat_list = [(form.save(commit=False), [menu_item.save(commit=False) for menu_item in form.nested]) for form in formset]
+        #raise Exception("asd")
+        new_table_number = self.kwargs.get('table_number')
+        new_table = Table.objects.create(
+                                         server=self.request.user.userprofile,
+                                         number=new_table_number
+                                         )
+
+        #print(new_table)
+        for seat, menu_items in seat_list:
+            if seat.seat_number:
+                seat.table = new_table
+                for item in menu_items:
+                    print(type(item))
+                    seat.items.add(item)
+                seat.save()
+        return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
-
         return reverse('server_home')
+
 # # test for form wizard
 # class WizardCreateOrderView(CookieWizardView):
 #     def done(self, form_list, **kwargs):

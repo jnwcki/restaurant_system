@@ -29,5 +29,5 @@ urlpatterns = [
     url(r'^menuitem/detail/(?P<pk>\d+)', MenuItemDetailView.as_view(), name='menu_item_detail'),
     url(r'^table/order/update/(?P<table_pk>\d+)', FunctionBasedUpdateOrder, name='order_update_view'),
     url(r'^table/fulfilled/(?P<table_id>\d+)', mark_table_fulfilled, name='table_fulfilled'),
-    url(r'^ordercreate/', CreateOrderItem.as_view(), name='creeate'),
+    url(r'^ordercreate/(?P<table_number>\d+)', CreateOrderItem.as_view(), name='creeate'),
 ]
