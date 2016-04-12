@@ -57,7 +57,7 @@ class Order(models.Model):
     items = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     seat_number = models.IntegerField(null=True, blank=True)
-    special_instructions = models.CharField(max_length=255)
+    special_instructions = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return str(self.pk)

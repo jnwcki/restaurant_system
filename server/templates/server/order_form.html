@@ -20,22 +20,13 @@
             <div class="col-lg-4" id="order_input">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <b>Seat</b>
+                        <b>Item</b>
                     </div>
                     <div class="panel-body">
                         <div class="fieldWrapper">
                             <tr>
-                                <td>
-                                    {{ form.seat_number.label_tag }}
-                                    {{ form.seat_number }}
-                                    <br>
-                                    {{ form.items.label_tag }}
-                                    {% for item in form.items %}
-                                        <div><button type="button" class="btn btn-default btn-sm" name="button">{{ item }}</button></div>
-                                    {% endfor %}
-                                    {% if form.items.help_text %}
-                                        <p class="help">{{ form.items.help_text|safe }}</p>
-                                    {% endif %}
+                                <td>{{form}}
+                                    <br>{{ form.errors }}
                                 </td>
                             </tr>
                         </div>
@@ -53,7 +44,7 @@
 </form>
 
 <script type="text/javascript">
-    $('#create_order_form #order_input').formset();
+    $('#create_order_form').formset();
 </script>
 <br><br>
 {% endblock %}

@@ -2,7 +2,7 @@ from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, Order
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
-from server.forms import ServerCreateForm
+from server.forms import ServerCreateForm, CreateOrderForm, OrderFormSet
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
@@ -66,9 +66,35 @@ class ServerHomeView(TemplateView):
         return context
 
 
+# New try at class-based order create view. gonna work this time!!
+class CreateOrderItem(CreateView):
+    template_name = 'server/order_form.html'
+    form_class = CreateOrderForm
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateOrderItem, self).get_context_data(**kwargs)
+        if self.request.POST:
+            
+            context['formset'] = OrderFormSet(self.request.POST)
+        else:
+            context['formset'] = OrderFormSet(initial=[{'quantity': 1}])
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset = context['formset']
+        if formset.is_valid():
+            self.object = form.save()
+            formset.instance = self.object
+            formset.save()
+            return reverse('server_home')
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+
 def FunctionBasedCreateOrder(request, table_number):
     server = request.user.userprofile
-    OrderFormSet = inlineformset_factory(Table, Order, extra=1, max_num=20, exclude=[])
+    OrderFormSet = inlineformset_factory(Table, Order, extra=1, max_num=20, exclude=['delete'])
     menus = Menu.objects.filter(restaurant=request.user.userprofile.workplace)
 
     if request.method == 'POST':
