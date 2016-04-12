@@ -1,8 +1,8 @@
-from server.models import UserProfile, Restaurant, Order, MenuItem, Menu, Table
+from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, Order
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
-from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm
+from server.forms import NewUserCreation, ServerCreateForm
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
@@ -71,7 +71,7 @@ class ServerHomeView(TemplateView):
 
 def FunctionBasedCreateOrder(request, table_number, seat_number):
     server = request.user.userprofile
-    OrderFormSet = inlineformset_factory(Table, Order, form=CreateOrderForm, max_num=20)
+    OrderFormSet = inlineformset_factory(Table, form=CreateOrderForm, max_num=20)
     menus = Menu.objects.filter(restaurant=request.user.userprofile.workplace)
 
     if request.method == 'POST':
@@ -93,7 +93,7 @@ def FunctionBasedCreateOrder(request, table_number, seat_number):
 
 
 def FunctionBasedUpdateOrder(request, table_pk):
-    OrderFormSet = inlineformset_factory(Table, Order, form=CreateOrderForm)
+    OrderFormSet = inlineformset_factory(Table, form=CreateOrderForm)
     working_table = Table.objects.get(pk=table_pk)
 
     if request.method == 'POST':
