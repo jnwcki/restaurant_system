@@ -74,7 +74,7 @@ class CreateOrderItem(CreateView):
     def get_context_data(self, **kwargs):
         context = super(CreateOrderItem, self).get_context_data(**kwargs)
         if self.request.POST:
-            
+
             context['formset'] = OrderFormSet(self.request.POST)
         else:
             context['formset'] = OrderFormSet(initial=[{'quantity': 1}])
@@ -94,14 +94,24 @@ class CreateOrderItem(CreateView):
 
 def FunctionBasedCreateOrder(request, table_number):
     server = request.user.userprofile
-    OrderFormSet = inlineformset_factory(Table, Order, extra=1, max_num=20, exclude=['delete'])
     menus = Menu.objects.filter(restaurant=request.user.userprofile.workplace)
 
     if request.method == 'POST':
         new_table = Table.objects.create(server=server, number=table_number)
         order_form_set = OrderFormSet(request.POST, instance=new_table)
         if order_form_set.is_valid():
-            order_form_set.save()
+            print(dir(order_form_set))
+            for order_item in order_form_set.forms:
+                Order.objects.create(
+                                     table=new_table,
+                                     items=order_item.cleaned_data.get('items'),
+                                     quantity=order_item.cleaned_data.get('quantity'),
+                                     seat_number=order_item.cleaned_data.get('seat_number'),
+                                     special_instructions=order_item.cleaned_data.get('special_instructions')
+
+                                     )
+
+
         # need to add message if form invalid
         return HttpResponseRedirect(reverse('server_home'))
     else:
