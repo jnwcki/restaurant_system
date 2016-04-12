@@ -7,7 +7,7 @@
         {% if not table.fulfilled %}
             <li class="list-group-item"><p class='bg-success'>
 
-            Server: {{ table.server }}<br>
+            Server: {{ table.server.user }}<br>
 
               <a href="{% url 'table_fulfilled' table.pk %}">
                   <button type="button" class="btn btn-success btn-lg pull-right">
@@ -17,8 +17,8 @@
               Table: {{ table.number }}<br>
               Order Sent: {{ table.started }}<br>
               Items:
-              {% for order in table.order_set.all %}
-              <br><b>
+              {% for order in table.ordered_items.all %}
+              <br><b>{{order}}
                   Seat Number {{ order.seat_number }}:
                   {% for item in order.items.all %}
                   <br>
