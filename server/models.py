@@ -4,7 +4,7 @@ POSITION_CHOICES = [('M', 'Manager'), ('S', 'Server'), ('K', 'Kitchen')]
 
 
 class Restaurant(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, default="Unnamed Restaurant")
     number_of_tables = models.IntegerField(default=1)
 
     def __str__(self):
@@ -13,12 +13,8 @@ class Restaurant(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField('auth.User')
-    name = models.CharField(max_length=100, default='default_username')
     position = models.CharField(max_length=255, choices=POSITION_CHOICES)
     workplace = models.ForeignKey(Restaurant)
-
-    def __str__(self):
-        return self.name
 
 
 class MenuItem(models.Model):

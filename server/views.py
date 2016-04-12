@@ -2,10 +2,11 @@ from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, Order
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
-from server.forms import NewUserCreation, ServerCreateForm
+from server.forms import ServerCreateForm
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.contrib.auth.forms import UserCreationForm
 
 
 class LandingView(TemplateView):
@@ -26,17 +27,13 @@ class IndexView(TemplateView):
 
 class UserCreateView(CreateView):
     model = User
-    form_class = NewUserCreation
+    form_class = UserCreationForm
 
     def form_valid(self, form):
         user_object = form.save()
-        new_restaurant = Restaurant.objects.create(
-                                                    name=form.cleaned_data["restaurant_name"],
-                                                    number_of_tables=form.cleaned_data['number_of_tables'],
-                                                    )
+        new_restaurant = Restaurant.objects.create()
         profile = UserProfile.objects.create(
                                              user=user_object,
-                                             name=form.cleaned_data["first_name"],
                                              workplace=new_restaurant
                                              )
         profile.save()
@@ -218,3 +215,14 @@ def mark_table_fulfilled(request, table_id):
     done_table.fulfilled = True
     done_table.save()
     return HttpResponseRedirect(reverse('kitchen'))
+
+
+class RestaurantUpdateView(UpdateView):
+    model = Restaurant
+    fields = '__all__'
+
+    def get_object(self):
+        return Restaurant.objects.get(userprofile__workplace=self.request.user.userprofile.workplace)
+
+    def get_success_url(self):
+        return reverse('index')

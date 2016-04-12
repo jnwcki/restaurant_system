@@ -34,7 +34,7 @@
                <div class="col-md-4 col-md-offset-4">
                    <div class="login-panel panel panel-default">
                        <div class="panel-heading">
-                           <h3 class="panel-title">Sign Up Your Restaurant</h3>
+                           <h3 class="panel-title">Update Restaurant Details</h3>
                        </div>
                        <div class="panel-body">
                            <form role="form" method="post">
@@ -42,19 +42,15 @@
                                <fieldset>
                                    {{ form.non_field_errors }}
                                    <div class="form-group">
-                                       <input class="form-control" id="id_username" placeholder="Username" maxlength="30" name="username" type="text">
-                                       {{ form.username.errors }}
+                                       <input class="form-control" id="id_name" placeholder="{{ user.userprofile.workplace }}" maxlength="30" name="name" type="text">
+                                       {{ form.name.errors }}
                                    </div>
                                    <div class="form-group">
-                                       <input class="form-control" id="id_password1" placeholder="Password" name="password1" type="password">
-                                       {{ form.password1.errors }}
+                                       <input class="form-control" id="id_number_of_tables" placeholder="{{ user.userprofile.workplace.number_of_tables }} Tables" name="number_of_tables" type="number">
+                                       {{ form.number_of_tables.errors }}
                                    </div>
-                                   <div class="form-group">
-                                       <input class="form-control" id="id_password2" name="password2" placeholder="Repeat Password" type="password">
-                                       {{ form.password2.errors }}
-                                   </div>
-                                   <button type="submit" class="btn btn-lg btn-success btn-block">Sign Up</button>
-                                   <a href="{% url 'landing' %}" class="btn btn-lg btn-primary btn-block">Home</a>
+                                   <button type="submit" class="btn btn-lg btn-success btn-block">Update</button>
+                                   <a href="{% url 'index' %}" class="btn btn-lg btn-primary btn-block">Home</a>
 
                                </fieldset>
                            </form>
