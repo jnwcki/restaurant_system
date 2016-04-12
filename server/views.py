@@ -67,6 +67,7 @@ class ServerHomeView(TemplateView):
 
 
 # New try at class-based order create view. gonna work this time!!
+# only saving a single form! what gives?!
 class CreateOrderItem(CreateView):
     template_name = 'server/order_form.html'
     form_class = CreateOrderForm
@@ -98,19 +99,18 @@ def FunctionBasedCreateOrder(request, table_number):
 
     if request.method == 'POST':
         new_table = Table.objects.create(server=server, number=table_number)
-        order_form_set = OrderFormSet(request.POST, instance=new_table)
+        order_form_set = OrderFormSet(request.POST)
         if order_form_set.is_valid():
-            print(dir(order_form_set))
-            for order_item in order_form_set.forms:
+            # print(dir(order_form_set))
+            for order_item in order_form_set:
+
                 Order.objects.create(
                                      table=new_table,
                                      items=order_item.cleaned_data.get('items'),
                                      quantity=order_item.cleaned_data.get('quantity'),
                                      seat_number=order_item.cleaned_data.get('seat_number'),
                                      special_instructions=order_item.cleaned_data.get('special_instructions')
-
                                      )
-
 
         # need to add message if form invalid
         return HttpResponseRedirect(reverse('server_home'))
