@@ -3,10 +3,11 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
 from server.forms import NewUserCreation, ServerCreateForm, CreateOrderForm, CreateOrderForm
-from django.forms import inlineformset_factory
+from django.forms import modelformset_factory, inlineformset_factory
+from nested_formset import nestedformset_factory
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from formtools.wizard.views import CookieWizardView
+# from formtools.wizard.views import CookieWizardView
 
 class LandingView(TemplateView):
     template_name = 'landing.html'
@@ -67,33 +68,69 @@ class ServerHomeView(TemplateView):
             return reverse('kitchen')
         return context
 
-# # test for new OrderItems model
-# class CreateOrderItem(CreateView):
-#     model = OrderItems
-#     fields = '__all__'
+# test for new OrderItems model
+class CreateOrderItem(CreateView):
+    model = Table
+    fields = '__all__'
 
+    def get_template_names(self):
+
+        return ['server/order_form.html']
+
+    def get_form_class(self):
+
+        return nestedformset_factory(
+            Table,
+            Seat,
+            nested_formset=inlineformset_factory(
+                Seat,
+                OrderItems,
+                fields='__all__'
+            )
+        )
+
+    def get_success_url(self):
+
+        return reverse('server_home')
 # # test for form wizard
 # class WizardCreateOrderView(CookieWizardView):
 #     def done(self, form_list, **kwargs):
 #
 #         return HttpResponseRedirect(reverse('server_home'))
 
-
+# Main function-based form view that's been sort of working
 def FunctionBasedCreateOrder(request, table_number):
     server = request.user.userprofile
-    OrderFormSet = inlineformset_factory(Seat, OrderItems, form=CreateOrderForm, extra=1, max_num=20)
+    # OrderFormSet = inlineformset_factory(Seat, OrderItems, form=CreateOrderForm, extra=1, max_num=20)
+
+    # Nested formset factory getting a field error on a field that exists. This could be awesome if it worked :(
+    OrderFormSet = nestedformset_factory(Table, Seat, nested_formset=inlineformset_factory(Seat, OrderItems, exclude=[]))
+
     if request.method == 'POST':
+            # create a new table with submitted order
             new_table = Table.objects.create(server=server, number=table_number)
+
+            # grab data from submitted form
             order_form_set = OrderFormSet(request.POST)
 
+            # create seat for every form in the submitted formset
             for form_number in range(1, order_form_set.total_form_count()):
-                Seat.objects.create(table=new_table, seat_number=form_number)
+                print("Form Number " + str(form_number))
+                # Trying this in the is_valid() function instead:
+                # Seat.objects.create(table=new_table, seat_number=form_number)
+
+            # this is not creating an orderitems model for some reason
 
             if order_form_set.is_valid():
-                for order in order_form_set:
-                    order.seat = Seat.objects.get(table=new_table, seat_number=1)
+                form_set = order_form_set.save(commit=False)
+                counter = 1
+                for order in form_set:
+                    happy_new_seat = Seat.objects.create(table=new_table, seat_number=counter)
+                    counter += 1
+                    order.seat = happy_new_seat
+
                     order.save()
-                order_form_set.save()
+                form_set.save()
 
             # need to add message if form invalid
             return HttpResponseRedirect(reverse('server_home'))

@@ -17,10 +17,10 @@
               Table: {{ table.number }}<br>
               Order Sent: {{ table.started }}<br>
               Items:
-              {% for order in table.order_set.all %}
+              {% for order in table.seat_set.all %}
               <br><b>
                   Seat Number {{ order.seat_number }}:
-                  {% for item in order.items.all %}
+                  {% for item in seat.items.all %}
                   <br>
                   {{ item.name }}
                   {% endfor %}

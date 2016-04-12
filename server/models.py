@@ -56,10 +56,10 @@ class Seat(models.Model):
     table = models.ForeignKey(Table)
     items = models.ManyToManyField(MenuItem, through='OrderItems')
     seat_number = models.IntegerField(null=True, blank=True)
-    created = models.DateTimeField(auto_now_add=True)
+    # created = models.DateTimeField(auto_now_add=True, editable=False)
 
     class Meta:
-        ordering = ['-created']
+        # ordering = ['-created']
         unique_together = ('table', 'seat_number')
 
     def __str__(self):
