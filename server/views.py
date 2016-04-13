@@ -59,9 +59,12 @@ class ServerHomeView(TemplateView):
             bound_table_numbers = bound_table_list.values_list('number', flat=True)
             unbound_tables = [x for x in all_tables_list if x not in bound_table_numbers]
 
+            all_menus = Menu.objects.filter(restaurant=current_restaurant)
+
+            context['first_menu'] = all_menus[0]
             context['restaurant'] = current_restaurant
             context['server'] = current_server
-            context['menus'] = Menu.objects.all()
+            context['menus'] = all_menus
             context['bound_tables'] = bound_table_list
             context['unbound_tables'] = unbound_tables
         else:
@@ -81,7 +84,7 @@ def start_table_view(request, table_number):
                                 )
 
 
-def add_item_to_order_view(request, table_pk, item_pk, seat_number):
+def add_item_to_order_view(request, table_pk, item_pk, seat_number, menu_pk):
     working_table = Table.objects.get(pk=table_pk)
     working_item = MenuItem.objects.get(pk=item_pk)
 
@@ -89,19 +92,21 @@ def add_item_to_order_view(request, table_pk, item_pk, seat_number):
 
     return HttpResponseRedirect(reverse('order_create_view',
                                         kwargs={'table_pk': table_pk,
-                                                'seat_number': seat_number
+                                                'seat_number': seat_number,
+                                                'menu_pk': menu_pk
                                                 }
                                         )
                                 )
 
 
-def remove_item_from_order_view(request, table_pk, ordered_item_pk, seat_number):
+def remove_item_from_order_view(request, table_pk, ordered_item_pk, seat_number, menu_pk):
     working_item_order = OrderedItem.objects.get(pk=ordered_item_pk)
     working_item_order.canceled = True
     working_item_order.save()
     return HttpResponseRedirect(reverse('order_create_view',
                                         kwargs={'table_pk': table_pk,
-                                                'seat_number': seat_number
+                                                'seat_number': seat_number,
+                                                'menu_pk': menu_pk
                                                 }
                                         )
                                 )
@@ -143,11 +148,12 @@ def archive_table_view(request, table_pk, archive_all_boolean):
     return HttpResponseRedirect(reverse('kitchen'))
 
 
-def add_seat_to_order_view(request, table_pk, current_seat_number):
+def add_seat_to_order_view(request, table_pk, current_seat_number, menu_pk):
     seat_number = int(current_seat_number) + 1
     return HttpResponseRedirect(reverse('order_create_view',
                                         kwargs={'table_pk': table_pk,
-                                                'seat_number': seat_number
+                                                'seat_number': seat_number,
+                                                'menu_pk': menu_pk
                                                 }
                                         )
                                 )
@@ -161,19 +167,21 @@ class CreateOrderItem(TemplateView):
         seat_number = self.kwargs['seat_number']
         current_table = Table.objects.get(pk=self.kwargs['table_pk'])
         ordered_items_list = OrderedItem.objects.filter(table=current_table, canceled=False)
+        current_menu = Menu.objects.get(pk=self.kwargs['menu_pk'])
 
         seats_list = [1]
         for item in ordered_items_list:
             seats_list.append(item.seat_number)
 
         context['working_seats'] = set(seats_list)
-        print(context['working_seats'])
+        context['last_seat'] = max(context['working_seats'])
 
         ticket_total = 0
         for item in ordered_items_list:
             ticket_total += item.item.price
         context['ticket_total'] = ticket_total
 
+        context['current_menu'] = current_menu
         context['table_pk'] = current_table.pk
         context['table_number'] = current_table.number
         context['seat_number'] = seat_number

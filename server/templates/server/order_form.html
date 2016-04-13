@@ -11,7 +11,7 @@
                 <h3>Order</h3>
             </div>
             {% for item in ordered_items_list %}
-            <br>Seat {{ item.seat_number }} {{ item.item.name  }} ${{ item.item.price }} <a class="btn btn-xs btn-default" href="{% url 'remove_item' item.pk table_pk seat_number %}">Remove</a>
+            <br>Seat {{ item.seat_number }} {{ item.item.name  }} ${{ item.item.price }} <a class="btn btn-xs btn-default" href="{% url 'remove_item' item.pk table_pk seat_number current_menu.pk %}">Remove</a>
             {% endfor %}
             <br><br>
             <b>Order Total: {{ ticket_total }}</b>
@@ -24,21 +24,22 @@
             <div class="page-header">
                 <h3>Table {{ table_number }} - Seat {{ seat_number }}</h3>
                 {% for seat in working_seats %}
-                    <a class="btn btn-sm btn-default" href="{% url 'order_create_view' table_pk seat %}"> Seat {{ seat }}</a>
+                    <a class="btn btn-sm btn-default" href="{% url 'order_create_view' table_pk seat menu_pk %}"> Seat {{ seat }}</a>
                 {% endfor %}
-                <a class="btn btn-sm btn-primary" href="{% url 'add_seat' table_pk seat_number %}">Add Seat</a>
+                <a class="btn btn-sm btn-primary" href="{% url 'add_seat' table_pk last_seat menu_pk %}">Add Seat</a>
+                {% for menu in menus_list %}
+                    <a class="btn btn-warning btn-sm pull-right" href="{% url 'order_create_view' table_pk 1 menu.pk %}">{{ menu.name }}</a>
+                {% endfor %}
             </div>
             <div class="row">
-                {% for menu in menus_list %}
-                    {% for item in menu.item.all %}
+                    {% for item in current_menu.item.all %}
                         <div class="col-md-2">
-                            <a href="{% url 'add_item' table_pk item.pk seat_number %}">
+                            <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
                                 <img src="{{ item.photo.url }}" alt="photo" height=50/><br>
                             {{ item.name }}
                             </a>
                         </div>
                     {% endfor %}
-                {% endfor %}
             </div>
         </div>
 </div>

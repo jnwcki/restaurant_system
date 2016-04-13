@@ -27,15 +27,15 @@ urlpatterns = [
     url(r'^menuitem/detail/(?P<pk>\d+)', MenuItemDetailView.as_view(), name='menu_item_detail'),
     url(r'^start/table/(?P<table_number>\d+)', start_table_view, name='start_table_view'),
     url(r'^table/fulfilled/(?P<table_id>\d+)', mark_table_fulfilled, name='table_fulfilled'),
-    url(r'^ordercreate/(?P<table_pk>\d+)/(?P<seat_number>\d+)', CreateOrderItem.as_view(), name='order_create_view'),
+    url(r'^ordercreate/(?P<table_pk>\d+)/(?P<seat_number>\d+)/(?P<menu_pk>\d+)', CreateOrderItem.as_view(), name='order_create_view'),
     url(r'^restaurant/update/', RestaurantUpdateView.as_view(), name='restaurant_update'),
-    url(r'^table/(?P<table_pk>\d+)/item/(?P<item_pk>\d+)/seat/(?P<seat_number>\d+)',
+    url(r'^table/(?P<table_pk>\d+)/item/(?P<item_pk>\d+)/seat/(?P<seat_number>\d+)/menu/(?P<menu_pk>\d+)',
         add_item_to_order_view, name='add_item'
         ),
     url(r'^submit/order/(?P<table_pk>\d+)', submit_order_view, name='submit_order'),
     url(r'^order/cancel/(?P<table_pk>\d+)', cancel_order_view, name='cancel_order'),
-    url(r'^order/ordered_item/(?P<ordered_item_pk>\d+)/table/(?P<table_pk>\d+)/seat/(?P<seat_number>\d+)',
+    url(r'^order/ordered_item/(?P<ordered_item_pk>\d+)/table/(?P<table_pk>\d+)/seat/(?P<seat_number>\d+)/menu/(?P<menu_pk>\d+)',
         remove_item_from_order_view, name='remove_item'),
     url(r'table/(?P<table_pk>\d+)/archive/(?P<archive_all_boolean>\d+)', archive_table_view, name='archive'),
-    url(r'tableorder/(?P<table_pk>\d+)/seat/(?P<current_seat_number>\d+)', add_seat_to_order_view, name='add_seat')
+    url(r'tableorder/(?P<table_pk>\d+)/seat/(?P<current_seat_number>\d+)/menu/(?P<menu_pk>\d+)', add_seat_to_order_view, name='add_seat')
 ]
