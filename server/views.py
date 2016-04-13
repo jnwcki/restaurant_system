@@ -129,10 +129,16 @@ class CreateOrderItem(TemplateView):
         context = super(CreateOrderItem, self).get_context_data(**kwargs)
         seat_number = self.kwargs['seat_number']
         current_table = Table.objects.get(pk=self.kwargs['table_pk'])
+        ordered_items_list = OrderedItem.objects.filter(table=current_table, canceled=False)
+        ticket_total = 0
+        for item in ordered_items_list:
+            ticket_total += item.item.price
+
+        context['ticket_total'] = ticket_total
         context['table_pk'] = current_table.pk
         context['table_number'] = current_table.number
         context['seat_number'] = seat_number
-        context['ordered_items_list'] = OrderedItem.objects.filter(table=current_table, canceled=False)
+        context['ordered_items_list'] = ordered_items_list
         context['menus_list'] = Menu.objects.filter(restaurant=self.request.user.userprofile.workplace)
         return context
 
