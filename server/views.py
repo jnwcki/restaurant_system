@@ -66,81 +66,37 @@ class ServerHomeView(TemplateView):
         return context
 
 
-# New try at class-based order create view. gonna work this time!!
-# only saving a single form! what gives?!
-# class CreateOrderItem(CreateView):
-#     template_name = 'server/order_form.html'
-#     form_class = CreateOrderForm
-#
-#     def get_context_data(self, **kwargs):
-#         context = super(CreateOrderItem, self).get_context_data(**kwargs)
-#         if self.request.POST:
-#
-#             context['formset'] = OrderFormSet(self.request.POST)
-#         else:
-#             context['formset'] = OrderFormSet(initial=[{'quantity': 1}])
-#         return context
-#
-#     def form_valid(self, form):
-#         context = self.get_context_data()
-#         formset = context['formset']
-#         if formset.is_valid():
-#             self.object = form.save()
-#             formset.instance = self.object
-#             formset.save()
-#             return reverse('server_home')
-#         else:
-#             return self.render_to_response(self.get_context_data(form=form))
-#
-
-def FunctionBasedCreateOrder(request, table_number):
+def start_table_view(request, table_number):
     server = request.user.userprofile
-    menus = Menu.objects.filter(restaurant=request.user.userprofile.workplace)
+    created_table = Table.objects.create(number=table_number, server=server)
 
-    if request.method == 'POST':
-        new_table = Table.objects.create(server=server, number=table_number)
-        order_form_set = OrderFormSet(request.POST)
-        if order_form_set.is_valid():
-            # print(dir(order_form_set))
-            for order_item in order_form_set:
-
-                Order.objects.create(
-                                     table=new_table,
-                                     items=order_item.cleaned_data.get('items'),
-                                     quantity=order_item.cleaned_data.get('quantity'),
-                                     seat_number=order_item.cleaned_data.get('seat_number'),
-                                     special_instructions=order_item.cleaned_data.get('special_instructions')
-                                     )
-
-        # need to add message if form invalid
-        return HttpResponseRedirect(reverse('server_home'))
-    else:
-        order_form_set = OrderFormSet
-
-        return render(request, 'server/order_form.html', {
-                                                          'formset': order_form_set,
-                                                          'table_num': table_number,
-                                                          'menus': menus,
-                                                          }
-                      )
+    return HttpResponseRedirect(reverse('order_create_view',
+                                        kwargs={'table_pk': created_table.pk,
+                                                'seat_number': 1
+                                                }
+                                        )
+                                )
 
 
-def FunctionBasedUpdateOrder(request, table_pk):
-    OrderFormSet = inlineformset_factory(Table, form=CreateOrderForm)
-    working_table = Table.objects.get(pk=table_pk)
-
-    if request.method == 'POST':
-        update_order_form_set = OrderFormSet(request.POST, instance=working_table)
-        if update_order_form_set.is_valid():
-            update_order_form_set.save()
-        return HttpResponseRedirect(reverse('server_home'))
-    else:
-        update_order_form_set = OrderFormSet(instance=working_table)
-        return render(request, 'server/update_order_form.html', {'formset': update_order_form_set})
+def add_item_to_order_view(request):
+    pass
 
 
-# class OrderDetailView(DetailView):
-#     model = Order
+class CreateOrderItem(TemplateView):
+    template_name = 'server/order_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CreateOrderItem, self).get_context_data(**kwargs)
+        seat_number = self.kwargs['seat_number']
+        current_table = Table.objects.get(pk=self.kwargs['table_pk'])
+
+        context['table_number'] = current_table.number
+        context['seat_number'] = seat_number
+        context['ordered_items_list'] = OrderedItem.objects.filter(table=current_table)
+        context['menus_list'] = Menu.objects.filter(restaurant=self.request.user.userprofile.workplace)
+
+
+        return context
 
 
 class KitchenListView(ListView):
@@ -235,15 +191,6 @@ class UpdateMenuView(UpdateView):
 
 class MenuItemDetailView(DetailView):
     model = MenuItem
-
-
-# class OrderUpdateView(UpdateView):
-#     model = Order
-#     fields = ['seat_number', 'table_number', 'items']
-
-
-# class TableStartView(TemplateView):
-#     template_name = 'server/table_start_view.html'
 
 
 def mark_table_fulfilled(request, table_id):

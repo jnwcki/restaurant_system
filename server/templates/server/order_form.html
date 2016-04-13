@@ -7,44 +7,9 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Table {{ table_num }}</h1>
-    </div>
-    <!-- /.col-lg-12 -->
-
-        <form id="create_order_form" role="form" method="post">
-            {% csrf_token %}
-
-        {{ formset.management_form }}
-        {{ formset.non_field_errors }}
-        {% for form in formset %}
-            <div class="col-lg-4" id="order_input">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <b>Item</b>
-                    </div>
-                    <div class="panel-body">
-                        <div class="fieldWrapper">
-                            <tr>
-                                <td>{{form}}
-                                    <br>{{ form.errors }}
-                                </td>
-                            </tr>
-                        </div>
-                        <br>
-
-                        <div class="panel-footer">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
+        <h1 class="page-header">Table {{ table_number }} - Seat {{ seat_number }}</h1>
     </div>
 <br><br>
-<button type="submit" class="btn btn-success btn-lg"><i class="fa fa-check"></i> Submit Order</button>
-</form>
 
-<script type="text/javascript">
-    $('#create_order_form').formset();
-</script>
 <br><br>
 {% endblock %}
