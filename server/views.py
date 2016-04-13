@@ -92,6 +92,14 @@ def add_item_to_order(request, table_pk, item_pk, seat_number):
                                 )
 
 
+def submit_order_view(request, table_pk):
+    print("working table is working!!!")
+    working_table = Table.objects.get(pk=table_pk)
+    working_table.sent = True
+    working_table.save()
+    return HttpResponseRedirect(reverse('server_home'))
+
+
 class CreateOrderItem(TemplateView):
     template_name = 'server/order_form.html'
 
@@ -99,17 +107,22 @@ class CreateOrderItem(TemplateView):
         context = super(CreateOrderItem, self).get_context_data(**kwargs)
         seat_number = self.kwargs['seat_number']
         current_table = Table.objects.get(pk=self.kwargs['table_pk'])
-
+        context['table_pk'] = current_table.pk
         context['table_number'] = current_table.number
         context['seat_number'] = seat_number
         context['ordered_items_list'] = OrderedItem.objects.filter(table=current_table)
         context['menus_list'] = Menu.objects.filter(restaurant=self.request.user.userprofile.workplace)
-        print(context['menus_list'])
         return context
 
 
 class KitchenListView(ListView):
     model = Table
+
+    def get_context_data(self, **kwargs):
+        context = super(KitchenListView, self).get_context_data(**kwargs)
+        context['table_list'] = Table.objects.filter(server__workplace=self.request.user.userprofile.workplace, sent=True)
+
+        return context
 
 
 class MenuDetailView(DetailView):

@@ -17,14 +17,15 @@
               Table: {{ table.number }}<br>
               Order Sent: {{ table.started }}<br>
               Items:
-              {% for order in table.ordered_items.all %}
-              <br><b>{{order}}
-                  Seat Number {{ order.seat_number }}:
-                  {% for item in order.items.all %}
+              {% for item in table.ordereditem_set.all %}
+              <br><b>
+                  {{ item.item.name }}
+              </b>
                   <br>
-                  {{ item.name }}
-                  {% endfor %}
-              </b>{% endfor %}
+                  Seat Number {{ item.seat_number }}:
+                  <br>
+                  Special Instructions{{ item.special_instructions }}
+              {% endfor %}
           </p></li>
         {% else %}
             <li class="list-group-item ">

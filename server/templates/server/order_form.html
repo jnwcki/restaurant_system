@@ -8,6 +8,13 @@
     <div class="row">
         <div class="col-lg-2">
             <h3 class="page-header">Order</h3>
+            {% for item in ordered_items_list %}
+            <br>{{ item.item.name  }} ${{ item.item.price }}
+            {% endfor %}
+            <br><br>
+            <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Submit Order</a>
+            <br><br>
+            <button type="button" name="button" class="btn btn-lg btn-danger">Cancel</button>
         </div>
         <div class="col-lg-10">
             <h1 class="page-header">Table {{ table_number }} - Seat {{ seat_number }}</h1>
@@ -15,7 +22,10 @@
                 {% for menu in menus_list %}
                     {% for item in menu.item.all %}
                         <div class="col-md-2">
+                            <a href="{% url 'add_item' table_pk item.pk seat_number %}">
+                                <img src="{{ item.photo.url }}" alt="photo" height=50/><br>
                             {{ item.name }}
+                            </a>
                         </div>
                     {% endfor %}
                 {% endfor %}
