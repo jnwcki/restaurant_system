@@ -95,10 +95,16 @@ def add_item_to_order_view(request, table_pk, item_pk, seat_number):
                                 )
 
 
-def remove_item_from_order_view(request, table_pk, ordered_item_pk):
-    working_table = Table.objects.get(pk=table_pk)
+def remove_item_from_order_view(request, table_pk, ordered_item_pk, seat_number):
     working_item_order = OrderedItem.objects.get(pk=ordered_item_pk)
-    pass
+    working_item_order.canceled = True
+    working_item_order.save()
+    return HttpResponseRedirect(reverse('order_create_view',
+                                        kwargs={'table_pk': table_pk,
+                                                'seat_number': seat_number
+                                                }
+                                        )
+                                )
 
 
 def submit_order_view(request, table_pk):
@@ -126,7 +132,7 @@ class CreateOrderItem(TemplateView):
         context['table_pk'] = current_table.pk
         context['table_number'] = current_table.number
         context['seat_number'] = seat_number
-        context['ordered_items_list'] = OrderedItem.objects.filter(table=current_table)
+        context['ordered_items_list'] = OrderedItem.objects.filter(table=current_table, canceled=False)
         context['menus_list'] = Menu.objects.filter(restaurant=self.request.user.userprofile.workplace)
         return context
 

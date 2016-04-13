@@ -4,7 +4,7 @@ from server_buddy import settings
 from server.views import IndexView, ServerHomeView, UserCreateView, CreateOrderItem, \
     KitchenListView, AddMenuItemView, CreateMenuView, MenuDetailView, ServerAddView, KitchenAddView, \
     UpdateMenuView, MenuItemDetailView, LandingView, start_table_view, add_item_to_order_view, \
-    mark_table_fulfilled, RestaurantUpdateView, submit_order_view, cancel_order_view
+    mark_table_fulfilled, RestaurantUpdateView, submit_order_view, cancel_order_view, remove_item_from_order_view
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -32,5 +32,7 @@ urlpatterns = [
         add_item_to_order_view, name='add_item'
         ),
     url(r'^submit/order/(?P<table_pk>\d+)', submit_order_view, name='submit_order'),
-    url(r'^order/cancel/(?P<table_pk>\d+)', cancel_order_view, name='cancel_order')
+    url(r'^order/cancel/(?P<table_pk>\d+)', cancel_order_view, name='cancel_order'),
+    url(r'^order/ordered_item/(?P<ordered_item_pk>\d+)/table/(?P<table_pk>\d+)/seat/(?P<seat_number>\d+)',
+        remove_item_from_order_view, name='remove_item')
 ]
