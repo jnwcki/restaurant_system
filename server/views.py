@@ -143,6 +143,16 @@ def archive_table_view(request, table_pk, archive_all_boolean):
     return HttpResponseRedirect(reverse('kitchen'))
 
 
+def add_seat_to_order_view(request, table_pk, current_seat_number):
+    seat_number = int(current_seat_number) + 1
+    return HttpResponseRedirect(reverse('order_create_view',
+                                        kwargs={'table_pk': table_pk,
+                                                'seat_number': seat_number
+                                                }
+                                        )
+                                )
+
+
 class CreateOrderItem(TemplateView):
     template_name = 'server/order_form.html'
 
@@ -151,11 +161,19 @@ class CreateOrderItem(TemplateView):
         seat_number = self.kwargs['seat_number']
         current_table = Table.objects.get(pk=self.kwargs['table_pk'])
         ordered_items_list = OrderedItem.objects.filter(table=current_table, canceled=False)
+
+        seats_list = [1]
+        for item in ordered_items_list:
+            seats_list.append(item.seat_number)
+
+        context['working_seats'] = set(seats_list)
+        print(context['working_seats'])
+
         ticket_total = 0
         for item in ordered_items_list:
             ticket_total += item.item.price
-
         context['ticket_total'] = ticket_total
+
         context['table_pk'] = current_table.pk
         context['table_number'] = current_table.number
         context['seat_number'] = seat_number
