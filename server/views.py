@@ -148,12 +148,12 @@ class KitchenListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(KitchenListView, self).get_context_data(**kwargs)
-        context['table_list'] = Table.objects.filter(
-                                                     server__workplace=self.request.user.userprofile.workplace,
-                                                     sent=True,
-                                                     canceled=False,
-                                                     archived=False
-                                                     )
+        good_table_list = Table.objects.filter(
+                                               server__workplace=self.request.user.userprofile.workplace,
+                                               sent=True,
+                                               canceled=False,
+                                               archived=False
+                                               )
 
         return context
 

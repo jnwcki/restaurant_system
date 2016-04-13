@@ -11,8 +11,8 @@
             {% for item in ordered_items_list %}
             <br>{{ item.item.name  }} ${{ item.item.price }} <a class="btn btn-xs btn-default" href="{% url 'remove_item' item.pk table_pk seat_number %}">Remove</a>
             {% endfor %}
-            <br>
-            Order Total: {{ ticket_total }}
+            <br><br>
+            <b>Order Total: {{ ticket_total }}</b>
             <br><br>
             <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
             <br><br>

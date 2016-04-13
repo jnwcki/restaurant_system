@@ -18,6 +18,8 @@
               Order Sent: {{ table.started }}<br>
               Items:
               {% for item in table.ordereditem_set.all %}
+              {% if not item.canceled %}
+
               <br><b>
                   {{ item.item.name }}
               </b>
@@ -25,6 +27,7 @@
                   Seat Number {{ item.seat_number }}:
                   <br>
                   Special Instructions{{ item.special_instructions }}
+                  {% endif %}
               {% endfor %}
           </p></li>
         {% else %}
