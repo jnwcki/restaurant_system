@@ -59,6 +59,8 @@ class OrderedItem(models.Model):
     item = models.ForeignKey(MenuItem)
     seat_number = models.IntegerField(null=True, blank=True)
     special_instructions = models.CharField(max_length=255, blank=True, null=True)
+    sent = models.BooleanField(default=False)
+    canceled = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.pk)

@@ -51,7 +51,10 @@ class ServerHomeView(TemplateView):
         current_server = UserProfile.objects.get(user=self.request.user)
         if current_server.position != 'K':
             current_restaurant = current_server.workplace
-            bound_table_list = Table.objects.filter(server__workplace=current_restaurant, fulfilled=False)
+            bound_table_list = Table.objects.filter(server__workplace=current_restaurant,
+                                                    fulfilled=False,
+                                                    canceled=False,
+                                                    )
             all_tables_list = [x for x in range(1, current_restaurant.number_of_tables + 1)]
             bound_table_numbers = bound_table_list.values_list('number', flat=True)
             unbound_tables = [x for x in all_tables_list if x not in bound_table_numbers]
@@ -78,7 +81,7 @@ def start_table_view(request, table_number):
                                 )
 
 
-def add_item_to_order(request, table_pk, item_pk, seat_number):
+def add_item_to_order_view(request, table_pk, item_pk, seat_number):
     working_table = Table.objects.get(pk=table_pk)
     working_item = MenuItem.objects.get(pk=item_pk)
 
@@ -92,10 +95,23 @@ def add_item_to_order(request, table_pk, item_pk, seat_number):
                                 )
 
 
+def remove_item_from_order_view(request, table_pk, ordered_item_pk):
+    working_table = Table.objects.get(pk=table_pk)
+    working_item_order = OrderedItem.objects.get(pk=ordered_item_pk)
+    pass
+
+
 def submit_order_view(request, table_pk):
-    print("working table is working!!!")
+    # print("working table is working!!!")
     working_table = Table.objects.get(pk=table_pk)
     working_table.sent = True
+    working_table.save()
+    return HttpResponseRedirect(reverse('server_home'))
+
+
+def cancel_order_view(request, table_pk):
+    working_table = Table.objects.get(pk=table_pk)
+    working_table.canceled = True
     working_table.save()
     return HttpResponseRedirect(reverse('server_home'))
 
@@ -120,7 +136,12 @@ class KitchenListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(KitchenListView, self).get_context_data(**kwargs)
-        context['table_list'] = Table.objects.filter(server__workplace=self.request.user.userprofile.workplace, sent=True)
+        context['table_list'] = Table.objects.filter(
+                                                     server__workplace=self.request.user.userprofile.workplace,
+                                                     sent=True,
+                                                     canceled=False,
+                                                     archived=False
+                                                     )
 
         return context
 

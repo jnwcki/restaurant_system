@@ -3,8 +3,8 @@ from django.contrib import admin
 from server_buddy import settings
 from server.views import IndexView, ServerHomeView, UserCreateView, CreateOrderItem, \
     KitchenListView, AddMenuItemView, CreateMenuView, MenuDetailView, ServerAddView, KitchenAddView, \
-    UpdateMenuView, MenuItemDetailView, LandingView, start_table_view, add_item_to_order, \
-    mark_table_fulfilled, RestaurantUpdateView, submit_order_view
+    UpdateMenuView, MenuItemDetailView, LandingView, start_table_view, add_item_to_order_view, \
+    mark_table_fulfilled, RestaurantUpdateView, submit_order_view, cancel_order_view
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -29,7 +29,8 @@ urlpatterns = [
     url(r'^ordercreate/(?P<table_pk>\d+)/(?P<seat_number>\d+)', CreateOrderItem.as_view(), name='order_create_view'),
     url(r'^restaurant/update/', RestaurantUpdateView.as_view(), name='restaurant_update'),
     url(r'^table/(?P<table_pk>\d+)/item/(?P<item_pk>\d+)/seat/(?P<seat_number>\d+)',
-        add_item_to_order, name='add_item'
+        add_item_to_order_view, name='add_item'
         ),
-    url(r'^submit/order/(?P<table_pk>\d+)', submit_order_view, name='submit_order')
+    url(r'^submit/order/(?P<table_pk>\d+)', submit_order_view, name='submit_order'),
+    url(r'^order/cancel/(?P<table_pk>\d+)', cancel_order_view, name='cancel_order')
 ]
