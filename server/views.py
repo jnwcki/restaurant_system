@@ -1,8 +1,8 @@
-from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, Order
+from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, OrderedItem
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
-from server.forms import ServerCreateForm, CreateOrderForm, OrderFormSet
+from server.forms import ServerCreateForm
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
@@ -68,30 +68,30 @@ class ServerHomeView(TemplateView):
 
 # New try at class-based order create view. gonna work this time!!
 # only saving a single form! what gives?!
-class CreateOrderItem(CreateView):
-    template_name = 'server/order_form.html'
-    form_class = CreateOrderForm
-
-    def get_context_data(self, **kwargs):
-        context = super(CreateOrderItem, self).get_context_data(**kwargs)
-        if self.request.POST:
-
-            context['formset'] = OrderFormSet(self.request.POST)
-        else:
-            context['formset'] = OrderFormSet(initial=[{'quantity': 1}])
-        return context
-
-    def form_valid(self, form):
-        context = self.get_context_data()
-        formset = context['formset']
-        if formset.is_valid():
-            self.object = form.save()
-            formset.instance = self.object
-            formset.save()
-            return reverse('server_home')
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
-
+# class CreateOrderItem(CreateView):
+#     template_name = 'server/order_form.html'
+#     form_class = CreateOrderForm
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(CreateOrderItem, self).get_context_data(**kwargs)
+#         if self.request.POST:
+#
+#             context['formset'] = OrderFormSet(self.request.POST)
+#         else:
+#             context['formset'] = OrderFormSet(initial=[{'quantity': 1}])
+#         return context
+#
+#     def form_valid(self, form):
+#         context = self.get_context_data()
+#         formset = context['formset']
+#         if formset.is_valid():
+#             self.object = form.save()
+#             formset.instance = self.object
+#             formset.save()
+#             return reverse('server_home')
+#         else:
+#             return self.render_to_response(self.get_context_data(form=form))
+#
 
 def FunctionBasedCreateOrder(request, table_number):
     server = request.user.userprofile
@@ -139,8 +139,8 @@ def FunctionBasedUpdateOrder(request, table_pk):
         return render(request, 'server/update_order_form.html', {'formset': update_order_form_set})
 
 
-class OrderDetailView(DetailView):
-    model = Order
+# class OrderDetailView(DetailView):
+#     model = Order
 
 
 class KitchenListView(ListView):
@@ -237,9 +237,9 @@ class MenuItemDetailView(DetailView):
     model = MenuItem
 
 
-class OrderUpdateView(UpdateView):
-    model = Order
-    fields = ['seat_number', 'table_number', 'items']
+# class OrderUpdateView(UpdateView):
+#     model = Order
+#     fields = ['seat_number', 'table_number', 'items']
 
 
 # class TableStartView(TemplateView):

@@ -43,7 +43,7 @@ class Table(models.Model):
     number = models.IntegerField()
     started = models.DateTimeField(auto_now_add=True)
     fulfilled = models.BooleanField(default=False)
-    ordered_items = models.ManyToManyField(MenuItem, through='Order')
+    sent = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-started']
@@ -52,10 +52,9 @@ class Table(models.Model):
         return "Table {} {}".format(self.number, self.started)
 
 
-class Order(models.Model):
-    table = models.ForeignKey(Table, on_delete=models.CASCADE)
-    items = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
+class OrderedItem(models.Model):
+    table = models.ForeignKey(Table)
+    item = models.ForeignKey(MenuItem)
     seat_number = models.IntegerField(null=True, blank=True)
     special_instructions = models.CharField(max_length=255, blank=True, null=True)
 
