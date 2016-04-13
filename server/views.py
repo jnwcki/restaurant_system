@@ -72,13 +72,14 @@ class ServerHomeView(TemplateView):
         return context
 
 
-def start_table_view(request, table_number):
+def start_table_view(request, table_number, menu_pk):
     server = request.user.userprofile
     created_table = Table.objects.create(number=table_number, server=server)
 
     return HttpResponseRedirect(reverse('order_create_view',
                                         kwargs={'table_pk': created_table.pk,
-                                                'seat_number': 1
+                                                'seat_number': 1,
+                                                'menu_pk': menu_pk
                                                 }
                                         )
                                 )
@@ -184,7 +185,7 @@ class CreateOrderItem(TemplateView):
         context['current_menu'] = current_menu
         context['table_pk'] = current_table.pk
         context['table_number'] = current_table.number
-        context['seat_number'] = seat_number
+        context['seat_number'] = int(seat_number)
         context['ordered_items_list'] = ordered_items_list
         context['menus_list'] = Menu.objects.filter(restaurant=self.request.user.userprofile.workplace)
         return context

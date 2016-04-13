@@ -62,5 +62,7 @@ class OrderedItem(models.Model):
     sent = models.BooleanField(default=False)
     canceled = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ['seat_number']
     def __str__(self):
         return str(self.pk)
