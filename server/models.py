@@ -44,6 +44,8 @@ class Table(models.Model):
     started = models.DateTimeField(auto_now_add=True)
     fulfilled = models.BooleanField(default=False)
     sent = models.BooleanField(default=False)
+    canceled = models.BooleanField(default=False)
+    archived = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-started']
