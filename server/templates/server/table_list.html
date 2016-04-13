@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="row">
+    <a class="btn btn-lg btn-default pull-right" href="{% url 'archive' 1 1 %}">Clear All Fulfilled</a>
+</div>
 <ul class="list-group">
     {% for table in table_list %}
 
@@ -33,7 +36,7 @@
         {% else %}
             <li class="list-group-item ">
                 <p class="bg-warning">
-
+                    <a class="btn btn-sm btn-warning pull-right"href="{% url 'archive' table.pk 0 %}">Clear</a>
                     Server: {{ order.server }}
                     Table: {{ table.number }}<br>
                     Seat Number: {{ table.started }}<br>

@@ -122,6 +122,27 @@ def cancel_order_view(request, table_pk):
     return HttpResponseRedirect(reverse('server_home'))
 
 
+def archive_table_view(request, table_pk, archive_all_boolean):
+    print(str(archive_all_boolean))
+    if archive_all_boolean == 0:
+        working_table = Table.objects.get(pk=table_pk)
+        working_table.archived = True
+        working_table.save()
+
+    else:
+        tables_to_archive = Table.objects.filter(
+                                                 sent=True,
+                                                 fulfilled=True,
+                                                 archived=False
+                                                 )
+        print(tables_to_archive)
+        for table in tables_to_archive:
+            table.archived = True
+            table.save()
+
+    return HttpResponseRedirect(reverse('kitchen'))
+
+
 class CreateOrderItem(TemplateView):
     template_name = 'server/order_form.html'
 
@@ -148,12 +169,12 @@ class KitchenListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(KitchenListView, self).get_context_data(**kwargs)
-        good_table_list = Table.objects.filter(
-                                               server__workplace=self.request.user.userprofile.workplace,
-                                               sent=True,
-                                               canceled=False,
-                                               archived=False
-                                               )
+        context['table_list'] = Table.objects.filter(
+                                                     server__workplace=self.request.user.userprofile.workplace,
+                                                     sent=True,
+                                                     canceled=False,
+                                                     archived=False
+                                                     )
 
         return context
 
