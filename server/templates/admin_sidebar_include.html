@@ -1,0 +1,39 @@
+
+                <div class="navbar-default sidebar" role="navigation">
+                    <div class="sidebar-nav navbar-collapse">
+                        <ul class="nav" id="side-menu">
+                            <li>
+                                <a href="{% url 'index' %}"><i class="fa fa-dashboard fa-fw"></i>Home Link</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'server_home' %}"><i class="fa fa-bar-chart-o fa-fw"></i>Server View<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="">New Table</a>
+                                    </li>
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                            <li>
+                                <a href="{% url 'kitchen' %}"><i class="fa fa-table fa-fw"></i>Kitchen View</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-wrench fa-fw"></i>Admin<span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="{% url 'add_menu_item' %}">Add Menu Items</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'create_menu' %}">Create New Menu</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'restaurant_update' %}">Update Restaurant Info</a>
+                                    </li>
+
+                                </ul>
+                                <!-- /.nav-second-level -->
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.sidebar-collapse -->
+                </div>

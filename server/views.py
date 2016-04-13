@@ -78,8 +78,18 @@ def start_table_view(request, table_number):
                                 )
 
 
-def add_item_to_order_view(request):
-    pass
+def add_item_to_order(request, table_pk, item_pk, seat_number):
+    working_table = Table.objects.get(pk=table_pk)
+    working_item = MenuItem.objects.get(pk=item_pk)
+
+    OrderedItem.objects.create(table=working_table, item=working_item, seat_number=seat_number)
+
+    return HttpResponseRedirect(reverse('order_create_view',
+                                        kwargs={'table_pk': table_pk,
+                                                'seat_number': seat_number
+                                                }
+                                        )
+                                )
 
 
 class CreateOrderItem(TemplateView):
@@ -94,8 +104,7 @@ class CreateOrderItem(TemplateView):
         context['seat_number'] = seat_number
         context['ordered_items_list'] = OrderedItem.objects.filter(table=current_table)
         context['menus_list'] = Menu.objects.filter(restaurant=self.request.user.userprofile.workplace)
-
-
+        print(context['menus_list'])
         return context
 
 

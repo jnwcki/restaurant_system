@@ -1,14 +1,28 @@
 {% extends 'base.html' %}
 
-{% block content %}
 {% load staticfiles %}
-<!-- Django Dynamic Formsets -->
-<script src="{% static 'js/jquery.formset.js' %}"></script>
 
-<div class="row">
-    <div class="col-lg-12">
-        <h1 class="page-header">Table {{ table_number }} - Seat {{ seat_number }}</h1>
-    </div>
+{% block content %}
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-2">
+            <h3 class="page-header">Order</h3>
+        </div>
+        <div class="col-lg-10">
+            <h1 class="page-header">Table {{ table_number }} - Seat {{ seat_number }}</h1>
+            <div class="row">
+                {% for menu in menus_list %}
+                    {% for item in menu.item.all %}
+                        <div class="col-md-2">
+                            {{ item.name }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+</div>
+
 <br><br>
 
 <br><br>
