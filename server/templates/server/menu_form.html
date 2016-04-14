@@ -1,18 +1,26 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<br><br>
-<h2>Create A New Menu</h2>
-<div class="row">
-    <div class="col-xs-6">
-        <form class="" action="" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" name="submit" value="Submit">
-        </form>
+{% block navbar %}
+{% include 'navbar_include.html' %}
+{% endblock %}
 
+{% block content %}
+<div id="page-wrapper">
+    <div class="row">
+        <div class="page-header">
+            <h3>Create or Update Menu</h3>
+        </div>
     </div>
 
+    <div class="row">
+        <div class="col-xs-6">
+            <form class="" action="" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <br>
+                <input class="btn btn-success btn-lg"type="submit" name="submit" value="Submit">
+            </form>
+        </div>
+    </div>
 </div>
-
 {% endblock %}

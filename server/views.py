@@ -2,7 +2,7 @@ from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, Ordere
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
-from server.forms import ServerCreateForm, MenuItemForm
+from server.forms import ServerCreateForm, MenuItemForm, MenuCreateForm
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
@@ -227,7 +227,7 @@ class AddMenuItemView(CreateView):
 
 class CreateMenuView(CreateView):
     model = Menu
-    fields = ['name', 'item']
+    form_class = MenuCreateForm
 
     def form_valid(self, form):
         new_item = form.save(commit=False)
@@ -287,8 +287,8 @@ class KitchenAddView(CreateView):
 
 class UpdateMenuView(UpdateView):
     model = Menu
-    fields = ['name', 'item']
-
+    form_class = MenuCreateForm
+    
     def get_success_url(self, **kwargs):
         return reverse_lazy('menu_detail', kwargs={'pk': self.kwargs['pk']})
 
@@ -317,7 +317,7 @@ class RestaurantUpdateView(UpdateView):
 
 class UpdateMenuItemView(UpdateView):
     model = MenuItem
-    fields = '__all__'
+    form_class = MenuItemForm
 
     def get_success_url(self):
         return reverse('index')
