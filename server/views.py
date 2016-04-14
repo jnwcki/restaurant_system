@@ -22,8 +22,6 @@ def employee_login_redirect(request):
         return HttpResponseRedirect(reverse('kitchen'))
 
 
-
-
 class IndexView(TemplateView):
     template_name = 'index.html'
 
@@ -45,10 +43,14 @@ class UserCreateView(CreateView):
         new_restaurant = Restaurant.objects.create()
         profile = UserProfile.objects.create(
                                              user=user_object,
-                                             workplace=new_restaurant
+                                             workplace=new_restaurant,
+                                             position='M'
                                              )
         profile.save()
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        print(form.errors)
 
     def get_success_url(self):
         return reverse('login')
