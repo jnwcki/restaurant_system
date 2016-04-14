@@ -2,7 +2,7 @@ from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, Ordere
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
-from server.forms import ServerCreateForm, MenuItemForm, MenuCreateForm
+from server.forms import EmployeeCreateForm, MenuItemForm, MenuCreateForm
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
@@ -10,6 +10,18 @@ from django.contrib.auth.forms import UserCreationForm
 
 class LandingView(TemplateView):
     template_name = 'landing.html'
+
+
+def employee_login_redirect(request):
+    employee_position = request.user.userprofile.position
+    if employee_position == 'M':
+        return HttpResponseRedirect(reverse('index'))
+    elif employee_position == 'S':
+        return HttpResponseRedirect(reverse('server_home'))
+    else:
+        return HttpResponseRedirect(reverse('kitchen'))
+
+
 
 
 class IndexView(TemplateView):
@@ -261,7 +273,7 @@ class ServerAddView(CreateView):
     #     return super().form_invalid(form)
 
     def get_context_data(self):
-        context = super(ServerAddView, self).get_context_data()
+        context = super().get_context_data()
         context['user_type'] = 'Server'
         return context
 
@@ -270,12 +282,12 @@ class ServerAddView(CreateView):
 
 
 class KitchenAddView(CreateView):
-    form_class = ServerCreateForm
+    form_class = UserCreationForm
     model = User
     template_name = 'server/employee_create_form.html'
 
     def get_context_data(self):
-        context = super(KitchenAddView, self).get_context_data()
+        context = super().get_context_data()
         context['user_type'] = 'Kitchen'
         return context
 
@@ -318,7 +330,7 @@ class RestaurantUpdateView(UpdateView):
     fields = '__all__'
 
     def get_object(self):
-        return Restaurant.objects.get(userprofile__workplace=self.request.user.userprofile.workplace)
+        return self.request.user.userprofile.workplace
 
     def get_success_url(self):
         return reverse('index')

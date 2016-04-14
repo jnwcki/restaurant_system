@@ -16,13 +16,16 @@ class Restaurant(models.Model):
     tax_percentage = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
-        return "{}".format(self.name)
+        return self.name
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField('auth.User')
     position = models.CharField(max_length=255, choices=POSITION_CHOICES)
     workplace = models.ForeignKey(Restaurant)
+
+    def __str__(self):
+        return self.user
 
 
 class MenuItem(models.Model):
@@ -60,7 +63,7 @@ class Table(models.Model):
         ordering = ['-started']
 
     def __str__(self):
-        return "Table {} {}".format(self.number, self.started)
+        return "Table {} -- {}".format(self.number, self.started)
 
 
 class OrderedItem(models.Model):
@@ -73,5 +76,6 @@ class OrderedItem(models.Model):
 
     class Meta:
         ordering = ['seat_number']
+        
     def __str__(self):
         return str(self.pk)

@@ -7,8 +7,11 @@ from server.models import MenuItem, Menu
 #     number_of_tables = forms.IntegerField()
 
 
-class ServerCreateForm(UserCreationForm):
+class EmployeeCreateForm(UserCreationForm):
     name = forms.CharField()
+
+    class Meta:
+        fields = ['username', 'password1', 'password2']
 
 
 class MenuItemForm(forms.ModelForm):

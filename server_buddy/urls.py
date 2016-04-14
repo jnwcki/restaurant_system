@@ -5,13 +5,14 @@ from server.views import IndexView, ServerHomeView, UserCreateView, CreateOrderI
     KitchenListView, AddMenuItemView, CreateMenuView, MenuDetailView, ServerAddView, KitchenAddView, \
     UpdateMenuView, MenuItemDetailView, LandingView, start_table_view, add_item_to_order_view, \
     mark_table_fulfilled, RestaurantUpdateView, submit_order_view, cancel_order_view, remove_item_from_order_view, \
-    add_seat_to_order_view, UpdateMenuItemView
+    add_seat_to_order_view, UpdateMenuItemView, employee_login_redirect
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^media/(?P<path>.*)', 'django.views.static.serve', {"document_root": settings.MEDIA_ROOT}),
     url(r'^$', LandingView.as_view(), name='landing'),
+    url(r'^loginredirect/$', employee_login_redirect, name='employee_login_redirect'),
     url(r'^index/$', IndexView.as_view(), name='index'),
     url(r'^server/home/$', ServerHomeView.as_view(), name='server_home'),
     url(r'^accounts/login/$', auth_views.login, name='login'),
