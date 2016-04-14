@@ -1,56 +1,64 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block navbar %}
+{% include 'navbar_include.html' %}
+{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-xs-12">
-        <h1 class="page-header">Welcome {{ user.userprofile.name }}</h1>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-4">
-        <div class="panel panel-green">
-            <div class="panel-heading">
-                <h4>Servers</h4>
-                {% for server in servers %}
-                <br>
-                {{ server }}
-                {% endfor %}
-                <br>
-            </div>
+<div id="page-wrapper">
 
-            <a href="{% url 'add_server' user.userprofile.workplace.pk %}">
-                <div class="panel-footer">
-                    <span class="pull-left">Add New Server</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
-                </div>
-            </a>
+    <div class="row">
+        <div class="col-xs-12">
+            <h1 class="page-header">Welcome {{ user.userprofile.name }}</h1>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-
-                <h4>Kitchen</h4>
-                {% for cook in kitchen %}
-                <br>
-                {{ cook }}
-                {% endfor %}
-            </div>
-            <a href="{% url 'add_cook' user.userprofile.workplace.pk %}">
-                <div class="panel-footer">
-                    <span class="pull-left">Add New Kitchen Staff</span>
-                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="panel panel-green">
+                <div class="panel-heading">
+                    <h4>Servers</h4>
+                    {% for server in servers %}
+                    <br>
+                    {{ server }}
+                    {% endfor %}
+                    <br>
                 </div>
 
-            </a>
-
+                <a href="{% url 'add_server' user.userprofile.workplace.pk %}">
+                    <div class="panel-footer">
+                        <span class="pull-left">Add New Server</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
         </div>
-    </div>
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
 
-    <div class="col-md-4">
-        <h3>Sales</h3>
+                    <h4>Kitchen</h4>
+                    {% for cook in kitchen %}
+                    <br>
+                    {{ cook }}
+                    {% endfor %}
+                </div>
+                <a href="{% url 'add_cook' user.userprofile.workplace.pk %}">
+                    <div class="panel-footer">
+                        <span class="pull-left">Add New Kitchen Staff</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </a>
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <h3>Sales</h3>
+        </div>
     </div>
 </div>
 

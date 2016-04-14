@@ -2,11 +2,12 @@
 
 {% block content %}
 <ul>
-<li><img src="{{ object.photo.url }}" alt="photo" height="100px"/></li>
-<li>{{ object.name }}</li>
-<li>{{ object.price }}</li>
-<li>{{ object.description }}</li>
-<li>{{ object.date_added }}</li>
+    <li><img src="{{ object.photo.url }}" alt="photo" height="100px"/></li>
+    <li>{{ object.name }}</li>
+    <li>{{ object.price }}</li>
+    <li>{{ object.description }}</li>
+    <li>{{ object.date_added }}</li>
+    <a href="{% url 'update_menu_item' object.pk %}">Update</a>
 
 </ul>
 

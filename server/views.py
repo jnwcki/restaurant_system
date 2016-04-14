@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
 from server.forms import ServerCreateForm
-from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
@@ -212,7 +211,7 @@ class MenuDetailView(DetailView):
 
 class AddMenuItemView(CreateView):
     model = MenuItem
-    fields = ['name', 'description', 'price', 'photo']
+    fields = ['name', 'description', 'price', 'photo', 'item_type']
 
     def form_valid(self, form):
         new_item = form.save(commit=False)
@@ -221,7 +220,7 @@ class AddMenuItemView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('server_home')
+        return reverse('index')
 
 
 class CreateMenuView(CreateView):
@@ -309,6 +308,14 @@ class RestaurantUpdateView(UpdateView):
 
     def get_object(self):
         return Restaurant.objects.get(userprofile__workplace=self.request.user.userprofile.workplace)
+
+    def get_success_url(self):
+        return reverse('index')
+
+
+class UpdateMenuItemView(UpdateView):
+    model = MenuItem
+    fields = '__all__'
 
     def get_success_url(self):
         return reverse('index')
