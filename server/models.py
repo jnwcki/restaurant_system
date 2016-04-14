@@ -1,4 +1,5 @@
 from django.db import models
+from stdimage.models import StdImageField
 
 POSITION_CHOICES = [('M', 'Manager'), ('S', 'Server'), ('K', 'Kitchen')]
 ITEM_CHOICES = [
@@ -25,14 +26,17 @@ class UserProfile(models.Model):
     workplace = models.ForeignKey(Restaurant)
 
     def __str__(self):
-        return self.user
+        return self.user.username
 
 
 class MenuItem(models.Model):
     restaurant = models.ForeignKey(Restaurant)
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    photo = models.ImageField(upload_to="uploads", default="uploads/default.png")
+    photo = StdImageField(upload_to="uploads",
+                          default="uploads/default.png",
+                          variations={'thumbnail': {"width": 100, "height": 100, "crop": True}}
+                          )
     description = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
     item_type = models.CharField(max_length=1, choices=ITEM_CHOICES, default='E')
@@ -76,6 +80,6 @@ class OrderedItem(models.Model):
 
     class Meta:
         ordering = ['seat_number']
-        
+
     def __str__(self):
         return str(self.pk)

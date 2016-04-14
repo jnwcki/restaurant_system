@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block navbar %}
-    {% include 'server_navbar_include.html' %}
+    {% include 'employee_navbar_include.html' %}
 {% endblock %}
 
 {% block content %}
@@ -16,15 +16,24 @@
             <ul class="list-group">
 
             {% for item in ordered_items_list %}
-            <li class="list-group-item">Seat {{ item.seat_number }} {{ item.item.name  }} ${{ item.item.price }} <a class="btn btn-xs btn-default pull-right" href="{% url 'remove_item' item.pk table_pk seat_number current_menu.pk %}">Remove</a></li>
+            {% if item.sent %}
+            <li class="list-group-item list-group-item-warning">Seat {{ item.seat_number }} {{ item.item.name  }} ${{ item.item.price }}<span class="glyphicon glyphicon-ok-circle pull-right"></span></li>
+            {% else %}
+            <li class="list-group-item list-group-item-success">Seat {{ item.seat_number }} {{ item.item.name  }} ${{ item.item.price }} <a class="glyphicon glyphicon-remove pull-right" href="{% url 'remove_item' item.pk table_pk seat_number current_menu.pk %}"></a></li>
+            {% endif %}
             {% endfor %}
             </ul>
             <br><br>
             <b>Order Total: {{ ticket_total }}</b>
             <br><br>
+            {% if current_table.sent %}
             <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
             <br><br>
+            {% else %}
+            <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
+            <br>
             <a class="btn btn-lg btn-danger" href="{% url 'cancel_order' table_pk %}">Cancel</a>
+            {% endif %}
         </div>
         <div class="col-xs-8">
             <div class="page-header">
@@ -48,11 +57,13 @@
             </div>
             <div class="row">
                     {% for item in current_menu.item.all %}
-                        <div class="col-xs-6 col-md-3">
+                        <div class="col-md-2">
+                            <div class="media">
                             <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}" class="thumbnail">
-                                <img src="{{ item.photo.url }}" alt="photo" /><br>
+                                <img src="{{ item.photo.url }}" alt="photo" class="img-rounded" width="100" height="100 !important" /><br>
                             {{ item.name }}
                             </a>
+                            </div>
                         </div>
                     {% endfor %}
             </div>

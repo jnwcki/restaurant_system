@@ -47,6 +47,7 @@ class UserCreateView(CreateView):
                                              position='M'
                                              )
         profile.save()
+        Menu.objects.create(restaurant=new_restaurant, name="Menu")
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -130,6 +131,9 @@ def submit_order_view(request, table_pk):
     # print("working table is working!!!")
     working_table = Table.objects.get(pk=table_pk)
     working_table.sent = True
+    for item in working_table.ordereditem_set.all():
+        item.sent = True
+        item.save()
     working_table.save()
     return HttpResponseRedirect(reverse('server_home'))
 
@@ -194,7 +198,7 @@ class CreateOrderItem(TemplateView):
         for item in ordered_items_list:
             ticket_total += item.item.price
         context['ticket_total'] = ticket_total
-
+        context['current_table'] = current_table
         context['current_menu'] = current_menu
         context['table_pk'] = current_table.pk
         context['table_number'] = current_table.number
