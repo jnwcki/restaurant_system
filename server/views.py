@@ -2,7 +2,7 @@ from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, Ordere
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
-from server.forms import ServerCreateForm
+from server.forms import ServerCreateForm, MenuItemForm
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
@@ -211,7 +211,9 @@ class MenuDetailView(DetailView):
 
 class AddMenuItemView(CreateView):
     model = MenuItem
-    fields = ['name', 'description', 'price', 'photo', 'item_type']
+    # fields = ['name', 'description', 'price', 'photo', 'item_type']
+    form_class = MenuItemForm
+    # fields = '__all__'
 
     def form_valid(self, form):
         new_item = form.save(commit=False)
