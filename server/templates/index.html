@@ -20,7 +20,7 @@
                     <h4>Servers</h4>
                     {% for server in servers %}
                     <br>
-                    {{ server }}
+                    {{ server.user }}
                     {% endfor %}
                     <br>
                 </div>
@@ -41,7 +41,7 @@
                     <h4>Kitchen</h4>
                     {% for cook in kitchen %}
                     <br>
-                    {{ cook }}
+                    {{ cook.user }}
                     {% endfor %}
                 </div>
                 <a href="{% url 'add_cook' user.userprofile.workplace.pk %}">

@@ -240,25 +240,30 @@ class CreateMenuView(CreateView):
 
 
 class ServerAddView(CreateView):
-    form_class = ServerCreateForm
+    form_class = UserCreationForm
     model = User
-    template_name = 'server/server_create_form.html'
+    template_name = 'server/employee_create_form.html'
 
     def form_valid(self, form, **kwargs):
         new_server = form.save()
         server_restaurant = Restaurant.objects.get(pk=self.kwargs['restaurant_id'])
         profile = UserProfile.objects.create(
                                              user=new_server,
-                                             name=form.cleaned_data["name"],
                                              workplace=server_restaurant,
                                              position='S'
                                              )
         profile.save()
         return super().form_valid(form, **kwargs)
 
-    def form_invalid(self, form):
-        print("Your Form Is Invalid sir!")
-        return super().form_invalid(form)
+    # def form_invalid(self, form):
+    #     print("Your Form Is Invalid sir!")
+    #     print(form.errors)
+    #     return super().form_invalid(form)
+
+    def get_context_data(self):
+        context = super(ServerAddView, self).get_context_data()
+        context['user_type'] = 'Server'
+        return context
 
     def get_success_url(self):
         return reverse('index')
@@ -267,14 +272,18 @@ class ServerAddView(CreateView):
 class KitchenAddView(CreateView):
     form_class = ServerCreateForm
     model = User
-    template_name = 'server/kitchen_create_form.html'
+    template_name = 'server/employee_create_form.html'
+
+    def get_context_data(self):
+        context = super(KitchenAddView, self).get_context_data()
+        context['user_type'] = 'Kitchen'
+        return context
 
     def form_valid(self, form, **kwargs):
         new_server = form.save()
         server_restaurant = Restaurant.objects.get(pk=self.kwargs['restaurant_id'])
         profile = UserProfile.objects.create(
                                              user=new_server,
-                                             name=form.cleaned_data["name"],
                                              workplace=server_restaurant,
                                              position='K'
                                              )
@@ -288,7 +297,7 @@ class KitchenAddView(CreateView):
 class UpdateMenuView(UpdateView):
     model = Menu
     form_class = MenuCreateForm
-    
+
     def get_success_url(self, **kwargs):
         return reverse_lazy('menu_detail', kwargs={'pk': self.kwargs['pk']})
 
