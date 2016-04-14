@@ -1,6 +1,13 @@
 from django.db import models
 
 POSITION_CHOICES = [('M', 'Manager'), ('S', 'Server'), ('K', 'Kitchen')]
+ITEM_CHOICES = [
+                ('N', 'Non-Alcoholic Beverage'),
+                ('A', 'Appetizer'),
+                ('E', 'Entree'),
+                ('D', 'Dessert'),
+                ('B', 'Alcohol')
+                ]
 
 
 class Restaurant(models.Model):
@@ -24,6 +31,7 @@ class MenuItem(models.Model):
     photo = models.ImageField(upload_to="uploads", default="uploads/default.png")
     description = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
+    item_type = models.CharField(max_length=1, choices=ITEM_CHOICES, default='E')
 
     def __str__(self):
         return self.name
