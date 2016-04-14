@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
-
+{% block navbar %}
+{% include 'server_navbar_include.html' %}
+{% endblock %}
 {% block content %}
+<div class="container">
     <div class="row">
         <div class="col-xs-12">
 
@@ -42,5 +45,6 @@
             </div>
         </div>
     </div>
+</div>
 
 {% endblock %}
