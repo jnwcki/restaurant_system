@@ -1,14 +1,27 @@
 {% extends 'base.html' %}
 
+{% block navbar %}
+{% include 'navbar_include.html' %}
+{% endblock %}
+
 {% block content %}
-<ul>
-    <li><img src="{{ object.photo.url }}" alt="photo" height="100px"/></li>
-    <li>{{ object.name }}</li>
-    <li>{{ object.price }}</li>
-    <li>{{ object.description }}</li>
-    <li>{{ object.date_added }}</li>
-    <a href="{% url 'update_menu_item' object.pk %}">Update</a>
-
-</ul>
-
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Menu Item Details</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <ul>
+                <li><img src="{{ object.photo.url }}" alt="photo" height="100px"/></li>
+                <li>{{ object.name }}</li>
+                <li>{{ object.price }}</li>
+                <li>{{ object.description }}</li>
+                <li>{{ object.date_added }}</li>
+                <a href="{% url 'update_menu_item' object.pk %}">Update</a>
+            </ul>
+        </div>
+    </div>
+</div>
 {% endblock %}

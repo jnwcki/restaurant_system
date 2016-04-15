@@ -9,11 +9,12 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-xs-12">
-            <h1 class="page-header">Welcome {{ user.userprofile.name }}</h1>
+            <h1>Welcome {{ user.username }}</h1>
+            <br>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-md-4">
             <div class="panel panel-green">
                 <div class="panel-heading">
                     <h4>Servers</h4>
@@ -23,7 +24,6 @@
                     <br>
                     {% endfor %}
                 </div>
-
                 <a href="{% url 'add_server' user.userprofile.workplace.pk %}">
                     <div class="panel-footer">
                         <span class="pull-left">Add New Server</span>
@@ -53,11 +53,30 @@
             </div>
         </div>
         <div class="col-md-4">
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    <h4>Recent Tables</h4>
+                    {% for table in recent_tables.all %}
+                    <a href="#">
+                        <span class="pull-left">Table {{ table.number }}</span>
+                        <span class="glyphicon glyphicon-eye-open pull-right"></span>
+                    </a>
+                    <br>
+                    {% endfor %}
+                </div>
+                <a href="{% url 'create_menu' %}">
+                    <div class="panel-footer">
+                        <span class="pull-left">Go To All Fulfilled Tables</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-4">
-            <div class="panel panel-default">
+            <div class="panel panel-warning">
                 <div class="panel-heading">
                     <h4>Menus</h4>
                     {% for menu in menus %}
@@ -68,17 +87,15 @@
                     <br>
                     {% endfor %}
                 </div>
-                    <a href="#">
-                        <div class="panel-footer">
-                            <span class="pull-left">Add New Menu</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
+                <a href="{% url 'create_menu' %}">
+                    <div class="panel-footer">
+                        <span class="pull-left">Add New Menu</span>
+                        <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                        <div class="clearfix"></div>
+                    </div>
+                </a>
             </div>
         </div>
-
     </div>
 </div>
 {% endblock %}

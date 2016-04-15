@@ -31,11 +31,14 @@ class IndexView(TemplateView):
         current_restaurant = current_server.workplace
         all_menus = Menu.objects.filter(restaurant=current_restaurant)
         employee_list = UserProfile.objects.filter(workplace=self.request.user.userprofile.workplace)
+        recent_tables_list = Table.objects.filter(server__workplace=current_restaurant,
+                                                  fulfilled=True).order_by('-id')[:3]
 
         context['user'] = self.request.user
         context['servers'] = employee_list.filter(position='S')
         context['kitchen'] = employee_list.filter(position='K')
         context['menus'] = all_menus
+        context['recent_tables'] = recent_tables_list
         return context
 
 

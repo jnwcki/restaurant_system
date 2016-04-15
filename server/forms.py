@@ -34,4 +34,4 @@ class MenuCreateForm(forms.ModelForm):
         widgets = {'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Menu Name'}),
                    'item': forms.CheckboxSelectMultiple(attrs={'class': 'checkboxinline'})
                    }
-        labels = {'name': '', 'item': 'Menu Items To Include'}
+        labels = {'name': 'Name', 'item': 'Menu Items To Include'}
