@@ -8,32 +8,29 @@
 <div id='page-wrapper'>
     <div class="row">
         <div class="col-sm-12">
-                <h3>
-                    <a class="btn btn-primary btn-lg pull-right" href="{% url 'update_menu' object.pk %}">Update Menu</a>
-                    {{ object.restaurant }} - {{ object.name }} - Menu Details
-                </h3>
-                <br>
-
+            <h3>
+                <a class="btn btn-primary btn-lg pull-right" href="{% url 'update_menu' object.pk %}">Update Menu</a>
+                {{ object.restaurant }} - {{ object.name }} - Menu Details
+            </h3>
+            <br>
         </div>
-
     </div>
     <div class="row">
         <div class="col-sm-12">
-                        {% for item in object.item.all %}
-                        <div class="col-xs-6 col-md-3">
-                            <a href="{% url 'menu_item_detail' item.pk %}">
-                                <figure>
-                                    <img class="img-rounded" src="{{ item.photo.url }}" alt="image" height='100px' />
-                                    <figcaption>
-                                        <br>{{ item.name }}
-                                        <br>{{ item.price }}
-                                    </figcaption>
-                                </figure>
-                            </a>
-                        </div>
-                        {% endfor %}
+            {% for item in object.item.all %}
+                <div class="col-xs-6 col-md-3">
+                    <a href="{% url 'menu_item_detail' item.pk %}">
+                        <figure>
+                            <img class="img-rounded" src="{{ item.photo.url }}" alt="image" height='100px' />
+                            <figcaption>
+                                <br>{{ item.name }}
+                                <br>{{ item.price }}
+                            </figcaption>
+                        </figure>
+                    </a>
+                </div>
+            {% endfor %}
         </div>
     </div>
 </div>
-
 {% endblock %}

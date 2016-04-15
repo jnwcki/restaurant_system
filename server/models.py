@@ -69,6 +69,13 @@ class Table(models.Model):
     def __str__(self):
         return "Table {} -- {}".format(self.number, self.started)
 
+    def total_ticket_price(self):
+        good_items = self.ordereditem_set.filter(canceled=False, sent=True)
+        counter = 0
+        for item in good_items:
+            counter += item.item.price
+        return counter
+
 
 class OrderedItem(models.Model):
     table = models.ForeignKey(Table)

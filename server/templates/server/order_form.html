@@ -9,7 +9,7 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-sm-3" style="background-color:#f2f2f2">
+        <div class="col-sm-3">
             <div class="page-header">
                 <h3>Order</h3>
             </div>
@@ -35,7 +35,7 @@
             <a class="btn btn-lg btn-danger" href="{% url 'cancel_order' table_pk %}">Cancel</a>
             {% endif %}
         </div>
-        <div class="col-xs-8" style="background-color:#f2f2f2">
+        <div class="col-xs-8">
             <div class="page-header">
                 <h3>Table {{ table_number }} - <span class="label label-default">Seat {{ seat_number }}</span></h3>
                 {% for seat in working_seats %}

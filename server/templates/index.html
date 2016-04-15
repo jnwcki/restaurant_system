@@ -17,7 +17,7 @@
         <div class="col-md-4">
             <div class="panel panel-green">
                 <div class="panel-heading">
-                    <h4>Servers</h4>
+                    <h4>Top Servers</h4>
                     {% for server in servers %}
                     <span class="pull-left">{{ server.user }}</span>
                     <span class="glyphicon glyphicon-glass pull-right"></span>
@@ -58,8 +58,8 @@
                     <h4>Recent Tables</h4>
                     {% for table in recent_tables.all %}
                     <a href="#">
-                        <span class="pull-left">Table {{ table.number }}</span>
-                        <span class="glyphicon glyphicon-eye-open pull-right"></span>
+                        <span class="pull-left">Table {{ table.number }} ${{ table.total_ticket_price }}</span>
+                        <span class="glyphicon glyphicon-usd pull-right"></span>
                     </a>
                     <br>
                     {% endfor %}
