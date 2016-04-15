@@ -27,10 +27,15 @@ class IndexView(TemplateView):
 
     def get_context_data(self):
         context = super(IndexView, self).get_context_data()
-        context['user'] = self.request.user
+        current_server = UserProfile.objects.get(user=self.request.user)
+        current_restaurant = current_server.workplace
+        all_menus = Menu.objects.filter(restaurant=current_restaurant)
         employee_list = UserProfile.objects.filter(workplace=self.request.user.userprofile.workplace)
+
+        context['user'] = self.request.user
         context['servers'] = employee_list.filter(position='S')
         context['kitchen'] = employee_list.filter(position='K')
+        context['menus'] = all_menus
         return context
 
 
@@ -72,13 +77,11 @@ class ServerHomeView(TemplateView):
             all_tables_list = [x for x in range(1, current_restaurant.number_of_tables + 1)]
             bound_table_numbers = bound_table_list.values_list('number', flat=True)
             unbound_tables = [x for x in all_tables_list if x not in bound_table_numbers]
-
             all_menus = Menu.objects.filter(restaurant=current_restaurant)
 
             context['first_menu'] = all_menus[0]
             context['restaurant'] = current_restaurant
             context['server'] = current_server
-            context['menus'] = all_menus
             context['bound_tables'] = bound_table_list
             context['unbound_tables'] = unbound_tables
         else:
