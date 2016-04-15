@@ -35,7 +35,7 @@ class MenuItem(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     photo = StdImageField(upload_to="uploads",
                           default="uploads/default.png",
-                          variations={'thumbnail': {"width": 100, "height": 100, "crop": True}}
+                          variations={'thumbnail': {"width": 100, "height": 100}}
                           )
     description = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)

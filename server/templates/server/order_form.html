@@ -9,7 +9,7 @@
 <div class="container">
 
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-3" style="background-color:#f2f2f2">
             <div class="page-header">
                 <h3>Order</h3>
             </div>
@@ -35,7 +35,7 @@
             <a class="btn btn-lg btn-danger" href="{% url 'cancel_order' table_pk %}">Cancel</a>
             {% endif %}
         </div>
-        <div class="col-xs-8">
+        <div class="col-xs-8" style="background-color:#f2f2f2">
             <div class="page-header">
                 <h3>Table {{ table_number }} - <span class="label label-default">Seat {{ seat_number }}</span></h3>
                 {% for seat in working_seats %}
@@ -57,13 +57,11 @@
             </div>
             <div class="row">
                     {% for item in current_menu.item.all %}
-                        <div class="col-md-2">
-                            <div class="media">
-                            <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}" class="thumbnail">
-                                <img src="{{ item.photo.url }}" alt="photo" class="img-rounded" width="100" height="100 !important" /><br>
+                        <div class="col-xs-6 col-md-3">
+                            <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
+                                <img src="{{ item.photo.url }}" alt="photo" class="img-rounded" height="100"/><br>
                             {{ item.name }}
                             </a>
-                            </div>
                         </div>
                     {% endfor %}
             </div>
