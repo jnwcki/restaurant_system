@@ -149,8 +149,7 @@ def cancel_order_view(request, table_pk):
 
 
 def archive_table_view(request, table_pk, archive_all_boolean):
-    print(str(archive_all_boolean))
-    if archive_all_boolean == 0:
+    if str(archive_all_boolean) == '0':
         working_table = Table.objects.get(pk=table_pk)
         working_table.archived = True
         working_table.save()
