@@ -160,7 +160,6 @@ def archive_table_view(request, table_pk, archive_all_boolean):
                                                  fulfilled=True,
                                                  archived=False
                                                  )
-        print(tables_to_archive)
         for table in tables_to_archive:
             table.archived = True
             table.save()

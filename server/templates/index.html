@@ -18,10 +18,10 @@
                 <div class="panel-heading">
                     <h4>Servers</h4>
                     {% for server in servers %}
+                    <span class="pull-left">{{ server.user }}</span>
+                    <span class="glyphicon glyphicon-glass pull-right"></span>
                     <br>
-                    {{ server.user }}
                     {% endfor %}
-                    <br>
                 </div>
 
                 <a href="{% url 'add_server' user.userprofile.workplace.pk %}">
@@ -36,11 +36,11 @@
         <div class="col-md-4">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-
                     <h4>Kitchen</h4>
                     {% for cook in kitchen %}
+                    <span class="pull-left">{{ cook.user }}</span>
+                    <span class="glyphicon glyphicon-user pull-right"></span>
                     <br>
-                    {{ cook.user }}
                     {% endfor %}
                 </div>
                 <a href="{% url 'add_cook' user.userprofile.workplace.pk %}">
@@ -52,7 +52,6 @@
                 </a>
             </div>
         </div>
-
         <div class="col-md-4">
         </div>
     </div>
@@ -61,18 +60,25 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4>Menus</h4>
-                </div>
-                <div class="panel-body">
                     {% for menu in menus %}
-                        <a href="{% url 'update_menu' menu.pk %}">Update {{ menu.name }}</a><br>
+                    <a href="{% url 'menu_detail' menu.pk %}">
+                        <span class="pull-left">{{ menu.name }}</span>
+                        <span class="glyphicon glyphicon-eye-open pull-right"></span>
+                    </a>
+                    <br>
                     {% endfor %}
+                </div>
+                    <a href="#">
+                        <div class="panel-footer">
+                            <span class="pull-left">Add New Menu</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
 
     </div>
 </div>
-
-
-
 {% endblock %}
