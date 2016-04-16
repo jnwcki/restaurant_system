@@ -7,7 +7,6 @@
 
 {% block content %}
 <div class="container">
-
     <div class="row">
         <div class="col-sm-3">
             <div class="page-header">
@@ -44,7 +43,6 @@
                     {% else %}
                     <a class="btn btn-sm btn-default" href="{% url 'order_create_view' table_pk seat menu_pk %}"> Seat {{ seat }}</a>
                 {% endif %}
-
                 {% endfor %}
                 <a class="btn btn-sm btn-primary" href="{% url 'add_seat' table_pk last_seat menu_pk %}">Add Seat</a>
                 {% for menu in menus_list %}
@@ -55,20 +53,71 @@
                     {% endif %}
                 {% endfor %}
             </div>
+
             <div class="row">
-                    {% for item in current_menu.item.all %}
-                        <div class="col-xs-6 col-md-3">
-                            <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
-                                <img src="{{ item.photo.url }}" alt="photo" class="img-rounded" height="100"/><br>
-                            {{ item.name }}
-                            </a>
-                        </div>
-                    {% endfor %}
+                <h3>Beverages</h3>
+                {% for item in non_alcoholic_bevs %}
+                <div class="col-xs-6 col-md-3">
+                    <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
+                        <img src="{{ item.photo.url }}" alt="photo" class="img-rounded" height="100"/><br>
+                    {{ item.name }}
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                <h3>Alcoholic Beverages</h3>
+                {% for item in alcoholic_bevs %}
+                <div class="col-xs-6 col-md-3">
+                    <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
+                        <img src="{{ item.photo.url }}" alt="photo" class="img-rounded" height="100"/><br>
+                    {{ item.name }}
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                <h3>Appetizers</h3>
+                {% for item in appetizers %}
+                    <div class="col-xs-6 col-md-3">
+                        <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
+                            <img src="{{ item.photo.url }}" alt="photo" class="img-rounded" height="100"/><br>
+                        {{ item.name }}
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                <h3>Entrees</h3>
+                {% for item in entrees %}
+                <div class="col-xs-6 col-md-3">
+                    <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
+                        <img src="{{ item.photo.url }}" alt="photo" class="img-rounded" height="100"/><br>
+                    {{ item.name }}
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                <h3>Desserts</h3>
+                {% for item in desserts %}
+                <div class="col-xs-6 col-md-3">
+                    <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
+                        <img src="{{ item.photo.url }}" alt="photo" class="img-rounded" height="100"/><br>
+                    {{ item.name }}
+                    </a>
+                </div>
+                {% endfor %}
+
             </div>
         </div>
+    </div>
 </div>
 
 <br><br>
 
-<br><br>
 {% endblock %}

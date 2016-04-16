@@ -191,6 +191,12 @@ class CreateOrderItem(TemplateView):
         ordered_items_list = OrderedItem.objects.filter(table=current_table, canceled=False)
         current_menu = Menu.objects.get(pk=self.kwargs['menu_pk'])
 
+        context['appetizers'] = current_menu.item.filter(item_type='A')
+        context['entrees'] = current_menu.item.filter(item_type='E')
+        context['desserts'] = current_menu.item.filter(item_type='D')
+        context['non_alcoholic_bevs'] = current_menu.item.filter(item_type='N')
+        context['alcoholic_bevs'] = current_menu.item.filter(item_type='B')
+
         seats_list = [1]
         for item in ordered_items_list:
             seats_list.append(item.seat_number)
