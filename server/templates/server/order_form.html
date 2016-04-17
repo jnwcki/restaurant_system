@@ -23,7 +23,9 @@ div {
             </div>
             <div class="row"  positon="relative" style="height: 325px;">
                 <ul class="list-group">
-
+                    {% if not ordered_items_list %}
+                    Order Currently Empty
+                    {% endif %}
                     {% for item in ordered_items_list %}
                         {% if item.sent %}
                             <li class="list-group-item list-group-item-warning">Seat {{ item.seat_number }} {{ item.item.name  }} ${{ item.item.price }}<span class="glyphicon glyphicon-ok-circle pull-right"></span></li>

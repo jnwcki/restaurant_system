@@ -23,24 +23,24 @@
                 {% for table in object_list %}
                     {% if not table.fulfilled %}
                         <li class="list-group-item list-group-item-success">
-                            Server: {{ table.server.user }}<br>
+                            
                             <a href="{% url 'table_fulfilled' table.pk %}">
                                 <button type="button" class="btn btn-success btn-lg pull-right">
                                     <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Mark Table Fulfilled
                                 </button>
                             </a>
-                            Table: {{ table.number }}
-                            <br>Order Sent: {{ table.started }}
-                            <br>Items:
+                            Server: <b>{{ table.server.user }}</b>
+                            Table: <b>{{ table.number }} </b>
+                            Order Sent: <b>{{ table.started }}</b>
+                            <br>
                             {% for item in table.ordereditem_set.all %}
                             {% if not item.canceled %}
-                            <br><b>
-                                {{ item.item.name }}
-                            </b>
-                                <br>
-                                Seat Number {{ item.seat_number }}:
-                                <br>
+                            <br>
+                            Seat Number {{ item.seat_number }}: <b>{{ item.item.name }}</b>
+
+                            {% if item.special_instructions %}
                                 Special Instructions{{ item.special_instructions }}
+                            {% endif %}
                     {% endif %}
                 {% endfor %}
                 </li>
