@@ -11,15 +11,16 @@
 
 {% block content %}
 <div class="container">
-    <ul class="list-group">
-            <div class="row">
-                <div class="col-sm-12">
-                    <a class="btn btn-lg btn-default pull-right" href="{% url 'archive' 1 1 %}">Clear All Fulfilled</a>
-                    <h3>Current Orders</h3>
+    <div class="row">
+        <div class="col-sm-12">
 
-                </div>
-            </div>
-                {% for table in table_list %}
+            <a class="btn btn-lg btn-default pull-right" href="{% url 'archive' 1 1 %}">Clear All Fulfilled</a>
+            <h3>Current Orders</h3>
+        </div>
+    </div>
+
+    <ul class="list-group">
+                {% for table in object_list %}
                     {% if not table.fulfilled %}
                         <li class="list-group-item list-group-item-success">
                             Server: {{ table.server.user }}<br>
@@ -62,5 +63,46 @@
             {% endif %}
         {% endfor %}
     </ul>
+    <!-- pagination test -->
+        {% if is_paginated %}
+      <nav>
+        <ul class="pagination pagination-lg">
+          {% if page_obj.has_previous %}
+            <li>
+              <a href="?page={{ page_obj.previous_page_number }}">
+                <span>Previous</span>
+              </a>
+            </li>
+          {% else %}
+            <li class="disabled">
+              <a href="#">
+                <span>Previous</span>
+              </a>
+            </li>
+          {% endif %}
+          {% for page in paginator.page_range %}
+            <li {% if page == page_obj.number %}class="active"{% endif %}>
+              <a href="?page={{ page }}">{{ page }}</a>
+            </li>
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li>
+              <a href="?page={{ page_obj.next_page_number }}">
+                <span>Next</span>
+              </a>
+            </li>
+          {% else %}
+            <li {% if not page_obj.has_next %}class="disabled"{% endif %}>
+              <a href="#">
+                <span>Next</span>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+<!-- end paginator test -->
+
+
 </div>
 {% endblock %}

@@ -220,17 +220,27 @@ class CreateOrderItem(TemplateView):
 
 class KitchenListView(ListView):
     model = Table
+    paginate_by = 2
 
-    def get_context_data(self, **kwargs):
-        context = super(KitchenListView, self).get_context_data(**kwargs)
-        context['table_list'] = Table.objects.filter(
-                                                     server__workplace=self.request.user.userprofile.workplace,
-                                                     sent=True,
-                                                     canceled=False,
-                                                     archived=False
-                                                     )
+    def get_queryset(self):
+        queryset = Table.objects.filter(
+                                        server__workplace=self.request.user.userprofile.workplace,
+                                        sent=True,
+                                        canceled=False,
+                                        archived=False
+                                        )
+        return queryset
 
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super(KitchenListView, self).get_context_data(**kwargs)
+    #     context['table_list'] = Table.objects.filter(
+    #                                                  server__workplace=self.request.user.userprofile.workplace,
+    #                                                  sent=True,
+    #                                                  canceled=False,
+    #                                                  archived=False
+    #                                                  )
+    #
+    #     return context
 
 
 class MenuDetailView(DetailView):
