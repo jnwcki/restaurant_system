@@ -9,142 +9,140 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-3">
-            <div class="page-header">
+            <div class="row">
                 <h3>Order</h3>
             </div>
-            <ul class="list-group">
+            <div class="row">
+                <ul class="list-group">
 
-            {% for item in ordered_items_list %}
-            {% if item.sent %}
-            <li class="list-group-item list-group-item-warning">Seat {{ item.seat_number }} {{ item.item.name  }} ${{ item.item.price }}<span class="glyphicon glyphicon-ok-circle pull-right"></span></li>
-            {% else %}
-            <li class="list-group-item list-group-item-success">Seat {{ item.seat_number }} {{ item.item.name  }} ${{ item.item.price }} <a class="glyphicon glyphicon-remove pull-right" href="{% url 'remove_item' item.pk table_pk seat_number current_menu.pk %}"></a></li>
-            {% endif %}
-            {% endfor %}
-            </ul>
-            <br><br>
-            <b>Order Total: {{ ticket_total }}</b>
-            <br><br>
-            {% if current_table.sent %}
-            <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
-            <br><br>
-            {% else %}
-            <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
-            <br>
-            <a class="btn btn-lg btn-danger" href="{% url 'cancel_order' table_pk %}">Cancel</a>
-            {% endif %}
+                    {% for item in ordered_items_list %}
+                    {% if item.sent %}
+                    <li class="list-group-item list-group-item-warning">Seat {{ item.seat_number }} {{ item.item.name  }} ${{ item.item.price }}<span class="glyphicon glyphicon-ok-circle pull-right"></span></li>
+                    {% else %}
+                    <li class="list-group-item list-group-item-success">Seat {{ item.seat_number }} {{ item.item.name  }} ${{ item.item.price }} <a class="glyphicon glyphicon-remove pull-right" href="{% url 'remove_item' item.pk table_pk seat_number current_menu.pk %}"></a></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+                <br><br>
+                <b>Order Total: {{ ticket_total }}</b>
+                <br><br>
+                {% if current_table.sent %}
+                <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
+                <br><br>
+                {% else %}
+                <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
+                <br>
+                <a class="btn btn-lg btn-danger" href="{% url 'cancel_order' table_pk %}">Cancel</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-sm-1">
+
         </div>
         <div class="col-xs-8">
-            <div class="page-header">
+            <div class="row">
                 <h3>Table {{ table_number }} - <span class="label label-default">Seat {{ seat_number }}</span>
                 {% for seat in working_seats %}
                 {% if seat_number == seat %}
-                    <a class="btn btn-sm btn-success" href="{% url 'order_create_view' table_pk seat menu_pk %}"> Seat {{ seat }}</a>
+                    <a class="btn btn-xs btn-success" href="{% url 'order_create_view' table_pk seat menu_pk %}"> Seat {{ seat }}</a>
                     {% else %}
-                    <a class="btn btn-sm btn-default" href="{% url 'order_create_view' table_pk seat menu_pk %}"> Seat {{ seat }}</a>
+                    <a class="btn btn-xs btn-default" href="{% url 'order_create_view' table_pk seat menu_pk %}"> Seat {{ seat }}</a>
                 {% endif %}
                 {% endfor %}
-                <a class="btn btn-sm btn-primary" href="{% url 'add_seat' table_pk last_seat menu_pk %}">Add Seat</a>
+                <a class="btn btn-xs btn-primary" href="{% url 'add_seat' table_pk last_seat menu_pk %}">Add Seat</a>
                 {% for menu in menus_list %}
                     {% if menu == current_menu %}
-                    <a class="btn btn-warning btn-sm pull-right" href="{% url 'order_create_view' table_pk 1 menu.pk %}">{{ menu.name }}</a>
+                    <a class="btn btn-warning btn-xs pull-right" href="{% url 'order_create_view' table_pk 1 menu.pk %}">{{ menu.name }}</a>
                     {% else %}
-                    <a class="btn btn-default btn-sm pull-right" href="{% url 'order_create_view' table_pk 1 menu.pk %}">{{ menu.name }}</a>
+                    <a class="btn btn-default btn-xs pull-right" href="{% url 'order_create_view' table_pk 1 menu.pk %}">{{ menu.name }}</a>
                     {% endif %}
                 {% endfor %}
                 </h3>
             </div>
 
-<!-- begin bootstrap example -->
+    <!-- begin bootstrap example -->
+            <div class="row">
 
-            <div>
+                <div>
 
-              <!-- Nav tabs -->
-              <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#beverages" aria-controls="beverages" role="tab" data-toggle="tab">Beverages</a></li>
-                <li role="presentation"><a href="#alcohol" aria-controls="alcohol" role="tab" data-toggle="tab">Alcoholic Beverages</a></li>
-                <li role="presentation"><a href="#appetizers" aria-controls="appetizers" role="tab" data-toggle="tab">Appetizers</a></li>
-                <li role="presentation"><a href="#entrees" aria-controls="entrees" role="tab" data-toggle="tab">Entrees</a></li>
-                <li role="presentation"><a href="#desserts" aria-controls="dessert" role="tab" data-toggle="tab">Desserts</a></li>
-              </ul>
+                  <!-- Nav tabs -->
+                  <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#beverages" aria-controls="beverages" role="tab" data-toggle="tab">Beverages</a></li>
+                    <li role="presentation"><a href="#alcohol" aria-controls="alcohol" role="tab" data-toggle="tab">Alcoholic Beverages</a></li>
+                    <li role="presentation"><a href="#appetizers" aria-controls="appetizers" role="tab" data-toggle="tab">Appetizers</a></li>
+                    <li role="presentation"><a href="#entrees" aria-controls="entrees" role="tab" data-toggle="tab">Entrees</a></li>
+                    <li role="presentation"><a href="#desserts" aria-controls="dessert" role="tab" data-toggle="tab">Desserts</a></li>
+                  </ul>
 
-              <!-- Tab panes -->
-              <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="beverages">
-                    <div class="row">
+                  <!-- Tab panes -->
+                  <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="beverages">
                         <h3>Beverages</h3>
                         {% for item in non_alcoholic_bevs %}
                         <div class="col-xs-6 col-md-3">
                             <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
-                                <img src="{{ item.photo.url }}" alt="photo" class="img-rounded" height="100"/><br>
+                                <img src="{{ item.photo.thumbnail.url }}" alt="photo" class="img-rounded" /><br>
                             {{ item.name }}
                             </a>
                         </div>
                         {% endfor %}
                     </div>
-                </div>
 
-                <div role="tabpanel" class="tab-pane" id="alcohol">
-                    <div class="row">
+                    <div role="tabpanel" class="tab-pane" id="alcohol">
                         <h3>Alcoholic Beverages</h3>
                         {% for item in alcoholic_bevs %}
                         <div class="col-xs-6 col-md-3">
                             <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
-                                <img src="{{ item.photo.url }}" alt="photo" class="img-rounded" height="100"/><br>
+                                <img src="{{ item.photo.thumbnail.url }}" alt="photo" class="img-rounded" /><br>
                             {{ item.name }}
                             </a>
                         </div>
                         {% endfor %}
                     </div>
-                </div>
 
-                <div role="tabpanel" class="tab-pane" id="appetizers">
-                    <div class="row">
+                    <div role="tabpanel" class="tab-pane" id="appetizers">
                         <h3>Appetizers</h3>
                         {% for item in appetizers %}
                             <div class="col-xs-6 col-md-3">
                                 <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
-                                    <img src="{{ item.photo.url }}" alt="photo" class="img-rounded" height="100"/><br>
+                                    <img src="{{ item.photo.thumbnail.url }}" alt="photo" class="img-rounded" /><br>
                                 {{ item.name }}
                                 </a>
                             </div>
                         {% endfor %}
                     </div>
-                </div>
 
-                <div role="tabpanel" class="tab-pane" id="entrees">
-                    <div class="row">
+                    <div role="tabpanel" class="tab-pane" id="entrees">
                         <h3>Entrees</h3>
                         {% for item in entrees %}
                         <div class="col-xs-6 col-md-3">
                             <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
-                                <img src="{{ item.photo.url }}" alt="photo" class="img-rounded" height="100"/><br>
+                                <img src="{{ item.photo.thumbnail.url }}" alt="photo" class="img-rounded" /><br>
                             {{ item.name }}
                             </a>
                         </div>
                         {% endfor %}
                     </div>
-                </div>
 
-                <div role="tabpanel" class="tab-pane" id="desserts">
-                    <div class="row">
+                    <div role="tabpanel" class="tab-pane" id="desserts">
                         <h3>Desserts</h3>
                         {% for item in desserts %}
                         <div class="col-xs-6 col-md-3">
                             <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
-                                <img src="{{ item.photo.url }}" alt="photo" class="img-rounded" height="100"/><br>
+                                <img src="{{ item.photo.thumbnail.url }}" alt="photo" class="img-rounded" /><br>
                             {{ item.name }}
                             </a>
                         </div>
                         {% endfor %}
+
                     </div>
 
+                  </div>
+
                 </div>
-
-              </div>
-
             </div>
-<!-- end bootstrap example -->
+
+    <!-- end bootstrap example -->
         </div>
     </div>
 </div>
