@@ -62,6 +62,7 @@ class Table(models.Model):
     sent = models.BooleanField(default=False)
     canceled = models.BooleanField(default=False)
     archived = models.BooleanField(default=False)
+    paid = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-started']
