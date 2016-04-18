@@ -36,6 +36,7 @@
                     <form action="{% url 'charge_view' %}" method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="amount" value="{{ table_object.stripe_total }}">
+                        <input type="hidden" name="table_pk" value="{{ table_object.pk }}">
                       <script
                         src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                         data-key="pk_test_rdjIyPpbimdaKQ6bzkbWV5Mp"

@@ -99,6 +99,20 @@ class ServerHomeView(TemplateView):
         return context
 
 
+def menu_activate_view(request, menu_pk):
+    working_menu = Menu.objects.get(pk=menu_pk)
+    working_menu.active = True
+    working_menu.save()
+    return HttpResponseRedirect(reverse('index'))
+
+
+def menu_deactivate_view(request, menu_pk):
+    working_menu = Menu.objects.get(pk=menu_pk)
+    working_menu.active = False
+    working_menu.save()
+    return HttpResponseRedirect(reverse('index'))
+
+
 def start_table_view(request, table_number, menu_pk):
     server = request.user.userprofile
     created_table = Table.objects.create(number=table_number, server=server)
@@ -366,8 +380,10 @@ class PaymentView(TemplateView):
         context = super(PaymentView, self).get_context_data(**kwargs)
         working_table = Table.objects.get(pk=self.kwargs['pk'])
         stripe_total = working_table.stripe_total
+
         context['table_object'] = working_table
-        context['ticket_items'] = OrderedItem.objects.filter(table=working_table,
+        context['ticket_items'] = OrderedItem.objects.filter(
+                                                             table=working_table,
                                                              canceled=False,
                                                              sent=True
                                                              )
@@ -392,5 +408,9 @@ class ChargeView(View):
                                       currency='usd',
                                       description='description'
         )
+        paid_table = Table.objects.get(pk=request.POST.get('table_pk'))
+        paid_table.paid = True
+        paid_table.save()
+
 
         return HttpResponseRedirect(reverse('server_home'))

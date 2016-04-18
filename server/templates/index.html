@@ -78,12 +78,20 @@
         <div class="col-md-4">
             <div class="panel panel-warning">
                 <div class="panel-heading">
-                    <h4>Menus</h4>
+                    <h4>Menus <span class="pull-right">Activate/Deactivate</span></h4>
                     {% for menu in menus %}
                     <a href="{% url 'menu_detail' menu.pk %}">
                         <span class="pull-left">{{ menu.name }}</span>
-                        <span class="glyphicon glyphicon-eye-open pull-right"></span>
                     </a>
+                    {% if menu.active %}
+                    <a href="{% url 'menu_deactivate' menu.pk %}">
+                        <span class="glyphicon glyphicon-ok-sign pull-right"></span>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'menu_activate' menu.pk %}">
+                        <span class="glyphicon glyphicon-remove pull-right"></span>
+                    </a>
+                    {% endif %}
                     <br>
                     {% endfor %}
                 </div>

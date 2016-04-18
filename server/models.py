@@ -49,7 +49,8 @@ class Menu(models.Model):
     restaurant = models.ForeignKey(Restaurant)
     name = models.CharField(max_length=100)
     item = models.ManyToManyField(MenuItem)
-
+    active = models.BooleanField(default=False)
+    
     def __str__(self):
         return self.name
 

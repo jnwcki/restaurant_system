@@ -23,11 +23,11 @@
                 {% for table in bound_tables %}
                     {% if table.sent %}
                     <a class="btn btn-danger btn-lg" href="{% url 'order_create_view' table.pk 1 first_menu.pk %}">
-                            <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Current Table {{ table.number }}
+                             Table {{ table.number }}<br>Sent
                     </a>
                     {% else %}
                     <a class="btn btn-warning btn-lg" href="{% url 'order_create_view' table.pk 1 first_menu.pk %}">
-                            <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Current Table {{ table.number }}
+                             Table {{ table.number }}<br>Unsent
                     </a>
 
                     {% endif %}
@@ -35,13 +35,13 @@
                 <br><br>
                 {% for table in unbound_tables %}
                 <a class="btn btn-default btn-lg" href="{% url 'start_table_view' table first_menu.pk %}">
-                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Start Table {{ table }}
+                         Start<br>Table {{ table }}
                 </a>
                 {% endfor %}
                 <br><br>
                 {% for table in unpaid_tables %}
                 <a class="btn btn-success btn-lg" href="{% url 'payment' table.pk %}">
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Take Payment {{ table }}
+                    <span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Take Payment<br>Table {{ table.number }}<br>{{ table.started }}
                 </a>
 
                 {% endfor %}
