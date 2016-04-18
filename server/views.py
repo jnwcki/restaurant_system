@@ -2,8 +2,7 @@ from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, Ordere
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
-from server.forms import EmployeeCreateForm, MenuItemForm, MenuCreateForm
-from django.shortcuts import render
+from server.forms import MenuItemForm, MenuCreateForm
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 
@@ -220,7 +219,7 @@ class CreateOrderItem(TemplateView):
 
 class KitchenListView(ListView):
     model = Table
-    paginate_by = 2
+    paginate_by = 3
 
     def get_queryset(self):
         queryset = Table.objects.filter(
@@ -231,17 +230,6 @@ class KitchenListView(ListView):
                                         )
         return queryset
 
-    # def get_context_data(self, **kwargs):
-    #     context = super(KitchenListView, self).get_context_data(**kwargs)
-    #     context['table_list'] = Table.objects.filter(
-    #                                                  server__workplace=self.request.user.userprofile.workplace,
-    #                                                  sent=True,
-    #                                                  canceled=False,
-    #                                                  archived=False
-    #                                                  )
-    #
-    #     return context
-
 
 class MenuDetailView(DetailView):
     model = Menu
@@ -249,9 +237,7 @@ class MenuDetailView(DetailView):
 
 class AddMenuItemView(CreateView):
     model = MenuItem
-    # fields = ['name', 'description', 'price', 'photo', 'item_type']
     form_class = MenuItemForm
-    # fields = '__all__'
 
     def form_valid(self, form):
         new_item = form.save(commit=False)
@@ -292,11 +278,6 @@ class ServerAddView(CreateView):
                                              )
         profile.save()
         return super().form_valid(form, **kwargs)
-
-    # def form_invalid(self, form):
-    #     print("Your Form Is Invalid sir!")
-    #     print(form.errors)
-    #     return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

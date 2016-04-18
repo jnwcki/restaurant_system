@@ -1,4 +1,10 @@
 Django==1.9.4
 django-bootstrap3==7.0.0
+django-extra-views==0.7.1
+django-formtools==1.0
+django-nested-formset==0.1.4
+django-stdimage==2.3.2
 Pillow==3.1.1
+progressbar2==3.6.2
+six==1.10.0
 wheel==0.26.0
