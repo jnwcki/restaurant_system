@@ -19,9 +19,17 @@ div {
     <div class="row">
         <div class="col-sm-3">
             <div class="row">
-                <h3>Order</h3>
+                    {% if current_table.sent %}
+                    <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
+                    {% else %}
+                    <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
+                    <a class="btn btn-lg btn-danger" href="{% url 'cancel_order' table_pk %}">Cancel</a>
+                    {% endif %}
+                    <br>
+                    <h4>Order Total: {{ ticket_total }}</h4>
+
             </div>
-            <div class="row"  positon="relative" style="height: 325px;">
+            <div class="row"  positon="relative" style="height: 425px;">
                 <ul class="list-group">
                     {% if not ordered_items_list %}
                     Order Currently Empty
@@ -35,19 +43,6 @@ div {
                     {% endfor %}
                 </ul>
 
-            </div>
-            <div class="row">
-                <br>
-                <b>Order Total: {{ ticket_total }}</b>
-                <br>
-                {% if current_table.sent %}
-                <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
-                <br>
-                {% else %}
-                <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
-                <br>
-                <a class="btn btn-lg btn-danger" href="{% url 'cancel_order' table_pk %}">Cancel</a>
-                {% endif %}
             </div>
         </div>
         <div class="col-sm-1">
@@ -96,7 +91,7 @@ div {
                         <div class="col-xs-6 col-md-3">
                             <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
                                 <img src="{{ item.photo.thumbnail.url }}" alt="photo" class="img-rounded" /><br>
-                            {{ item.name }}
+                            {{ item.name }} ${{ item.price }}
                             </a>
                         </div>
                         {% endfor %}
@@ -108,7 +103,7 @@ div {
                         <div class="col-xs-6 col-md-3">
                             <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
                                 <img src="{{ item.photo.thumbnail.url }}" alt="photo" class="img-rounded" /><br>
-                            {{ item.name }}
+                            {{ item.name }} ${{ item.price }}
                             </a>
                         </div>
                         {% endfor %}
@@ -120,7 +115,7 @@ div {
                             <div class="col-xs-6 col-md-3">
                                 <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
                                     <img src="{{ item.photo.thumbnail.url }}" alt="photo" class="img-rounded" /><br>
-                                {{ item.name }}
+                                {{ item.name }} ${{ item.price }}
                                 </a>
                             </div>
                         {% endfor %}
@@ -132,7 +127,7 @@ div {
                         <div class="col-xs-6 col-md-3">
                             <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
                                 <img src="{{ item.photo.thumbnail.url }}" alt="photo" class="img-rounded" /><br>
-                            {{ item.name }}
+                            {{ item.name }} ${{ item.price }}
                             </a>
                         </div>
                         {% endfor %}
@@ -144,7 +139,7 @@ div {
                         <div class="col-xs-6 col-md-3">
                             <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
                                 <img src="{{ item.photo.thumbnail.url }}" alt="photo" class="img-rounded" /><br>
-                            {{ item.name }}
+                            {{ item.name }} ${{ item.price }}
                             </a>
                         </div>
                         {% endfor %}
