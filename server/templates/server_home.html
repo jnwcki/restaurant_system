@@ -10,15 +10,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-2">
-            <h5>{{ server }}</h5>
-            {% for menu in menus %}
-            <br>
-            <a href="{% url 'menu_detail' menu.pk %}">{{ menu }}</a>
-            {% endfor %}
-        </div>
-        <div class="col-xs-10">
-            <h3>Your Tables</h3>
+        <div class="col-xs-12">
+            <h3>Your Tables <span class="pull-right">Current Menu: <button class="btn btn-lg btn-primary">{{ restaurant.current_menu }}</button></span></h3>
             <div class="list-group">
                 {% for table in bound_tables %}
                     {% if table.sent %}

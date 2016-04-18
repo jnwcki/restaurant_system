@@ -47,26 +47,33 @@ div {
         </div>
         <div class="col-sm-1">
             <!-- spacer in between order list and menu -->
+            <div class="row">
+                <br><br><br>
+            </div>
+            {% for seat in working_seats %}
+                {% if seat_number == seat %}
+                    <div class="row">
+                        <p class="text-center">
+                            <br><a class="btn btn-md btn-success" href="{% url 'order_create_view' table_pk seat menu_pk %}"> Seat {{ seat }}</a>
+                        </p>
+                    </div>
+                    {% else %}
+                    <div class="row">
+                        <p class="text-center">
+                            <br><a class="btn btn-md btn-default" href="{% url 'order_create_view' table_pk seat menu_pk %}"> Seat {{ seat }}</a>
+                        </p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
         </div>
         <div class="col-xs-8">
             <div class="row">
-                <h3>Table {{ table_number }} - <span class="label label-default">Seat {{ seat_number }}</span>
-                {% for seat in working_seats %}
-                    {% if seat_number == seat %}
-                        <a class="btn btn-xs btn-success" href="{% url 'order_create_view' table_pk seat menu_pk %}"> Seat {{ seat }}</a>
-                    {% else %}
-                        <a class="btn btn-xs btn-default" href="{% url 'order_create_view' table_pk seat menu_pk %}"> Seat {{ seat }}</a>
-                    {% endif %}
-                {% endfor %}
-                <a class="btn btn-xs btn-primary" href="{% url 'add_seat' table_pk last_seat menu_pk %}">Add Seat</a>
-                {% for menu in menus_list %}
-                    {% if menu == current_menu %}
-                        <a class="btn btn-warning btn-xs pull-right" href="{% url 'order_create_view' table_pk 1 menu.pk %}">{{ menu.name }}</a>
-                    {% else %}
-                        <a class="btn btn-default btn-xs pull-right" href="{% url 'order_create_view' table_pk 1 menu.pk %}">{{ menu.name }}</a>
-                    {% endif %}
-                {% endfor %}
-                </h3>
+                <button class="btn btn-warning btn-lg">{{ user.userprofile.workplace.current_menu }}</button>
+                <button class="btn btn-info btn-lg">Table {{ table_number }}</button>
+                <button class="btn btn-default btn-lg">Seat {{ seat_number }}</button>
+                <a class="btn btn-lg btn-primary pull-center" href="{% url 'add_seat' table_pk last_seat menu_pk %}">Add Seat</a>
+                <br><br>
             </div>
 
     <!-- begin bootstrap example -->

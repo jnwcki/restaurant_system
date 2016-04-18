@@ -99,6 +99,14 @@ class ServerHomeView(TemplateView):
         return context
 
 
+def mark_current_menu_view(request, menu_pk):
+    working_menu = Menu.objects.get(pk=menu_pk)
+    current_restaurant = request.user.userprofile.workplace
+    current_restaurant.current_menu = working_menu
+    current_restaurant.save()
+    return HttpResponseRedirect(reverse('index'))
+
+
 def menu_activate_view(request, menu_pk):
     working_menu = Menu.objects.get(pk=menu_pk)
     working_menu.active = True
