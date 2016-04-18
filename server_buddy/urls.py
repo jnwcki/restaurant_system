@@ -5,7 +5,7 @@ from server.views import IndexView, ServerHomeView, UserCreateView, CreateOrderI
     KitchenListView, AddMenuItemView, CreateMenuView, MenuDetailView, ServerAddView, KitchenAddView, \
     UpdateMenuView, MenuItemDetailView, LandingView, start_table_view, add_item_to_order_view, \
     mark_table_fulfilled, RestaurantUpdateView, submit_order_view, cancel_order_view, remove_item_from_order_view, \
-    add_seat_to_order_view, UpdateMenuItemView, employee_login_redirect
+    add_seat_to_order_view, UpdateMenuItemView, employee_login_redirect, PaymentView
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -42,9 +42,10 @@ urlpatterns = [
     url(r'^order/cancel/(?P<table_pk>\d+)', cancel_order_view, name='cancel_order'),
     url(r'^remove/ordered_item/(?P<ordered_item_pk>\d+)/(?P<table_pk>\d+)/(?P<seat_number>\d+)/(?P<menu_pk>\d+)',
         remove_item_from_order_view, name='remove_item'),
-    url(r'table/(?P<table_pk>\d+)/archive/(?P<archive_all_boolean>\d+)', archive_table_view, name='archive'),
+    url(r'^table/(?P<table_pk>\d+)/archive/(?P<archive_all_boolean>\d+)', archive_table_view, name='archive'),
     url(
-        r'add_seat/(?P<table_pk>\d+)/(?P<current_seat_number>\d+)/(?P<menu_pk>\d+)',
+        r'^add_seat/(?P<table_pk>\d+)/(?P<current_seat_number>\d+)/(?P<menu_pk>\d+)',
         add_seat_to_order_view, name='add_seat'
-        )
+        ),
+    url(r'^payment/(?P<pk>\d+)', PaymentView.as_view(), name='payment')
 ]

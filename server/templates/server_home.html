@@ -10,9 +10,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-2" style="background-color:pink">
+        <div class="col-sm-2">
             <h5>{{ server }}</h5>
-            Available Menus:
             {% for menu in menus %}
             <br>
             <a href="{% url 'menu_detail' menu.pk %}">{{ menu }}</a>
@@ -38,6 +37,13 @@
                 <a class="btn btn-default btn-lg" href="{% url 'start_table_view' table first_menu.pk %}">
                         <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Start Table {{ table }}
                 </a>
+                {% endfor %}
+                <br><br>
+                {% for table in unpaid_tables %}
+                <a class="btn btn-success btn-lg" href="{% url 'payment' table.pk %}">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Take Payment {{ table }}
+                </a>
+
                 {% endfor %}
             </div>
         </div>

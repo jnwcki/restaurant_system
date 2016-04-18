@@ -77,6 +77,10 @@ class Table(models.Model):
             counter += item.item.price
         return counter
 
+    def price_with_tax(self):
+        pay_this_amount = self.total_ticket_price * self.server.workplace.tax_percentage / 100
+        return pay_this_amount
+
 
 class OrderedItem(models.Model):
     table = models.ForeignKey(Table)

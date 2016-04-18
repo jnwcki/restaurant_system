@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-xs-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h3>{{ table_object.server.workplace }}</h3>
+                    Server {{ table_object.server }}
+                    Table {{ table_object.number }}
+                    Date {{ table_object.started }}
+                    <br><br>
+                    Items:
+                    <br>
+                    {% for item in ticket_items %}
+                    Seat {{ item.seat_number }} {{ item.item.name }} ${{ item.item.price }}<br>
+                    {% endfor %}
+                    <br>
+                    Subtotal: ${{ table_object.total_ticket_price }}<br>
+                    Tax: {{ table_object.server.workplace.tax_percentage }}<br>
+                    {% if table_object.server.workplace.tax_percentage %}
+                    Total: {{ table_object.price_with_tax }}
+                    {% else %}
+                    Total: ${{ table_object.total_ticket_price }}
+                    {% endif %}
+                    <br><br>
+                    <a href="#" class="btn btn-success btn-lg">Pay Now</a>
+                    <a href="{% url 'server_home' %}" class="btn btn-default btn-lg pull-right">
+                        Go Back
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-4">
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

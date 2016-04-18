@@ -76,11 +76,18 @@ class ServerHomeView(TemplateView):
                                                     fulfilled=False,
                                                     canceled=False,
                                                     )
+            tables_pending_payment = Table.objects.filter(server__workplace=current_restaurant,
+                                                          fulfilled=True,
+                                                          canceled=False,
+                                                          paid=False
+                                                          )
+
             all_tables_list = [x for x in range(1, current_restaurant.number_of_tables + 1)]
             bound_table_numbers = bound_table_list.values_list('number', flat=True)
             unbound_tables = [x for x in all_tables_list if x not in bound_table_numbers]
             all_menus = Menu.objects.filter(restaurant=current_restaurant)
 
+            context['unpaid_tables'] = tables_pending_payment
             context['first_menu'] = all_menus[0]
             context['restaurant'] = current_restaurant
             context['server'] = current_server
@@ -349,3 +356,17 @@ class UpdateMenuItemView(UpdateView):
 
     def get_success_url(self):
         return reverse('index')
+
+
+class PaymentView(TemplateView):
+    template_name = 'server/table_detail.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(PaymentView, self).get_context_data(**kwargs)
+        working_table = Table.objects.get(pk=self.kwargs['pk'])
+        context['table_object'] = working_table
+        context['ticket_items'] = OrderedItem.objects.filter(table=working_table,
+                                                             canceled=False,
+                                                             sent=True
+                                                             )
+        return context
