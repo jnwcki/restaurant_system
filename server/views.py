@@ -1,10 +1,11 @@
-from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, OrderedItem
+from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, OrderedItem, ApiKey
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView
+from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView, View
 from server.forms import MenuItemForm, MenuCreateForm
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
+import stripe
 
 
 class LandingView(TemplateView):
@@ -360,13 +361,36 @@ class UpdateMenuItemView(UpdateView):
 
 class PaymentView(TemplateView):
     template_name = 'server/table_detail.html'
-    
+
     def get_context_data(self, **kwargs):
         context = super(PaymentView, self).get_context_data(**kwargs)
         working_table = Table.objects.get(pk=self.kwargs['pk'])
+        stripe_total = working_table.stripe_total
         context['table_object'] = working_table
         context['ticket_items'] = OrderedItem.objects.filter(table=working_table,
                                                              canceled=False,
                                                              sent=True
                                                              )
+        context['stripe_total'] = stripe_total
         return context
+
+
+class ChargeView(View):
+    def post(self, request):
+        print(request.POST)
+        stripe_keys = ApiKey.objects.get(provider='stripe')
+
+        stripe.api_key = stripe_keys.private_key
+        amount = int(float(request.POST.get('amount')))
+        customer = stripe.Customer.create(
+                                          email=request.POST.get('stripeEmail'),
+                                          card=request.POST.get('stripeToken')
+                                          )
+        charge = stripe.Charge.create(
+                                      customer=customer.id,
+                                      amount=amount,
+                                      currency='usd',
+                                      description='description'
+        )
+
+        return HttpResponseRedirect(reverse('server_home'))

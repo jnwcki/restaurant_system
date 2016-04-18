@@ -78,8 +78,24 @@ class Table(models.Model):
         return counter
 
     def price_with_tax(self):
-        pay_this_amount = self.total_ticket_price * self.server.workplace.tax_percentage / 100
+        if self.server.workplace.tax_percentage:
+            pay_this_amount = self.total_ticket_price * self.server.workplace.tax_percentage / 100
+        else:
+            pay_this_amount = self.total_ticket_price
         return pay_this_amount
+
+    def stripe_total(self):
+        good_items = self.ordereditem_set.filter(canceled=False, sent=True)
+        counter = 0
+        for item in good_items:
+            counter += item.item.price
+
+        if self.server.workplace.tax_percentage:
+            pay_this_amount = counter * self.server.workplace.tax_percentage
+        else:
+            pay_this_amount = counter
+            total = pay_this_amount * 100
+        return total
 
 
 class OrderedItem(models.Model):
@@ -95,3 +111,9 @@ class OrderedItem(models.Model):
 
     def __str__(self):
         return str(self.pk)
+
+
+class ApiKey(models.Model):
+    provider = models.CharField(max_length=50)
+    public_key = models.TextField()
+    private_key = models.TextField()

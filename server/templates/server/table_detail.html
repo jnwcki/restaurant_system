@@ -4,6 +4,10 @@
 <div class="container">
     <div class="row">
         <div class="col-md-4">
+            <a href="{% url 'server_home' %}" class="btn btn-default btn-lg pull-right">
+                Go Back
+            </a>
+
         </div>
         <div class="col-xs-4">
             <div class="panel panel-default">
@@ -28,10 +32,20 @@
                     Total: ${{ table_object.total_ticket_price }}
                     {% endif %}
                     <br><br>
-                    <a href="#" class="btn btn-success btn-lg">Pay Now</a>
-                    <a href="{% url 'server_home' %}" class="btn btn-default btn-lg pull-right">
-                        Go Back
-                    </a>
+                    <br>
+                    <form action="{% url 'charge_view' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="amount" value="{{ table_object.stripe_total }}">
+                      <script
+                        src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                        data-key="pk_test_rdjIyPpbimdaKQ6bzkbWV5Mp"
+                        data-amount="{{ table_object.stripe_total }}"
+                        data-name="{{ table_object.server.workplace }}"
+                        data-description="Widget"
+                        data-image="/img/documentation/checkout/marketplace.png"
+                        data-locale="auto">
+                      </script>
+                    </form>
 
                 </div>
 
