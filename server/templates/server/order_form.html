@@ -19,14 +19,7 @@ div {
     <div class="row">
         <div class="col-sm-3">
             <div class="row">
-                    {% if current_table.sent %}
-                    <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
-                    {% else %}
-                    <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
-                    <a class="btn btn-lg btn-danger" href="{% url 'cancel_order' table_pk %}">Cancel</a>
-                    {% endif %}
-                    <br>
-                    <h4>Order Total: {{ ticket_total }}</h4>
+                    <h3>Order Total: {{ ticket_total }}</h3>
 
             </div>
             <div class="row"  positon="relative" style="height: 425px;">
@@ -76,10 +69,15 @@ div {
         </div>
         <div class="col-xs-8">
             <div class="row">
-                <button class="btn btn-warning btn-lg">{{ user.userprofile.workplace.current_menu }}</button>
                 <button class="btn btn-info btn-lg">Table {{ table_number }}</button>
-                <button class="btn btn-default btn-lg">Seat {{ seat_number }}</button>
                 <a class="btn btn-lg btn-primary pull-center" href="{% url 'add_seat' table_pk last_seat menu_pk %}">Add Seat</a>
+                {% if current_table.sent %}
+                <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
+                {% else %}
+                <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
+                <a class="btn btn-lg btn-danger" href="{% url 'cancel_order' table_pk %}">Cancel</a>
+                {% endif %}
+
                 <br><br>
             </div>
 

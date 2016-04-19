@@ -200,7 +200,13 @@ def archive_table_view(request, table_pk, archive_all_boolean):
 
 
 def add_seat_to_order_view(request, table_pk, current_seat_number, menu_pk):
-    seat_number = int(current_seat_number) + 1
+    seat_number = int(current_seat_number)
+    working_table = Table.objects.get(pk=table_pk)
+    if int(current_seat_number) < 10:
+        seat_number = int(current_seat_number) + 1
+    if working_table.number_of_seats < 10:
+        working_table.number_of_seats += 1
+    working_table.save()
     return HttpResponseRedirect(reverse('order_create_view',
                                         kwargs={'table_pk': table_pk,
                                                 'seat_number': seat_number,
@@ -227,10 +233,10 @@ class CreateOrderItem(TemplateView):
         context['non_alcoholic_bevs'] = current_menu.item.filter(item_type='N')
         context['alcoholic_bevs'] = current_menu.item.filter(item_type='B')
 
-        seats_list = [1]
-        for item in ordered_items_list:
-            seats_list.append(item.seat_number)
-
+        # seats_list = [1]
+        # for item in ordered_items_list:
+        #     seats_list.append(item.seat_number)
+        seats_list = list(range(1, current_table.number_of_seats + 1))
         context['working_seats'] = set(seats_list)
         context['last_seat'] = max(context['working_seats'])
 

@@ -65,6 +65,7 @@ class Table(models.Model):
     canceled = models.BooleanField(default=False)
     archived = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
+    number_of_seats = models.IntegerField(default=1)
 
     class Meta:
         ordering = ['-started']
