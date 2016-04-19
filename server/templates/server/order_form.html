@@ -36,9 +36,16 @@ div {
                     {% endif %}
                     {% for item in ordered_items_list %}
                         {% if item.sent %}
-                            <li class="list-group-item list-group-item-warning">Seat {{ item.seat_number }} {{ item.item.name  }} ${{ item.item.price }}<span class="glyphicon glyphicon-ok-circle pull-right"></span></li>
+                            <li class="list-group-item list-group-item-warning">
+                                Seat {{ item.seat_number }} {{ item.item.name  }} ${{ item.item.price }}
+                                <span class="glyphicon glyphicon-ok-circle pull-right"></span>
+                            </li>
                         {% else %}
-                            <li class="list-group-item list-group-item-success">Seat {{ item.seat_number }} {{ item.item.name  }} ${{ item.item.price }} <a class="glyphicon glyphicon-remove pull-right" href="{% url 'remove_item' item.pk table_pk seat_number current_menu.pk %}"></a></li>
+                            <li class="list-group-item list-group-item-success">
+                                Seat {{ item.seat_number }} {{ item.item.name  }} ${{ item.item.price }}
+                                <a class="glyphicon glyphicon-remove pull-right" href="{% url 'remove_item' item.pk table_pk seat_number current_menu.pk %}">
+                                </a>
+                            </li>
                         {% endif %}
                     {% endfor %}
                 </ul>

@@ -218,7 +218,8 @@ class CreateOrderItem(TemplateView):
         seat_number = self.kwargs['seat_number']
         current_table = Table.objects.get(pk=self.kwargs['table_pk'])
         ordered_items_list = OrderedItem.objects.filter(table=current_table, canceled=False)
-        current_menu = Menu.objects.get(pk=self.kwargs['menu_pk'])
+        # current_menu = Menu.objects.get(pk=self.kwargs['menu_pk'])
+        current_menu = self.request.user.userprofile.workplace.current_menu
 
         context['appetizers'] = current_menu.item.filter(item_type='A')
         context['entrees'] = current_menu.item.filter(item_type='E')
