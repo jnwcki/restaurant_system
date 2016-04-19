@@ -6,7 +6,7 @@ from server.views import IndexView, ServerHomeView, UserCreateView, CreateOrderI
     UpdateMenuView, MenuItemDetailView, LandingView, start_table_view, add_item_to_order_view, \
     mark_table_fulfilled, RestaurantUpdateView, submit_order_view, cancel_order_view, remove_item_from_order_view, \
     add_seat_to_order_view, UpdateMenuItemView, employee_login_redirect, PaymentView, ChargeView, menu_activate_view, \
-    menu_deactivate_view, mark_current_menu_view
+    menu_deactivate_view, mark_current_menu_view, remove_seat_from_order_view
 
 from django.contrib.auth import views as auth_views
 
@@ -54,4 +54,9 @@ urlpatterns = [
         ),
     url(r'^payment/(?P<pk>\d+)', PaymentView.as_view(), name='payment'),
     url(r'^charge/', ChargeView.as_view(), name='charge_view'),
+    url(
+        r'^remove_seat/(?P<table_pk>\d+)/(?P<current_seat_number>\d+)/(?P<menu_pk>\d+)',
+        remove_seat_from_order_view, name='remove_seat'
+        ),
+
 ]

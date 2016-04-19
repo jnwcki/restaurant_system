@@ -45,18 +45,32 @@
                         <a href="{% url 'kitchen' %}"><i class="fa fa-table fa-fw"></i>Kitchen</a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-wrench fa-fw"></i>Menu<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-wrench fa-fw"></i>Current Menu: {{ user.userprofile.workplace.current_menu }}<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li>
-                                <a href="{% url 'menu_detail' user.userprofile.workplace.current_menu.pk %}">Current Menu: {{ user.userprofile.workplace.current_menu }}</a>
-                            </li>
+                            {% for menu in menus %}
+                                <li>
+                                    <a href="{% url 'mark_current_menu' menu.pk %}">Make {{ menu.name }} Current</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa fa-wrench fa-fw"></i>Menus And Items<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
                             <li>
                                 <a href="{% url 'add_menu_item' %}">Add Menu Item</a>
                             </li>
                             <li>
                                 <a href="{% url 'create_menu' %}">Create New Menu</a>
                             </li>
+                            {% for menu in menus %}
+                                <li>
+                                    <a href="{% url 'menu_detail' menu.pk %}">{{ menu.name }} Detail</a>
+                                </li>
+                            {% endfor %}
+
                         </ul>
+                    </li>
                     <li>
                         <a href="#"><i class="fa fa-wrench fa-fw"></i>Admin<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -66,7 +80,6 @@
                         </ul>
                     </li>
                         <!-- /.nav-second-level -->
-                    </li>
                 </ul>
             </div>
             <!-- /.sidebar-collapse -->

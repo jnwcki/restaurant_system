@@ -217,6 +217,23 @@ def add_seat_to_order_view(request, table_pk, current_seat_number, menu_pk):
                                 )
 
 
+def remove_seat_from_order_view(request, table_pk, current_seat_number, menu_pk):
+    seat_number = int(current_seat_number)
+    working_table = Table.objects.get(pk=table_pk)
+    if int(current_seat_number) > 1:
+        seat_number = int(current_seat_number) - 1
+    if working_table.number_of_seats > 1:
+        working_table.number_of_seats -= 1
+    working_table.save()
+    return HttpResponseRedirect(reverse('order_create_view',
+                                        kwargs={'table_pk': table_pk,
+                                                'seat_number': seat_number,
+                                                'menu_pk': menu_pk
+                                                }
+                                        )
+                                )
+
+
 class CreateOrderItem(TemplateView):
     template_name = 'server/order_form.html'
 

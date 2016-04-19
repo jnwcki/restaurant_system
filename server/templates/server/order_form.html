@@ -65,7 +65,13 @@ div {
                     </div>
                 {% endif %}
             {% endfor %}
-
+<!-- not sure if removing seats is necessary
+            <div class="row">
+                <p class="text-center">
+                    <a class="btn btn-md btn-primary pull-center" href="{% url 'remove_seat' table_pk last_seat menu_pk %}">Remove<br>Seat</a>
+                </p>
+            </div>
+-->
         </div>
         <div class="col-xs-8">
             <div class="row">
