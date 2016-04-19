@@ -3,3 +3,8 @@
 server/__pycache__/
 server_buddy/__pycache__/
 server/migrations/__pycache__/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
