@@ -11,34 +11,41 @@
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <h3>Your Tables <span class="pull-right">Current Menu: <button class="btn btn-lg btn-primary">{{ restaurant.current_menu }}</button></span></h3>
-            <div class="list-group">
-                {% for table in bound_tables %}
-                    {% if table.sent %}
-                    <a class="btn btn-danger btn-lg" href="{% url 'order_create_view' table.pk 1 first_menu.pk %}">
-                             Table {{ table.number }}<br>Sent
-                    </a>
-                    {% else %}
-                    <a class="btn btn-warning btn-lg" href="{% url 'order_create_view' table.pk 1 first_menu.pk %}">
-                             Table {{ table.number }}<br>Unsent
-                    </a>
+            <h3>Current Tables</h3>
+            <div class="panel panel-default">
+                <div class="panel-body">
 
-                    {% endif %}
-                {% endfor %}
-                <br><br>
-                {% for table in unbound_tables %}
-                <a class="btn btn-default btn-lg" href="{% url 'start_table_view' table first_menu.pk %}">
-                         Start<br>Table {{ table }}
-                </a>
-                {% endfor %}
-                <br><br>
-                {% for table in unpaid_tables %}
-                <a class="btn btn-success btn-lg" href="{% url 'payment' table.pk %}">
-                    <span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Take Payment<br>Table {{ table.number }}<br>{{ table.started }}
-                </a>
+                    <div class="list-group">
+                        {% for table in bound_tables %}
+                            {% if table.sent %}
+                            <a class="btn btn-danger btn-lg" href="{% url 'order_create_view' table.pk 1 first_menu.pk %}">
+                                     Table {{ table.number }}<br>Sent
+                            </a>
+                            {% else %}
+                            <a class="btn btn-warning btn-lg" href="{% url 'order_create_view' table.pk 1 first_menu.pk %}">
+                                     Table {{ table.number }}<br>Unsent
+                            </a>
 
-                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                        <br><br>
+                        {% for table in unbound_tables %}
+                        <a class="btn btn-default btn-lg" href="{% url 'start_table_view' table first_menu.pk %}">
+                                 Start<br>Table {{ table }}
+                        </a>
+                        {% endfor %}
+                        <br><br>
+                        {% for table in unpaid_tables %}
+                        <a class="btn btn-success btn-lg" href="{% url 'payment' table.pk %}">
+                            <span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Take Payment<br>Table {{ table.number }}<br>{{ table.started }}
+                        </a>
+
+                        {% endfor %}
+                    </div>
+                </div>
+
             </div>
+
         </div>
     </div>
 </div>

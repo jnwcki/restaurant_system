@@ -32,7 +32,7 @@ class IndexView(TemplateView):
         all_menus = Menu.objects.filter(restaurant=current_restaurant)
         employee_list = UserProfile.objects.filter(workplace=self.request.user.userprofile.workplace)
         recent_tables_list = Table.objects.filter(server__workplace=current_restaurant,
-                                                  fulfilled=True).order_by('-id')[:3]
+                                                  paid=True).order_by('-id')[:3]
 
         context['user'] = self.request.user
         context['servers'] = employee_list.filter(position='S')
@@ -85,7 +85,8 @@ class ServerHomeView(TemplateView):
 
             all_tables_list = [x for x in range(1, current_restaurant.number_of_tables + 1)]
             bound_table_numbers = bound_table_list.values_list('number', flat=True)
-            unbound_tables = [x for x in all_tables_list if x not in bound_table_numbers]
+            tables_pending_payment_numbers = tables_pending_payment.values_list('number', flat=True)
+            unbound_tables = [x for x in all_tables_list if x not in bound_table_numbers and x not in tables_pending_payment_numbers]
             all_menus = Menu.objects.filter(restaurant=current_restaurant)
 
             context['unpaid_tables'] = tables_pending_payment

@@ -54,13 +54,13 @@ div {
                 {% if seat_number == seat %}
                     <div class="row">
                         <p class="text-center">
-                            <br><a class="btn btn-md btn-success" href="{% url 'order_create_view' table_pk seat menu_pk %}"> Seat {{ seat }}</a>
+                            <a class="btn btn-md btn-success" href="{% url 'order_create_view' table_pk seat menu_pk %}"> Seat {{ seat }}</a>
                         </p>
                     </div>
                     {% else %}
                     <div class="row">
                         <p class="text-center">
-                            <br><a class="btn btn-md btn-default" href="{% url 'order_create_view' table_pk seat menu_pk %}"> Seat {{ seat }}</a>
+                            <a class="btn btn-md btn-default" href="{% url 'order_create_view' table_pk seat menu_pk %}"> Seat {{ seat }}</a>
                         </p>
                     </div>
                 {% endif %}
@@ -77,6 +77,7 @@ div {
                 <a class="btn btn-lg btn-success" href="{% url 'submit_order' table_pk %}" name="submit">Send Order</a>
                 <a class="btn btn-lg btn-danger" href="{% url 'cancel_order' table_pk %}">Cancel</a>
                 {% endif %}
+                <a class="btn btn-lg btn-default pull-right" href="{% url 'server_home' %}">Back To Current Tables</a>
 
                 <br><br>
             </div>
