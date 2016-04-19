@@ -428,5 +428,4 @@ class ChargeView(View):
         paid_table.paid = True
         paid_table.save()
 
-
         return HttpResponseRedirect(reverse('server_home'))

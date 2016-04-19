@@ -53,5 +53,5 @@ urlpatterns = [
         add_seat_to_order_view, name='add_seat'
         ),
     url(r'^payment/(?P<pk>\d+)', PaymentView.as_view(), name='payment'),
-    url(r'^charge/', ChargeView.as_view(), name='charge_view')
+    url(r'^charge/', ChargeView.as_view(), name='charge_view'),
 ]
