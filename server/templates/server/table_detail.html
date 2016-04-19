@@ -25,9 +25,21 @@
                     <br><br>
                     Items:
                     <br>
-                    {% for item in ticket_items %}
-                    Seat {{ item.seat_number }} {{ item.item.name }} <span class="pull-right">${{ item.item.price }}</span><br>
-                    {% endfor %}
+                    <table class="table">
+                        <tr>
+                            <th>Seat</th>
+                            <th>Item</th>
+                            <th class="text-right">Price</th>
+                        </tr>
+                        {% for item in ticket_items %}
+                        <tr>
+                            <td>{{ item.seat_number }}</td>
+                            <td>{{ item.item.name }}</td>
+                            <td class="text-right">{{ item.item.price }}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </table>
                     <br>
                     Subtotal: <span class="pull-right">${{ table_object.total_ticket_price }}</span><br>
                     Tax: <span class="pull-right">{{ table_object.server.workplace.tax_percentage }}</span><br>
