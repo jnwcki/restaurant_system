@@ -55,7 +55,9 @@ class UserCreateView(CreateView):
                                              position='M'
                                              )
         profile.save()
-        Menu.objects.create(restaurant=new_restaurant, name="Menu")
+        default_menu = Menu.objects.create(restaurant=new_restaurant, name="Default Menu")
+        new_restaurant.current_menu = default_menu
+        new_restaurant.save()
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -71,32 +73,29 @@ class ServerHomeView(TemplateView):
     def get_context_data(self):
         context = super(ServerHomeView, self).get_context_data()
         current_server = UserProfile.objects.get(user=self.request.user)
-        if current_server.position != 'K':
-            current_restaurant = current_server.workplace
-            bound_table_list = Table.objects.filter(server__workplace=current_restaurant,
-                                                    fulfilled=False,
-                                                    canceled=False,
-                                                    )
-            tables_pending_payment = Table.objects.filter(server__workplace=current_restaurant,
-                                                          fulfilled=True,
-                                                          canceled=False,
-                                                          paid=False
-                                                          )
+        current_restaurant = current_server.workplace
+        bound_table_list = Table.objects.filter(server__workplace=current_restaurant,
+                                                fulfilled=False,
+                                                canceled=False,
+                                                )
+        tables_pending_payment = Table.objects.filter(server__workplace=current_restaurant,
+                                                      fulfilled=True,
+                                                      canceled=False,
+                                                      paid=False
+                                                      )
 
-            all_tables_list = [x for x in range(1, current_restaurant.number_of_tables + 1)]
-            bound_table_numbers = bound_table_list.values_list('number', flat=True)
-            tables_pending_payment_numbers = tables_pending_payment.values_list('number', flat=True)
-            unbound_tables = [x for x in all_tables_list if x not in bound_table_numbers and x not in tables_pending_payment_numbers]
-            all_menus = Menu.objects.filter(restaurant=current_restaurant)
+        all_tables_list = [x for x in range(1, current_restaurant.number_of_tables + 1)]
+        bound_table_numbers = bound_table_list.values_list('number', flat=True)
+        tables_pending_payment_numbers = tables_pending_payment.values_list('number', flat=True)
+        unbound_tables = [x for x in all_tables_list if x not in bound_table_numbers and x not in tables_pending_payment_numbers]
+        all_menus = Menu.objects.filter(restaurant=current_restaurant)
 
-            context['unpaid_tables'] = tables_pending_payment
-            context['first_menu'] = all_menus[0]
-            context['restaurant'] = current_restaurant
-            context['server'] = current_server
-            context['bound_tables'] = bound_table_list
-            context['unbound_tables'] = unbound_tables
-        else:
-            return reverse('kitchen')
+        context['unpaid_tables'] = tables_pending_payment
+        context['first_menu'] = all_menus[0]
+        context['restaurant'] = current_restaurant
+        context['server'] = current_server
+        context['bound_tables'] = bound_table_list
+        context['unbound_tables'] = unbound_tables
         return context
 
 
@@ -274,7 +273,7 @@ class CreateOrderItem(TemplateView):
 
 class KitchenListView(ListView):
     model = Table
-    paginate_by = 3
+    paginate_by = 5
 
     def get_queryset(self):
         queryset = Table.objects.filter(
@@ -315,7 +314,7 @@ class CreateMenuView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('server_home')
+        return reverse('index')
 
 
 class ServerAddView(CreateView):
@@ -389,7 +388,7 @@ def mark_table_fulfilled(request, table_id):
 
 class RestaurantUpdateView(UpdateView):
     model = Restaurant
-    fields = '__all__'
+    fields = ['name', 'number_of_tables']
 
     def get_object(self):
         return self.request.user.userprofile.workplace
@@ -446,3 +445,10 @@ class ChargeView(View):
         paid_table.save()
 
         return HttpResponseRedirect(reverse('server_home'))
+
+
+def paid_with_cash_view(request, table_pk):
+    working_table = Table.objects.get(pk=table_pk)
+    working_table.paid = True
+    working_table.save()
+    return HttpResponseRedirect(reverse('server_home'))

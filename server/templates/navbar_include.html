@@ -49,7 +49,7 @@
                         <ul class="nav nav-second-level">
                             {% for menu in menus %}
                                 <li>
-                                    <a href="{% url 'mark_current_menu' menu.pk %}">Make {{ menu.name }} Current</a>
+                                    <a href="{% url 'mark_current_menu' menu.pk %}">Set Menu {{ menu.name }} Current</a>
                                 </li>
                             {% endfor %}
                         </ul>
@@ -65,7 +65,7 @@
                             </li>
                             {% for menu in menus %}
                                 <li>
-                                    <a href="{% url 'menu_detail' menu.pk %}">{{ menu.name }} Detail</a>
+                                    <a href="{% url 'menu_detail' menu.pk %}">Menu {{ menu.name }} Detail</a>
                                 </li>
                             {% endfor %}
 

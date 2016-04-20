@@ -51,6 +51,8 @@
                     <br><br>
                     <br>
                     {% if not table_object.paid %}
+                    <a class="btn btn-md btn-success pull-right" href="{% url 'cash_paid' table_object.pk %}">Paid With Cash</a>
+
                     <form action="{% url 'charge_view' %}" method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="amount" value="{{ table_object.stripe_total }}">

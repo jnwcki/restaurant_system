@@ -2,11 +2,15 @@
     <ul class="nav nav-pills">
         <li role="presentation"><a href="#">Logged In As {{ user }}</a></li>
         <li role="presentation"><a href="{% url 'logout' %}">Log Out</a></li>
+        {% if user.userprofile.position != 'S' %}
         <li role="presentation"><a href="{% url 'kitchen' %}">Kitchen Home</a></li>
+        {% endif %}
         {% if user.userprofile.position == 'M' %}
         <li role="presentation"><a href="{% url 'index' %}">Administrator Home</a></li>
         {% endif %}
+        {% if user.userprofile.position != 'K' %}
         <li role="presentation"><a href="{% url 'server_home' %}">Current Tables</a></li>
+        {% endif %}
         <li role="presentation"><a href="#">Current Menu: {{ user.userprofile.workplace.current_menu }}</a></li>
     </ul>
 </div>
