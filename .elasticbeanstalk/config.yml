@@ -1,0 +1,11 @@
+branch-defaults:
+  simplemodels:
+    environment: server-buddy-dev
+    group_suffix: null
+global:
+  application_name: server_buddy
+  default_ec2_keyname: server-buddy-eb
+  default_platform: Python 3.4
+  default_region: us-east-1
+  profile: eb-cli
+  sc: git
