@@ -307,6 +307,11 @@ class CreateMenuView(CreateView):
     model = Menu
     form_class = MenuCreateForm
 
+    def get_form(self, form_class):
+        form = super(CreateMenuView, self).get_form(form_class=MenuCreateForm)
+        form.fields['item'].queryset = MenuItem.objects.filter(restaurant=self.request.user.userprofile.workplace)
+        return form
+
     def form_valid(self, form):
         new_item = form.save(commit=False)
         new_item.restaurant = self.request.user.userprofile.workplace
@@ -370,6 +375,11 @@ class KitchenAddView(CreateView):
 class UpdateMenuView(UpdateView):
     model = Menu
     form_class = MenuCreateForm
+
+    def get_form(self, form_class):
+        form = super(UpdateMenuView, self).get_form(form_class=MenuCreateForm)
+        form.fields['item'].queryset = MenuItem.objects.filter(restaurant=self.request.user.userprofile.workplace)
+        return form
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('menu_detail', kwargs={'pk': self.kwargs['pk']})

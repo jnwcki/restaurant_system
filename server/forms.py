@@ -35,3 +35,7 @@ class MenuCreateForm(forms.ModelForm):
                    'item': forms.CheckboxSelectMultiple(attrs={'class': 'checkboxinline'})
                    }
         labels = {'name': 'Name', 'item': 'Menu Items To Include'}
+
+    # def __init__(self, *args, **kwargs):
+    #     super(MenuCreateForm, self).__init__(*args, **kwargs)
+    #     self.fields['item'].queryset = MenuItem.objects.filter(restaurant=self.request.user.userprofile.workplace)
