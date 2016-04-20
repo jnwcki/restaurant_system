@@ -13,6 +13,7 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^media/(?P<path>.*)', 'django.views.static.serve', {"document_root": settings.MEDIA_ROOT}),
+    url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT}),
     url(r'^$', LandingView.as_view(), name='landing'),
     url(r'^loginredirect/$', employee_login_redirect, name='employee_login_redirect'),
     url(r'^index/$', IndexView.as_view(), name='index'),
