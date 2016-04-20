@@ -3,26 +3,23 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>Server Buddy</title>
         <!-- Bootstrap Core CSS -->
         <link href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
 
     </head>
     <body>
-        <div class="container">
-            <div class="row">
-
-                    <div class="jumbotron">
-                      <h1>Welcome To Server Buddy</h1>
-                      <p>A lightweight backend-driven restaurant ordering system</p>
-                      <p>
-                          <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Log In</a>
-                          <a class="btn btn-primary btn-lg" href="{% url 'signup' %}" role="button">Sign Up Your Restaurant</a>
-                      </p>
-                    </div>
-
+        <div class="jumbotron vertical-center">
+            <div class="container">
+                <h1>Welcome To Server Buddy</h1>
+                <p>A lightweight backend-driven restaurant ordering system</p>
+                <p>
+                    <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Log In</a>
+                    <a class="btn btn-primary btn-lg" href="{% url 'signup' %}" role="button">Sign Up Your Restaurant</a>
+                </p>
             </div>
-    </div>
+        </div>
+
     <!-- jQuery -->
     <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
 

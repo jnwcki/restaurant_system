@@ -65,22 +65,22 @@ WSGI_APPLICATION = 'server_buddy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'restaurant_cloud_db',
-#         'USER': 'serverappuser',
-#         'PASSWORD': 'ksalfordyh',
-#         'HOST': 'cloud-server-app-instance.ctofr4f4ay8x.us-east-1.rds.amazonaws.com'
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'restaurant_cloud_db',
+        'USER': 'serverappuser',
+        'PASSWORD': 'ksalfordyh',
+        'HOST': 'cloud-server-app-instance.ctofr4f4ay8x.us-east-1.rds.amazonaws.com'
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
