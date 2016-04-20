@@ -250,9 +250,6 @@ class CreateOrderItem(TemplateView):
         context['non_alcoholic_bevs'] = current_menu.item.filter(item_type='N')
         context['alcoholic_bevs'] = current_menu.item.filter(item_type='B')
 
-        # seats_list = [1]
-        # for item in ordered_items_list:
-        #     seats_list.append(item.seat_number)
         seats_list = list(range(1, current_table.number_of_seats + 1))
         context['working_seats'] = set(seats_list)
         context['last_seat'] = max(context['working_seats'])
