@@ -1,5 +1,7 @@
 import os
 
+from server_buddy.stored_keys import *
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -28,6 +30,7 @@ INSTALLED_APPS = [
     'server',
     'bootstrap3',
     'stdimage',
+    'storages',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -72,15 +75,7 @@ WSGI_APPLICATION = 'server_buddy.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'restaurant_cloud_db',
-        'USER': 'serverappuser',
-        'PASSWORD': 'ksalfordyh',
-        'HOST': 'cloud-server-app-instance.ctofr4f4ay8x.us-east-1.rds.amazonaws.com'
-    }
-}
+DATABASES = DATABASES_var
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -119,7 +114,28 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
+
 MEDIA_ROOT = os.path.dirname(os.path.join(BASE_DIR, 'media'))
-MEDIA_URL = '/media/'
+# MEDIA_URL = '/media/'
 LOGIN_REDIRECT_URL = '/loginredirect/'
+AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
+        'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+        'Cache-Control': 'max-age=94608000',
+    }
+
+AWS_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME_var
+AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID_var
+AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY_var
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME_var
+
+STATICFILES_LOCATION = 'static'
+STATICFILES_STORAGE = 'custom_storages.StaticStorage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
+
+MEDIAFILES_LOCATION = 'media'
+MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+
+
+# DEFAULT_FILE_STORAGE = 'final_project.custom_storages.MediaStorage'
