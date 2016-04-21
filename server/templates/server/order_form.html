@@ -109,8 +109,8 @@ div {
                         {% for item in non_alcoholic_bevs %}
                         <div class="col-xs-6 col-md-3">
                             <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
-                                <img src="{{ item.photo.thumbnail.url }}" alt="photo" class="img-rounded" /><br>
-                            {{ item.name }} ${{ item.price }}
+                                <img src="{{ item.photo.thumbnail.url }}" style="margin:auto; display:block;" alt="photo" class="img-rounded" height="100"/><br>
+                                <p class="text-center">{{ item.name }} ${{ item.price }}</p>                        
                             </a>
                         </div>
                         {% endfor %}
