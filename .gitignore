@@ -5,6 +5,7 @@ server/__pycache__/*
 server_buddy/__pycache__/*
 server/migrations/__pycache__/*
 server_buddy/stored_keys.py
+stored_keys.py
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
