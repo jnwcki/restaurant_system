@@ -75,7 +75,7 @@ WSGI_APPLICATION = 'server_buddy.wsgi.application'
 #     }
 # }
 
-DATABASES_var = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'restaurant_cloud_db',
