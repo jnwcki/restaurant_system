@@ -1,6 +1,6 @@
 import os
 
-from stored_keys import *
+# from stored_keys import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -75,7 +75,16 @@ WSGI_APPLICATION = 'server_buddy.wsgi.application'
 #     }
 # }
 
-DATABASES = DATABASES_var
+DATABASES_var = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'restaurant_cloud_db',
+        'USER': 'serverappuser',
+        'PASSWORD': os.environ['PASSWORD'],
+        'HOST': 'cloud-server-buddy-instance.ctofr4f4ay8x.us-east-1.rds.amazonaws.com'
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -124,10 +133,10 @@ AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
         'Cache-Control': 'max-age=94608000',
     }
 
-AWS_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME_var
-AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID_var
-AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY_var
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME_var
+AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 STATICFILES_LOCATION = 'static'
 STATICFILES_STORAGE = 'custom_storages.StaticStorage'
@@ -136,6 +145,3 @@ STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
 MEDIAFILES_LOCATION = 'media'
 MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
-
-
-# DEFAULT_FILE_STORAGE = 'final_project.custom_storages.MediaStorage'
