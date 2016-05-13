@@ -2,12 +2,6 @@
 {% load staticfiles %}
 
 {% block head %}
-<style>
-div {
-    position: relative;
-    overflow-y: scroll;
-}
-</style>
 {% endblock %}
 
 {% block navbar %}
@@ -22,7 +16,7 @@ div {
                     <h3>Order Total: {{ ticket_total }}</h3>
 
             </div>
-            <div class="row"  positon="relative" style="height: 425px;">
+            <div class="row"  positon="relative" style="height: 425px; position: relative; overflow-y: scroll;">
                 <ul class="list-group">
                     {% if not ordered_items_list %}
                     Order Currently Empty
