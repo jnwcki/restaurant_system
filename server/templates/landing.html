@@ -8,7 +8,7 @@
         <link href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
 
     </head>
-    <body>
+    <body style="background-image: url('{% static "restaurant_background.jpeg" %}')">
         <div class="jumbotron vertical-center">
             <div class="container">
                 <h1>Welcome To Server Buddy</h1>
@@ -16,6 +16,13 @@
                 <p>
                     <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Log In</a>
                     <a class="btn btn-primary btn-lg" href="{% url 'signup' %}" role="button">Sign Up Your Restaurant</a>
+                </p>
+                <p>
+                    <h5>
+                        For a demo of Server Buddy with data, log in with
+                        Username: <b>burger_guy</b> and Password: <b>safepass</b>
+
+                    </h5>
                 </p>
             </div>
         </div>
