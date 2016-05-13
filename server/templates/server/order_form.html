@@ -100,63 +100,72 @@
                   <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="beverages">
                         <h3>Beverages</h3>
-                        {% for item in non_alcoholic_bevs %}
-                        <div class="col-xs-6 col-md-2">
-                            <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
-                                <img src="{{ item.photo.thumbnail.url }}" style="margin:auto; display:block;" alt="photo" class="img-rounded" height="80"/><br>
-                                <p class="text-center">{{ item.name }} ${{ item.price }}</p>
-                            </a>
-                        </div>
+                        <div class="col-md-12">
+                            {% for item in non_alcoholic_bevs %}
+                            <div class="col-xs-6 col-md-3">
+                                <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
+                                    <img src="{{ item.photo.thumbnail.url }}" style="margin:auto; display:block;" alt="photo" class="img-rounded" height="80"/><br>
+                                    <p class="text-center">{{ item.name }} ${{ item.price }}</p>
+                                </a>
+                            </div>
                         {% endfor %}
+                        </div>
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="alcohol">
                         <h3>Alcoholic Beverages</h3>
-                        {% for item in alcoholic_bevs %}
-                        <div class="col-xs-6 col-md-2">
-                            <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
-                                <img src="{{ item.photo.thumbnail.url }}" style="margin:auto; display:block;" alt="photo" class="img-rounded" height="80" /><br>
-                                <p class="text-center">{{ item.name }} ${{ item.price }}</p>
-                            </a>
-                        </div>
-                        {% endfor %}
-                    </div>
-
-                    <div role="tabpanel" class="tab-pane" id="appetizers">
-                        <h3>Appetizers</h3>
-                        {% for item in appetizers %}
-                            <div class="col-xs-6 col-md-2">
+                        <div class="col-md-12">
+                            {% for item in alcoholic_bevs %}
+                            <div class="col-xs-6 col-md-3">
                                 <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
                                     <img src="{{ item.photo.thumbnail.url }}" style="margin:auto; display:block;" alt="photo" class="img-rounded" height="80" /><br>
                                     <p class="text-center">{{ item.name }} ${{ item.price }}</p>
                                 </a>
                             </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                     </div>
 
-                    <div role="tabpanel" class="tab-pane" id="entrees">
-                        <h3>Entrees</h3>
-                                {% for item in entrees %}
-                                <div class="col-xs-6 col-md-2">
+                    <div role="tabpanel" class="tab-pane" id="appetizers">
+                        <h3>Appetizers</h3>
+                        <div class="col-md-12">
+                            {% for item in appetizers %}
+                                <div class="col-xs-6 col-md-3">
                                     <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
                                         <img src="{{ item.photo.thumbnail.url }}" style="margin:auto; display:block;" alt="photo" class="img-rounded" height="80" /><br>
                                         <p class="text-center">{{ item.name }} ${{ item.price }}</p>
                                     </a>
                                 </div>
-                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="entrees">
+                        <h3>Entrees</h3>
+                        <div class="col-md-12">
+                            {% for item in entrees %}
+                            <div class="col-xs-6 col-md-3">
+                                <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
+                                    <img src="{{ item.photo.thumbnail.url }}" style="margin:auto; display:block;" alt="photo" class="img-rounded" height="80" /><br>
+                                    <p class="text-center">{{ item.name }} ${{ item.price }}</p>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
                     </div>
 
                     <div role="tabpanel" class="tab-pane" id="desserts">
                         <h3>Desserts</h3>
-                        {% for item in desserts %}
-                        <div class="col-xs-6 col-md-2">
-                            <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
-                                <img src="{{ item.photo.thumbnail.url }}" style="margin:auto; display:block;" alt="photo" class="img-rounded" height="80" /><br>
-                                <p class="text-center">{{ item.name }} ${{ item.price }}</p>
-                            </a>
+                        <div class="col-md-12">
+                            {% for item in desserts %}
+                            <div class="col-xs-6 col-md-3">
+                                <a href="{% url 'add_item' table_pk item.pk seat_number menu_pk %}">
+                                    <img src="{{ item.photo.thumbnail.url }}" style="margin:auto; display:block;" alt="photo" class="img-rounded" height="80" /><br>
+                                    <p class="text-center">{{ item.name }} ${{ item.price }}</p>
+                                </a>
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
-
                     </div>
 
                   </div>
