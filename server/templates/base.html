@@ -44,13 +44,11 @@
         <!-- Metis Menu Plugin JavaScript -->
         <script src="{% static 'bower_components/metisMenu/dist/metisMenu.min.js' %}"></script>
 
-        <!-- Morris Charts JavaScript -->
-
-
-
-
         <!-- Custom Theme JavaScript -->
         <script src="{% static 'dist/js/sb-admin-2.js' %}"></script>
+
+        {% block chartscript %}
+        {% endblock %}
     </body>
 
 </html>

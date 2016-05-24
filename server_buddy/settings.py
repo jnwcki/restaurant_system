@@ -1,5 +1,5 @@
 import os
-# from stored_keys import *
+from stored_keys import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -74,15 +74,15 @@ WSGI_APPLICATION = 'server_buddy.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'restaurant_cloud_db',
-        'USER': 'serverappuser',
-        'PASSWORD': os.environ['PASSWORD'],
-        'HOST': 'cloud-server-buddy-instance.ctofr4f4ay8x.us-east-1.rds.amazonaws.com'
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'restaurant_cloud_db',
+#         'USER': 'serverappuser',
+#         'PASSWORD': os.environ['PASSWORD'],
+#         'HOST': 'cloud-server-buddy-instance.ctofr4f4ay8x.us-east-1.rds.amazonaws.com'
+#     }
+# }
 
 
 # Password validation
@@ -132,9 +132,9 @@ AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
         'Cache-Control': 'max-age=94608000',
     }
 
-AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
-AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+# AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+# AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+# AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 STATICFILES_LOCATION = 'static'

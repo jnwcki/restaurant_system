@@ -75,6 +75,39 @@
         </div>
     </div>
     <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Sales by category
+          </div>
+          <div class="panel-body">
+            <div id="sales-chart" style="height: 300px;"></div>
+          </div>
+        </div>
+      </div>
     </div>
 </div>
+{% endblock %}
+
+{% block chartscript %}
+<script src="{% static 'bower_components/raphael/raphael-min.js' %}"></script>
+
+<script src="{% static 'bower_components/morrisjs/morris.min.js' %}"></script>
+<script type="text/javascript">
+  new Morris.Area({
+    element: 'sales-chart',
+    data: [
+      { day: '2016-05-15', sales: 100 },
+      { day: '2016-06-23', sales: 25 },
+      { day: '2016-02-15', sales: 100 },
+
+    ],
+
+    xkey: 'day',
+    ykeys: ['sales'],
+    labels: ['Sales'],
+    xLabels: ['month'],
+
+  });
+</script>
 {% endblock %}
