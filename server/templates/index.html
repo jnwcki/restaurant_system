@@ -97,10 +97,9 @@
   new Morris.Area({
     element: 'sales-chart',
     data: [
-      { day: '2016-05-15', sales: 100 },
-      { day: '2016-06-23', sales: 25 },
-      { day: '2016-02-15', sales: 100 },
-
+      {% for date in chart_data %}
+      { day: '{{ date.0 }}', sales: {{ date.1 }} },
+      {% endfor %}
     ],
 
     xkey: 'day',

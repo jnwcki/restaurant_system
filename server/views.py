@@ -1,3 +1,4 @@
+import datetime
 from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, \
     OrderedItem, ApiKey
 from django.contrib.auth.models import User
@@ -43,13 +44,22 @@ class IndexView(TemplateView):
         context['kitchen'] = employee_list.filter(position='K')
         context['menus'] = all_menus
         context['recent_tables'] = recent_tables_list
+        context['chart_data'] = self.get_chart_data()
 
-        paid_tables = Table.objects.filter(
-            server__workplace=current_restaurant, paid=True)
-        time_count = 30
-        for table in paid_tables:
-            print('')
         return context
+
+    def get_chart_data(self):
+        working_date = datetime.date.today()
+        chart_list = []
+        for _ in range(1, 60):
+            working_date = working_date - datetime.timedelta(days=1)
+            item_list = []
+            item_list.append(working_date.strftime('%Y-%m-%d'))
+            item_list.append(0)
+            for table in Table.objects.filter(started__contains=working_date):
+                item_list[1] += table.total_ticket_price()
+            chart_list.append(item_list)
+        return chart_list
 
 
 class UserCreateView(CreateView):
