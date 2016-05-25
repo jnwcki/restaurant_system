@@ -98,13 +98,13 @@
     element: 'sales-chart',
     data: [
       {% for date in chart_data %}
-      { day: '{{ date.0 }}', sales: {{ date.1 }} },
+      { day: '{{ date.0 }}', N: {{ date.1.N|default_if_none:0 }}, A: {{ date.1.A|default_if_none:0 }}, E: {{ date.1.E|default_if_none:0 }}, D: {{ date.1.D|default_if_none:0 }}, B: {{ date.1.B|default_if_none:0 }}  },
       {% endfor %}
     ],
 
     xkey: 'day',
-    ykeys: ['sales'],
-    labels: ['Sales'],
+    ykeys: ['N', 'A', 'E', 'D', 'B'],
+    labels: ['Non-Alcoholic Beverages', 'Appetizers', 'Entrees', 'Desserts', 'Alcoholic Beverages'],
     xLabels: ['month'],
 
   });

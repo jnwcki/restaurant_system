@@ -1,4 +1,5 @@
 import datetime
+from collections import Counter
 from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, \
     OrderedItem, ApiKey
 from django.contrib.auth.models import User
@@ -45,20 +46,22 @@ class IndexView(TemplateView):
         context['menus'] = all_menus
         context['recent_tables'] = recent_tables_list
         context['chart_data'] = self.get_chart_data()
-
         return context
 
     def get_chart_data(self):
         working_date = datetime.date.today()
         chart_list = []
         for _ in range(1, 60):
-            working_date = working_date - datetime.timedelta(days=1)
             item_list = []
             item_list.append(working_date.strftime('%Y-%m-%d'))
-            item_list.append(0)
-            for table in Table.objects.filter(started__contains=working_date):
-                item_list[1] += table.total_ticket_price()
+            item_list.append(Counter({'N': 0, 'A': 0, 'E': 0, 'D': 0, 'B': 0}))
+
+            for table in Table.objects.filter(server__workplace=self.request.user.userprofile.workplace, started__contains=working_date, paid=True):
+                item_list[1].update(Counter(table.price_category_totals()))
+
+            item_list[1] = dict(item_list[1])
             chart_list.append(item_list)
+            working_date = working_date - datetime.timedelta(days=1)
         return chart_list
 
 
