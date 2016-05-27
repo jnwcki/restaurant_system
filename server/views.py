@@ -1,4 +1,5 @@
 import datetime
+from django.utils import timezone
 from collections import Counter
 from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, \
     OrderedItem, ApiKey
@@ -49,19 +50,21 @@ class IndexView(TemplateView):
         return context
 
     def get_chart_data(self):
-        working_date = datetime.date.today()
+        pass_through_local_date = timezone.localtime(timezone.now()).date()
+        working_date = timezone.now().date()
         chart_list = []
-        for _ in range(1, 60):
+        for _ in range(1, 30):
             item_list = []
-            item_list.append(working_date.strftime('%Y-%m-%d'))
+            item_list.append(pass_through_local_date.strftime('%Y-%m-%d'))
             item_list.append(Counter({'N': 0, 'A': 0, 'E': 0, 'D': 0, 'B': 0}))
 
             for table in Table.objects.filter(server__workplace=self.request.user.userprofile.workplace, started__contains=working_date, paid=True):
                 item_list[1].update(Counter(table.price_category_totals()))
-
+                # print(table)
             item_list[1] = dict(item_list[1])
             chart_list.append(item_list)
-            working_date = working_date - datetime.timedelta(days=1)
+            working_date -= datetime.timedelta(days=1)
+            pass_through_local_date -= datetime.timedelta(days=1)
         return chart_list
 
 

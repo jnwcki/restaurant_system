@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+{% block head %}
+<!-- Morris Charts CSS -->
+<link href="{% static 'bower_components/morrisjs/morris.css' %}" rel="stylesheet">
+
+{% endblock %}
+
 {% block navbar %}
 {% include 'navbar_include.html' %}
 {% endblock %}
@@ -78,7 +84,7 @@
       <div class="col-md-12">
         <div class="panel panel-default">
           <div class="panel-heading">
-            Sales by category
+            Pre-tax sales by category last 30 days
           </div>
           <div class="panel-body">
             <div id="sales-chart" style="height: 300px;"></div>
@@ -94,6 +100,7 @@
 
 <script src="{% static 'bower_components/morrisjs/morris.min.js' %}"></script>
 <script type="text/javascript">
+$( document ).ready(function(){
   new Morris.Area({
     element: 'sales-chart',
     data: [
@@ -106,7 +113,11 @@
     ykeys: ['N', 'A', 'E', 'D', 'B'],
     labels: ['Non-Alcoholic Beverages', 'Appetizers', 'Entrees', 'Desserts', 'Alcoholic Beverages'],
     xLabels: ['month'],
-
+    hoverCallback: function (index, options, content, row) {
+      var data = options.data[index];
+      return (content);
+    }
   });
+});
 </script>
 {% endblock %}
