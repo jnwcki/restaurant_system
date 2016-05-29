@@ -80,23 +80,6 @@ class Table(models.Model):
             counter += item.item.price
         return counter
 
-    def price_category_totals(self):
-        category_totals = {'N': 0, 'A': 0, 'E': 0, 'D': 0, 'B': 0}
-        sold_items = self.ordereditem_set.filter(canceled=False, sent=True)
-        for item in sold_items:
-            if item.item.item_type == 'N':
-                category_totals['N'] += item.item.price
-            elif item.item.item_type == 'A':
-                category_totals['A'] += item.item.price
-            elif item.item.item_type == 'E':
-                category_totals['E'] += item.item.price
-            elif item.item.item_type == 'D':
-                category_totals['D'] += item.item.price
-            elif item.item.item_type == 'B':
-                category_totals['B'] += item.item.price
-        # print(category_totals)
-        return category_totals
-
     def price_with_tax(self):
         if self.server.workplace.tax_percentage:
             pay_this_amount = self.total_ticket_price * self.server.workplace.tax_percentage / 100

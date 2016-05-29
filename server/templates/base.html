@@ -23,10 +23,10 @@
 
         <!-- Custom Fonts -->
         <link href="{% static 'bower_components/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
-        {% block head %}
-        {% endblock %}
 
         <title>Restaurant</title>
+        {% block head %}
+        {% endblock %}
     </head>
 
     <body>
@@ -44,11 +44,13 @@
         <!-- Metis Menu Plugin JavaScript -->
         <script src="{% static 'bower_components/metisMenu/dist/metisMenu.min.js' %}"></script>
 
+        <!-- Morris Charts JavaScript -->
+
+
+
+
         <!-- Custom Theme JavaScript -->
         <script src="{% static 'dist/js/sb-admin-2.js' %}"></script>
-
-        {% block chartscript %}
-        {% endblock %}
     </body>
 
 </html>

@@ -1,12 +1,7 @@
-import datetime
-from django.utils import timezone
-from collections import Counter
-from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, \
-    OrderedItem, ApiKey
+from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, OrderedItem, ApiKey
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.views.generic import CreateView, TemplateView, DetailView, \
-    ListView, UpdateView, View
+from django.views.generic import CreateView, TemplateView, DetailView, ListView, UpdateView, View
 from server.forms import MenuItemForm, MenuCreateForm
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
@@ -35,36 +30,16 @@ class IndexView(TemplateView):
         current_server = UserProfile.objects.get(user=self.request.user)
         current_restaurant = current_server.workplace
         all_menus = Menu.objects.filter(restaurant=current_restaurant)
-        employee_list = UserProfile.objects.filter(
-            workplace=self.request.user.userprofile.workplace)
-        recent_tables_list = Table.objects.filter(
-            server__workplace=current_restaurant,
-            paid=True).order_by('-id')[:3]
+        employee_list = UserProfile.objects.filter(workplace=self.request.user.userprofile.workplace)
+        recent_tables_list = Table.objects.filter(server__workplace=current_restaurant,
+                                                  paid=True).order_by('-id')[:3]
 
         context['user'] = self.request.user
         context['servers'] = employee_list.filter(position='S')
         context['kitchen'] = employee_list.filter(position='K')
         context['menus'] = all_menus
         context['recent_tables'] = recent_tables_list
-        context['chart_data'] = self.get_chart_data()
         return context
-
-    def get_chart_data(self):
-        pass_through_local_date = timezone.localtime(timezone.now()).date()
-        working_date = timezone.now().date()
-        chart_list = []
-        for _ in range(1, 30):
-            item_list = []
-            item_list.append(pass_through_local_date.strftime('%Y-%m-%d'))
-            item_list.append(Counter({'N': 0, 'A': 0, 'E': 0, 'D': 0, 'B': 0}))
-
-            for table in Table.objects.filter(server__workplace=self.request.user.userprofile.workplace, started__contains=working_date, paid=True):
-                item_list[1].update(Counter(table.price_category_totals()))
-            item_list[1] = dict(item_list[1])
-            chart_list.append(item_list)
-            working_date -= datetime.timedelta(days=1)
-            pass_through_local_date -= datetime.timedelta(days=1)
-        return chart_list
 
 
 class UserCreateView(CreateView):
@@ -80,8 +55,7 @@ class UserCreateView(CreateView):
                                              position='M'
                                              )
         profile.save()
-        default_menu = Menu.objects.create(
-            restaurant=new_restaurant, name="Default Menu")
+        default_menu = Menu.objects.create(restaurant=new_restaurant, name="Default Menu")
         new_restaurant.current_menu = default_menu
         new_restaurant.save()
         return super().form_valid(form)
@@ -100,15 +74,15 @@ class ServerHomeView(TemplateView):
         context = super(ServerHomeView, self).get_context_data()
         current_server = UserProfile.objects.get(user=self.request.user)
         current_restaurant = current_server.workplace
-        bound_table_list = Table.objects.filter(
-            server__workplace=current_restaurant,
-            fulfilled=False,
-            canceled=False)
-        tables_pending_payment = Table.objects.filter(
-            server__workplace=current_restaurant,
-            fulfilled=True,
-            canceled=False,
-            paid=False)
+        bound_table_list = Table.objects.filter(server__workplace=current_restaurant,
+                                                fulfilled=False,
+                                                canceled=False,
+                                                )
+        tables_pending_payment = Table.objects.filter(server__workplace=current_restaurant,
+                                                      fulfilled=True,
+                                                      canceled=False,
+                                                      paid=False
+                                                      )
 
         all_tables_list = [x for x in range(1, current_restaurant.number_of_tables + 1)]
         bound_table_numbers = bound_table_list.values_list('number', flat=True)

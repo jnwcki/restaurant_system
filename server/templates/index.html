@@ -1,12 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-{% block head %}
-<!-- Morris Charts CSS -->
-<link href="{% static 'bower_components/morrisjs/morris.css' %}" rel="stylesheet">
-
-{% endblock %}
-
 {% block navbar %}
 {% include 'navbar_include.html' %}
 {% endblock %}
@@ -81,43 +75,6 @@
         </div>
     </div>
     <div class="row">
-      <div class="col-md-12">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            Pre-tax sales by category last 30 days
-          </div>
-          <div class="panel-body">
-            <div id="sales-chart" style="height: 300px;"></div>
-          </div>
-        </div>
-      </div>
     </div>
 </div>
-{% endblock %}
-
-{% block chartscript %}
-<script src="{% static 'bower_components/raphael/raphael-min.js' %}"></script>
-
-<script src="{% static 'bower_components/morrisjs/morris.min.js' %}"></script>
-<script type="text/javascript">
-$( document ).ready(function(){
-  new Morris.Area({
-    element: 'sales-chart',
-    data: [
-      {% for date in chart_data %}
-      { day: '{{ date.0 }}', N: {{ date.1.N|default_if_none:0 }}, A: {{ date.1.A|default_if_none:0 }}, E: {{ date.1.E|default_if_none:0 }}, D: {{ date.1.D|default_if_none:0 }}, B: {{ date.1.B|default_if_none:0 }}  },
-      {% endfor %}
-    ],
-
-    xkey: 'day',
-    ykeys: ['N', 'A', 'E', 'D', 'B'],
-    labels: ['Non-Alcoholic Beverages', 'Appetizers', 'Entrees', 'Desserts', 'Alcoholic Beverages'],
-    xLabels: ['month'],
-    hoverCallback: function (index, options, content, row) {
-      var data = options.data[index];
-      return (content);
-    }
-  });
-});
-</script>
 {% endblock %}
