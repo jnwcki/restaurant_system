@@ -60,7 +60,6 @@ class IndexView(TemplateView):
 
             for table in Table.objects.filter(server__workplace=self.request.user.userprofile.workplace, started__contains=working_date, paid=True):
                 item_list[1].update(Counter(table.price_category_totals()))
-                # print(table)
             item_list[1] = dict(item_list[1])
             chart_list.append(item_list)
             working_date -= datetime.timedelta(days=1)
