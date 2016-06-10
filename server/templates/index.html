@@ -23,11 +23,10 @@
         <div class="col-md-4">
             <div class="panel panel-green">
                 <div class="panel-heading">
-                    <h4>Servers</h4>
-                    {% for server in servers %}
-                    <span class="pull-left">{{ server.user }}</span>
-                    <span class="glyphicon glyphicon-glass pull-right"></span>
-                    <br>
+                    <h4>Top Servers by Sales</h4>
+                    {% for server in best_servers %}
+                    <span class="pull-left">{{ server.0.user }} - ${{ server.1 }}</span>
+                    <span class="glyphicon glyphicon-glass pull-right"></span><br>
                     {% endfor %}
                 </div>
                 <a href="{% url 'add_server' user.userprofile.workplace.pk %}">
@@ -64,7 +63,7 @@
                     <h4>Recent Tables</h4>
                     {% for table in recent_tables.all %}
                     <a href="{% url 'payment' table.pk %}">
-                        <span class="pull-left">Table {{ table.number }} ${{ table.total_ticket_price }}</span>
+                        <span class="pull-left">Table {{ table.number }} ${{ table.total_ticket_price }} - {{ table.started }}</span>
                         <span class="glyphicon glyphicon-usd pull-right"></span>
                     </a>
                     <br>

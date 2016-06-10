@@ -1,4 +1,5 @@
 import datetime
+import operator
 from django.utils import timezone
 from collections import Counter
 from server.models import UserProfile, Restaurant, MenuItem, Menu, Table, \
@@ -42,12 +43,29 @@ class IndexView(TemplateView):
             paid=True).order_by('-id')[:3]
 
         context['user'] = self.request.user
-        context['servers'] = employee_list.filter(position='S')
-        context['kitchen'] = employee_list.filter(position='K')
+        context['servers'] = employee_list.filter(position='S')[:3]
+        context['kitchen'] = employee_list.filter(position='K')[:3]
         context['menus'] = all_menus
         context['recent_tables'] = recent_tables_list
         context['chart_data'] = self.get_chart_data()
+        context['best_servers'] = self.get_best_servers()
+        # print(self.get_best_servers())
         return context
+
+    def get_best_servers(self):
+        servers_list = UserProfile.objects.filter(
+            workplace=self.request.user.userprofile.workplace, position='S')
+        server_rankings_dict = {}
+        for server in servers_list:
+            table_total = 0
+            for table in Table.objects.filter(server=server):
+                table_total += table.total_ticket_price()
+            server_rankings_dict[server] = table_total
+        sorted_servers = sorted(server_rankings_dict.items(),
+                                key=operator.itemgetter(1), reverse=True)
+        # print("sorted servers: " + str(sorted_servers))
+        return sorted_servers
+
 
     def get_chart_data(self):
         pass_through_local_date = timezone.localtime(timezone.now()).date()
