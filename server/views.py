@@ -49,7 +49,6 @@ class IndexView(TemplateView):
         context['recent_tables'] = recent_tables_list
         context['chart_data'] = self.get_chart_data()
         context['best_servers'] = self.get_best_servers()
-        # print(self.get_best_servers())
         return context
 
     def get_best_servers(self):
@@ -58,12 +57,11 @@ class IndexView(TemplateView):
         server_rankings_dict = {}
         for server in servers_list:
             table_total = 0
-            for table in Table.objects.filter(server=server):
+            for table in Table.objects.filter(server=server, started__gt=timezone.now()-datetime.timedelta(days=30)):
                 table_total += table.total_ticket_price()
             server_rankings_dict[server] = table_total
         sorted_servers = sorted(server_rankings_dict.items(),
                                 key=operator.itemgetter(1), reverse=True)
-        # print("sorted servers: " + str(sorted_servers))
         return sorted_servers
 
 
