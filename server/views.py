@@ -64,7 +64,6 @@ class IndexView(TemplateView):
                                 key=operator.itemgetter(1), reverse=True)
         return sorted_servers
 
-
     def get_chart_data(self):
         pass_through_local_date = timezone.localtime(timezone.now()).date()
         working_date = timezone.now().date()
